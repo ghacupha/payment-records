@@ -9,7 +9,7 @@ jobs:
         env:
             SPRING_OUTPUT_ANSI_ENABLED: DETECT
             SPRING_JPA_SHOW_SQL: false
-            DOCKER_IMAGE_PREFIX: ${{ secrets.DOCKER_IMAGE_PREFIX }}
+            DOCKER_IMAGE_PREFIX: ${{secrets.DOCKER_IMAGE_PREFIX }}
             PAYMENT_RECORDS_PORT: ${{secrets.PAYMENT_RECORDS_PORT}}
             PAYMENT_RECORDS_DEV_DB: ${{secrets.PAYMENT_RECORDS_DEV_DB}}
             PAYMENT_RECORDS_PROD_DB: ${{secrets.PAYMENT_RECORDS_PROD_DB}}
@@ -27,4 +27,4 @@ jobs:
             - name: Build and publish docker image
               if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/'))
               run: |
-                  ./mvnw -ntp jib:build -Djib.to.image=ghacupha/payment-records:0.0.1-SNAPSHOT -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }}"
+                  ./mvnw -ntp jib:build -Djib.to.image=ghacupha/payment-records:0.0.1-SNAPSHOT -Djib.to.auth.username="${{secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{secrets.DOCKER_PASSWORD }}"
