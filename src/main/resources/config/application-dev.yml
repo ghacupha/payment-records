@@ -49,9 +49,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/paymentRecords
-    username: paymentRecords
-    password:
+    url: ${env.LOCAL_PG_SERVER}/${PAYMENT_RECORDS_DEV_DB}
+    username: ${PG_DATABASE_DEV_USER}
+    password: ${PG_DATABASE_DEV_PASSWORD}
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -59,10 +59,8 @@ spring:
     database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
     show-sql: true
   data:
-    elasticsearch:
-      properties:
-        path:
-          home: target/elasticsearch
+    jest:
+      uri: ${SPRING_DATA_JEST_URI}
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
@@ -86,7 +84,8 @@ spring:
         enabled: true
 
 server:
-  port: 8787
+  port: ${PAYMENT_RECORDS_PORT}
+  #port: 8787
 
 # ===================================================================
 # JHipster specific properties
@@ -116,7 +115,8 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: Y2RkYzllNWVhZGUwNTZkNDc4ZWVjMDBkNzZjM2IxZjU4YTJkZTk5Mzk2NmRjMDg3YzhiNjJiMDM4ZjRiNGY0MTA5MTgwMWVlMjU2YmNjYmExMDcyOGVhNWNmNWQ0OWU0OWY0ZjU5MDdiYTI2YmM0MjcxZWEyODI5NDdhMGEzMWY=
+        # base64-secret: Y2RkYzllNWVhZGUwNTZkNDc4ZWVjMDBkNzZjM2IxZjU4YTJkZTk5Mzk2NmRjMDg3YzhiNjJiMDM4ZjRiNGY0MTA5MTgwMWVlMjU2YmNjYmExMDcyOGVhNWNmNWQ0OWU0OWY0ZjU5MDdiYTI2YmM0MjcxZWEyODI5NDdhMGEzMWY=
+        base64-secret: ${SECURITY_AUTHENTICATION_JWT_BASE64_SECRET}
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
