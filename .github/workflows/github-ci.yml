@@ -12,6 +12,7 @@ jobs:
             DOCKER_IMAGE_PREFIX: ${{ secrets.DOCKER_IMAGE_PREFIX }}
             PAYMENT_RECORDS_PORT: ${{secrets.PAYMENT_RECORDS_PORT}}
             PAYMENT_RECORDS_DEV_DB: ${{secrets.PAYMENT_RECORDS_DEV_DB}}
+            PAYMENT_RECORDS_PROD_DB: ${{secrets.PAYMENT_RECORDS_PROD_DB}}
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-java@v1
