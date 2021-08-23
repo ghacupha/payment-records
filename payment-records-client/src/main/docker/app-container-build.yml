@@ -1,5 +1,5 @@
 #
-# ERP System - ERP data management platform
+# ERP System - ERP data management platform: Payment Records
 # Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
