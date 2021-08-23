@@ -6,7 +6,7 @@
     "useSass": true,
     "clientPackageManager": "npm",
     "clientFramework": "angularX",
-    "clientTheme": "darkly",
+    "clientTheme": "journal",
     "clientThemeVariant": "dark",
     "authenticationType": "jwt",
     "cacheProvider": "no",

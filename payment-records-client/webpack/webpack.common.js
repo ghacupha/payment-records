@@ -1,5 +1,5 @@
 /*
- * ERP System - ERP data management platform: Payment Records
+ * Payment Records - Payment records is part of the ERP System
  * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -86,7 +86,7 @@ module.exports = (options) => ({
                 // If this URL is left empty (""), then it will be relative to the current context.
                 // If you use an API server, in `prod` mode, you will need to enable CORS
                 // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
-                SERVER_API_URL: `''`
+                SERVER_API_URL: `'http://localhost:8977/'`
             }
         }),
         new CopyWebpackPlugin({

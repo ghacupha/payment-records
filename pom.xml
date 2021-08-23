@@ -7,8 +7,8 @@
     <artifactId>payment-records</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>ERP System</name>
-    <description>ERP data management platform: Payment Records</description>
+    <name>Payment Records</name>
+    <description>Payment records is part of the ERP System</description>
 
     <properties>
         <!-- Build properties -->

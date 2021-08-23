@@ -1,6 +1,6 @@
 
 /*-
- * ERP System - ERP data management platform: Payment Records
+ * Payment Records - Payment records is part of the ERP System
  * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
  *
  * This program is free software: you can redistribute it and/or modify
