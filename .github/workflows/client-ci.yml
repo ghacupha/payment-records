@@ -31,13 +31,13 @@ jobs:
             - name: Login to Docker hub
               uses: docker/login-action@v1
               with:
-                username: ${{ secrets.DOCKERHUB_USERNAME }}
-                password: ${{ secrets.DOCKERHUB_TOKEN }}
+                username: ${{ secrets.DOCKER_USERNAME }}
+                password: ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Build docker image
               working-directory: ./payment-records-client
-              run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_ORG }}/${{ secrets.DOCKERHUB_REPO }}:${{ secrets.DOCKERHUB_VER }}
+              run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_ORG }}/${{ secrets.DOCKERHUB_CLIENT_REPO }}:${{ secrets.DOCKERHUB_VER }}
 
             - name: Push docker image
               working-directory: ./payment-records-client
-              run: docker push ${{ secrets.DOCKERHUB_ORG }}/${{ secrets.DOCKERHUB_REPO }}:${{ secrets.DOCKERHUB_VER }}
+              run: docker push ${{ secrets.DOCKERHUB_ORG }}/${{ secrets.DOCKERHUB_CLIENT_REPO }}:${{ secrets.DOCKERHUB_VER }}
