@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-2">
+        <createTable tableName="currency_table">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="currency_tablePK"/>
+            </column>
+            <column name="country" type="VARCHAR(255)"/>
+            <column name="currency_code" type="VARCHAR(3)"/>
+            <column name="currency_name" type="VARCHAR(255)"/>
+            <column name="locality" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-3">
+        <createTable tableName="payments_file_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payments_file_typePK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="file_template" type="BYTEA"/>
+            <column name="file_template_content_type" type="VARCHAR(255)"/>
+            <column name="payments_file_medium_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payments_file_type_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paymentsfile_type" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-4">
+        <createTable tableName="payments_file_upload">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payments_file_uploadPK"/>
+            </column>
+            <column name="data_file" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_file_content_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payments_file_type_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="period_from" type="date"/>
+            <column name="period_to" type="date"/>
+            <column name="upload_processed" type="BOOLEAN"/>
+            <column name="upload_successful" type="BOOLEAN"/>
+            <column name="upload_token" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-5">
+        <createTable tableName="payments_message_token">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payments_message_tokenPK"/>
+            </column>
+            <column name="actioned" type="BOOLEAN"/>
+            <column name="content_fully_enqueued" type="BOOLEAN"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="received" type="BOOLEAN"/>
+            <column name="time_sent" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-6">
+        <addUniqueConstraint columnNames="currency_code" constraintName="UC_CURRENCY_TABLECURRENCY_CODE_COL" tableName="currency_table"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-7">
+        <addUniqueConstraint columnNames="payments_file_type_name" constraintName="UC_PAYMENTS_FILE_TYPEPAYMENTS_FILE_TYPE_NAME_COL" tableName="payments_file_type"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-8">
+        <addUniqueConstraint columnNames="file_name" constraintName="UC_PAYMENTS_FILE_UPLOADFILE_NAME_COL" tableName="payments_file_upload"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-9">
+        <addUniqueConstraint columnNames="upload_token" constraintName="UC_PAYMENTS_FILE_UPLOADUPLOAD_TOKEN_COL" tableName="payments_file_upload"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1629718812231-1">
+        <alterSequence sequenceName="sequence_generator"/>
+    </changeSet>
+</databaseChangeLog>

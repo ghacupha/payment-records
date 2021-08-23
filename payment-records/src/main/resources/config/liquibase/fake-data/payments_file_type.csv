@@ -1,0 +1,11 @@
+id;payments_file_type_name;payments_file_medium_type;description;file_template;file_template_content_type;paymentsfile_type
+1;backing up payment out-of-the-box;EXCEL;overriding;../fake-data/blob/hipster.png;image/png;CURRENCY_LIST
+2;system-worthy;EXCEL_XLSX;metrics Assistant;../fake-data/blob/hipster.png;image/png;PAYMENTS_DATA
+3;Orchestrator payment;EXCEL_CSV;Ergonomic Cape connecting;../fake-data/blob/hipster.png;image/png;CURRENCY_LIST
+4;application optimize infomediaries;EXCEL_XLSX;infrastructures Cotton;../fake-data/blob/hipster.png;image/png;PAYMENTS_DATA
+5;methodologies;EXCEL_XLSB;Steel;../fake-data/blob/hipster.png;image/png;CURRENCY_LIST
+6;tan open-source Circle;EXCEL;migration;../fake-data/blob/hipster.png;image/png;PAYMENTS_DATA
+7;Investor;DOC;ROI;../fake-data/blob/hipster.png;image/png;PAYMENTS_DATA
+8;drive;EXCEL_XLSX;Investor bandwidth;../fake-data/blob/hipster.png;image/png;PAYMENTS_DATA
+9;Focused Direct;JSON;back up;../fake-data/blob/hipster.png;image/png;CURRENCY_LIST
+10;Berkshire orange;EXCEL;redundant multi-byte;../fake-data/blob/hipster.png;image/png;PAYMENTS_DATA

@@ -1,0 +1,58 @@
+entity PaymentsFileType {
+    paymentsFileTypeName String required unique,
+    paymentsFileMediumType PaymentsFileMediumTypes required,
+    description String,
+    fileTemplate AnyBlob,
+    paymentsfileType PaymentsFileModelType
+  }
+  entity PaymentsFileUpload {
+    description String required,
+    fileName String required unique,
+    periodFrom LocalDate,
+    periodTo LocalDate,
+    paymentsFileTypeId Long required,
+    dataFile AnyBlob required,
+    uploadSuccessful Boolean,
+    uploadProcessed Boolean,
+    uploadToken String unique
+  }
+  entity PaymentsMessageToken {
+    description String,
+    timeSent Long required,
+    tokenValue String required,
+    received Boolean,
+    actioned Boolean,
+    contentFullyEnqueued Boolean
+  }
+  entity CurrencyTable {
+    currencyCode String unique minlength(3) maxlength(3),
+    locality CurrencyLocality required,
+    currencyName String,
+    country String
+  }
+  enum CurrencyLocality {
+    LOCAL,
+    FOREIGN
+  }
+  enum PaymentsFileMediumTypes {
+    EXCEL,
+    EXCEL_XLS,
+    EXCEL_XLSX,
+    EXCEL_XLSB,
+    EXCEL_CSV,
+    EXCEL_XML,
+    PDF,
+    POWERPOINT,
+    DOC,
+    TEXT,
+    JSON,
+    HTML5
+  }
+  enum PaymentsFileModelType { CURRENCY_LIST,PAYMENTS_DATA }
+  dto PaymentsFileUpload, PaymentsMessageToken, CurrencyTable with mapstruct
+  paginate PaymentsFileType, PaymentsFileUpload, PaymentsMessageToken, CurrencyTable with pagination
+  service PaymentsFileUpload, PaymentsMessageToken, CurrencyTable with serviceImpl
+  service PaymentsFileType with serviceClass
+  search CurrencyTable with elasticsearch
+  filter PaymentsFileType, PaymentsFileUpload, PaymentsMessageToken, CurrencyTable
+  clientRootFolder PaymentsFileType, PaymentsFileUpload, PaymentsMessageToken, CurrencyTable with payments
