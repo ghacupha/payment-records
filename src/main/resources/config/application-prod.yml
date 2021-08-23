@@ -40,7 +40,7 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: ${env.LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}
+    url: ${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}
     username: ${PG_DATABASE_PROD_USER}
     password: ${PG_DATABASE_PROD_PASSWORD}
     hikari:

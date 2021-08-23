@@ -9,7 +9,7 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       #- SPRING_DATASOURCE_URL=jdbc:postgresql://paymentrecords-postgresql:5432/paymentRecords
-      - SPRING_DATASOURCE_URL=${env.LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}
+      - SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
       #- SPRING_DATA_JEST_URI=http://paymentrecords-elasticsearch:9200
       - SPRING_DATA_JEST_URI=${SPRING_DATA_JEST_URI}
