@@ -32,7 +32,6 @@ public interface PaymentsFileTypeMapper extends EntityMapper<PaymentsFileTypeDTO
 
 
     @Mapping(target = "removePlaceholder", ignore = true)
-
     default PaymentsFileType fromId(Long id) {
         if (id == null) {
             return null;

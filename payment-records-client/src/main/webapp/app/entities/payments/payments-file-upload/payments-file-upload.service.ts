@@ -32,7 +32,7 @@ type EntityArrayResponseType = HttpResponse<IPaymentsFileUpload[]>;
 
 @Injectable({ providedIn: 'root' })
 export class PaymentsFileUploadService {
-  public resourceUrl = SERVER_API_URL + 'api/payments-file-uploads';
+  public resourceUrl = SERVER_API_URL + 'api/app/file-uploads';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/payments-file-uploads';
 
   constructor(protected http: HttpClient) {}

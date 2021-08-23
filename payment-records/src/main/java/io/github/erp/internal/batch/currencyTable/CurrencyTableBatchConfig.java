@@ -48,8 +48,6 @@ import java.util.List;
  */
 @Configuration
 public class CurrencyTableBatchConfig {
-
-
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
 

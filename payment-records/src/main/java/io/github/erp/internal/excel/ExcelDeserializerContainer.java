@@ -19,6 +19,7 @@ package io.github.erp.internal.excel;
  */
 
 import io.github.erp.internal.excel.deserializer.DefaultExcelFileDeserializer;
+import io.github.erp.internal.model.PaymentEVM;
 import io.github.erp.internal.model.sampleDataModel.CurrencyTableEVM;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,5 +37,8 @@ public class ExcelDeserializerContainer {
         return excelFile -> new DefaultExcelFileDeserializer<>(CurrencyTableEVM.class, getDefaultPoijiOptions()).deserialize(excelFile);
     }
 
-    // todo create bean for every data model
+    @Bean("paymentsExcelFileDeserializer")
+    public ExcelFileDeserializer<PaymentEVM> paymentsExcelFileDeserializer() {
+        return excelFile -> new DefaultExcelFileDeserializer<>(PaymentEVM.class, getDefaultPoijiOptions()).deserialize(excelFile);
+    }
 }

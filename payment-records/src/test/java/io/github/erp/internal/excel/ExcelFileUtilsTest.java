@@ -18,11 +18,14 @@ package io.github.erp.internal.excel;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import io.github.erp.internal.AppConstants;
+import io.github.erp.internal.model.PaymentEVM;
 import io.github.erp.internal.model.sampleDataModel.CurrencyTableEVM;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import static io.github.erp.internal.excel.ExcelTestUtil.readFile;
@@ -57,5 +60,31 @@ public class ExcelFileUtilsTest {
         assertThat(currencies.get(4)).isEqualTo(CurrencyTableEVM.builder().rowIndex(5).country("SWITZERLAND").currencyCode("CHF").currencyName("SWISS FRANC").locality("FOREIGN").build());
         assertThat(currencies.get(5)).isEqualTo(CurrencyTableEVM.builder().rowIndex(6).country("SOUTH AFRICA").currencyCode("ZAR").currencyName("SOUTH AFRICAN RAND").locality("FOREIGN").build());
         assertThat(currencies.get(12)).isEqualTo(CurrencyTableEVM.builder().rowIndex(13).country("CHINA").currencyCode("CNY").currencyName("CHINESE YUAN").locality("FOREIGN").build());
+    }
+
+    @Test
+    public void deserializePaymentsFile() throws Exception {
+
+        ExcelFileDeserializer<PaymentEVM> deserializer = container.paymentsExcelFileDeserializer();
+
+        List<PaymentEVM> payments = deserializer.deserialize(toBytes(readFile("payments.xlsx")));
+
+        assertThat(payments.size()).isEqualTo(1000);
+
+        for (int i = 0; i < 1000; i++) {
+            String index = String.valueOf(1 + i);
+            assertThat(payments.get(i))
+                .isEqualTo(
+                    PaymentEVM.builder()
+                        .rowIndex(Integer.parseInt(index))
+                        .paymentsCategory("category"+i)
+                        .transactionNumber("trn"+i)
+                        .transactionDate(AppConstants.DATETIME_FORMATTER.format(LocalDate.of(2021,8,23)))
+                        .transactionCurrency("crn"+i)
+                        .transactionAmount(100 + i)
+                        .beneficiary("ben"+i)
+                        .build()
+                );
+        }
     }
 }
