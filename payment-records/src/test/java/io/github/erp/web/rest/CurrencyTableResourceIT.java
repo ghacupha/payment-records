@@ -20,6 +20,7 @@ package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
 import io.github.erp.domain.CurrencyTable;
+import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.CurrencyTableRepository;
 import io.github.erp.repository.search.CurrencyTableSearchRepository;
 import io.github.erp.service.CurrencyTableService;
@@ -43,6 +44,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -78,8 +80,14 @@ public class CurrencyTableResourceIT {
     @Autowired
     private CurrencyTableRepository currencyTableRepository;
 
+    @Mock
+    private CurrencyTableRepository currencyTableRepositoryMock;
+
     @Autowired
     private CurrencyTableMapper currencyTableMapper;
+
+    @Mock
+    private CurrencyTableService currencyTableServiceMock;
 
     @Autowired
     private CurrencyTableService currencyTableService;
@@ -222,6 +230,26 @@ public class CurrencyTableResourceIT {
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllCurrencyTablesWithEagerRelationshipsIsEnabled() throws Exception {
+        when(currencyTableServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCurrencyTableMockMvc.perform(get("/api/currency-tables?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(currencyTableServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllCurrencyTablesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(currencyTableServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restCurrencyTableMockMvc.perform(get("/api/currency-tables?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(currencyTableServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getCurrencyTable() throws Exception {
@@ -542,6 +570,26 @@ public class CurrencyTableResourceIT {
 
         // Get all the currencyTableList where country does not contain UPDATED_COUNTRY
         defaultCurrencyTableShouldBeFound("country.doesNotContain=" + UPDATED_COUNTRY);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCurrencyTablesByPlaceholderIsEqualToSomething() throws Exception {
+        // Initialize the database
+        currencyTableRepository.saveAndFlush(currencyTable);
+        Placeholder placeholder = PlaceholderResourceIT.createEntity(em);
+        em.persist(placeholder);
+        em.flush();
+        currencyTable.addPlaceholder(placeholder);
+        currencyTableRepository.saveAndFlush(currencyTable);
+        Long placeholderId = placeholder.getId();
+
+        // Get all the currencyTableList where placeholder equals to placeholderId
+        defaultCurrencyTableShouldBeFound("placeholderId.equals=" + placeholderId);
+
+        // Get all the currencyTableList where placeholder equals to placeholderId + 1
+        defaultCurrencyTableShouldNotBeFound("placeholderId.equals=" + (placeholderId + 1));
     }
 
     /**

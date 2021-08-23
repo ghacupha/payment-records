@@ -71,6 +71,8 @@ public class CurrencyTableCriteria implements Serializable, Criteria {
 
     private StringFilter country;
 
+    private LongFilter placeholderId;
+
     public CurrencyTableCriteria() {
     }
 
@@ -80,6 +82,7 @@ public class CurrencyTableCriteria implements Serializable, Criteria {
         this.locality = other.locality == null ? null : other.locality.copy();
         this.currencyName = other.currencyName == null ? null : other.currencyName.copy();
         this.country = other.country == null ? null : other.country.copy();
+        this.placeholderId = other.placeholderId == null ? null : other.placeholderId.copy();
     }
 
     @Override
@@ -127,6 +130,14 @@ public class CurrencyTableCriteria implements Serializable, Criteria {
         this.country = country;
     }
 
+    public LongFilter getPlaceholderId() {
+        return placeholderId;
+    }
+
+    public void setPlaceholderId(LongFilter placeholderId) {
+        this.placeholderId = placeholderId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -142,7 +153,8 @@ public class CurrencyTableCriteria implements Serializable, Criteria {
             Objects.equals(currencyCode, that.currencyCode) &&
             Objects.equals(locality, that.locality) &&
             Objects.equals(currencyName, that.currencyName) &&
-            Objects.equals(country, that.country);
+            Objects.equals(country, that.country) &&
+            Objects.equals(placeholderId, that.placeholderId);
     }
 
     @Override
@@ -152,7 +164,8 @@ public class CurrencyTableCriteria implements Serializable, Criteria {
         currencyCode,
         locality,
         currencyName,
-        country
+        country,
+        placeholderId
         );
     }
 
@@ -165,6 +178,7 @@ public class CurrencyTableCriteria implements Serializable, Criteria {
                 (locality != null ? "locality=" + locality + ", " : "") +
                 (currencyName != null ? "currencyName=" + currencyName + ", " : "") +
                 (country != null ? "country=" + country + ", " : "") +
+                (placeholderId != null ? "placeholderId=" + placeholderId + ", " : "") +
             "}";
     }
 

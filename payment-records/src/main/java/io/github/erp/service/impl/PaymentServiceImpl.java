@@ -17,6 +17,7 @@ package io.github.erp.service.impl;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import io.github.erp.service.PaymentService;
 import io.github.erp.domain.Payment;
 import io.github.erp.repository.PaymentRepository;
@@ -75,11 +76,15 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
 
+    public Page<PaymentDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return paymentRepository.findAllWithEagerRelationships(pageable).map(paymentMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<PaymentDTO> findOne(Long id) {
         log.debug("Request to get Payment : {}", id);
-        return paymentRepository.findById(id)
+        return paymentRepository.findOneWithEagerRelationships(id)
             .map(paymentMapper::toDto);
     }
 

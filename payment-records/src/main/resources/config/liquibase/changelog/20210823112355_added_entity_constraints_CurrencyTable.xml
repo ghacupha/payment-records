@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity CurrencyTable.
+    -->
+    <changeSet id="20210823112355-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="currency_table_id"
+                                 baseTableName="currency_table_placeholder"
+                                 constraintName="fk_currency_table_placeholder_currency_table_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="currency_table"/>
+
+        <addForeignKeyConstraint baseColumnNames="placeholder_id"
+                                 baseTableName="currency_table_placeholder"
+                                 constraintName="fk_currency_table_placeholder_placeholder_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="placeholder"/>
+        
+    </changeSet>
+</databaseChangeLog>

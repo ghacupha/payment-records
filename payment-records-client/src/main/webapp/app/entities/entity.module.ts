@@ -22,6 +22,35 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forChild([
+      {
+        path: 'currency-table',
+        loadChildren: () => import('./payments/currency-table/currency-table.module').then(m => m.PaymentRecordsClientCurrencyTableModule),
+      },
+      {
+        path: 'payment',
+        loadChildren: () => import('./paymentRecords/payment/payment.module').then(m => m.PaymentRecordsClientPaymentModule),
+      },
+      {
+        path: 'payments-file-type',
+        loadChildren: () =>
+          import('./payments/payments-file-type/payments-file-type.module').then(m => m.PaymentRecordsClientPaymentsFileTypeModule),
+      },
+      {
+        path: 'payments-file-upload',
+        loadChildren: () =>
+          import('./payments/payments-file-upload/payments-file-upload.module').then(m => m.PaymentRecordsClientPaymentsFileUploadModule),
+      },
+      {
+        path: 'payments-message-token',
+        loadChildren: () =>
+          import('./payments/payments-message-token/payments-message-token.module').then(
+            m => m.PaymentRecordsClientPaymentsMessageTokenModule
+          ),
+      },
+      {
+        path: 'placeholder',
+        loadChildren: () => import('./paymentRecords/placeholder/placeholder.module').then(m => m.PaymentRecordsClientPlaceholderModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

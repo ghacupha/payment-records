@@ -17,8 +17,10 @@ package io.github.erp.web.rest;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import io.github.erp.PaymentRecordsApp;
 import io.github.erp.domain.Payment;
+import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.PaymentRepository;
 import io.github.erp.repository.search.PaymentSearchRepository;
 import io.github.erp.service.PaymentService;
@@ -45,6 +47,7 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,8 +90,14 @@ public class PaymentResourceIT {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Mock
+    private PaymentRepository paymentRepositoryMock;
+
     @Autowired
     private PaymentMapper paymentMapper;
+
+    @Mock
+    private PaymentService paymentServiceMock;
 
     @Autowired
     private PaymentService paymentService;
@@ -239,6 +248,26 @@ public class PaymentResourceIT {
             .andExpect(jsonPath("$.[*].beneficiary").value(hasItem(DEFAULT_BENEFICIARY)));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllPaymentsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(paymentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPaymentMockMvc.perform(get("/api/payments?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(paymentServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllPaymentsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(paymentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPaymentMockMvc.perform(get("/api/payments?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(paymentServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getPayment() throws Exception {
@@ -797,6 +826,26 @@ public class PaymentResourceIT {
 
         // Get all the paymentList where beneficiary does not contain UPDATED_BENEFICIARY
         defaultPaymentShouldBeFound("beneficiary.doesNotContain=" + UPDATED_BENEFICIARY);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPaymentsByPlaceholderIsEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentRepository.saveAndFlush(payment);
+        Placeholder placeholder = PlaceholderResourceIT.createEntity(em);
+        em.persist(placeholder);
+        em.flush();
+        payment.addPlaceholder(placeholder);
+        paymentRepository.saveAndFlush(payment);
+        Long placeholderId = placeholder.getId();
+
+        // Get all the paymentList where placeholder equals to placeholderId
+        defaultPaymentShouldBeFound("placeholderId.equals=" + placeholderId);
+
+        // Get all the paymentList where placeholder equals to placeholderId + 1
+        defaultPaymentShouldNotBeFound("placeholderId.equals=" + (placeholderId + 1));
     }
 
     /**

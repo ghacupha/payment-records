@@ -46,6 +46,13 @@ public interface CurrencyTableService {
      */
     Page<CurrencyTableDTO> findAll(Pageable pageable);
 
+    /**
+     * Get all the currencyTables with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<CurrencyTableDTO> findAllWithEagerRelationships(Pageable pageable);
+
 
     /**
      * Get the "id" currencyTable.

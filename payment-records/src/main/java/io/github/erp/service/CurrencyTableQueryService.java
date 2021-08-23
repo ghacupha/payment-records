@@ -125,6 +125,10 @@ public class CurrencyTableQueryService extends QueryService<CurrencyTable> {
             if (criteria.getCountry() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getCountry(), CurrencyTable_.country));
             }
+            if (criteria.getPlaceholderId() != null) {
+                specification = specification.and(buildSpecification(criteria.getPlaceholderId(),
+                    root -> root.join(CurrencyTable_.placeholders, JoinType.LEFT).get(Placeholder_.id)));
+            }
         }
         return specification;
     }

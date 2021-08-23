@@ -17,6 +17,7 @@ package io.github.erp.service.dto;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import java.io.Serializable;
 import java.util.Objects;
 import io.github.jhipster.service.Criteria;
@@ -57,6 +58,8 @@ public class PaymentCriteria implements Serializable, Criteria {
 
     private StringFilter beneficiary;
 
+    private LongFilter placeholderId;
+
     public PaymentCriteria() {
     }
 
@@ -68,6 +71,7 @@ public class PaymentCriteria implements Serializable, Criteria {
         this.transactionCurrency = other.transactionCurrency == null ? null : other.transactionCurrency.copy();
         this.transactionAmount = other.transactionAmount == null ? null : other.transactionAmount.copy();
         this.beneficiary = other.beneficiary == null ? null : other.beneficiary.copy();
+        this.placeholderId = other.placeholderId == null ? null : other.placeholderId.copy();
     }
 
     @Override
@@ -131,6 +135,14 @@ public class PaymentCriteria implements Serializable, Criteria {
         this.beneficiary = beneficiary;
     }
 
+    public LongFilter getPlaceholderId() {
+        return placeholderId;
+    }
+
+    public void setPlaceholderId(LongFilter placeholderId) {
+        this.placeholderId = placeholderId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -148,7 +160,8 @@ public class PaymentCriteria implements Serializable, Criteria {
             Objects.equals(transactionDate, that.transactionDate) &&
             Objects.equals(transactionCurrency, that.transactionCurrency) &&
             Objects.equals(transactionAmount, that.transactionAmount) &&
-            Objects.equals(beneficiary, that.beneficiary);
+            Objects.equals(beneficiary, that.beneficiary) &&
+            Objects.equals(placeholderId, that.placeholderId);
     }
 
     @Override
@@ -160,7 +173,8 @@ public class PaymentCriteria implements Serializable, Criteria {
         transactionDate,
         transactionCurrency,
         transactionAmount,
-        beneficiary
+        beneficiary,
+        placeholderId
         );
     }
 
@@ -175,6 +189,7 @@ public class PaymentCriteria implements Serializable, Criteria {
                 (transactionCurrency != null ? "transactionCurrency=" + transactionCurrency + ", " : "") +
                 (transactionAmount != null ? "transactionAmount=" + transactionAmount + ", " : "") +
                 (beneficiary != null ? "beneficiary=" + beneficiary + ", " : "") +
+                (placeholderId != null ? "placeholderId=" + placeholderId + ", " : "") +
             "}";
     }
 

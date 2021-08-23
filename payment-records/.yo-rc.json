@@ -25,10 +25,7 @@
     "jwtSecretKey": "Y2RkYzllNWVhZGUwNTZkNDc4ZWVjMDBkNzZjM2IxZjU4YTJkZTk5Mzk2NmRjMDg3YzhiNjJiMDM4ZjRiNGY0MTA5MTgwMWVlMjU2YmNjYmExMDcyOGVhNWNmNWQ0OWU0OWY0ZjU5MDdiYTI2YmM0MjcxZWEyODI5NDdhMGEzMWY=",
     "embeddableLaunchScript": false,
     "creationTimestamp": 1629610095290,
-    "testFrameworks": [
-      "gatling",
-      "cucumber"
-    ],
+    "testFrameworks": ["gatling", "cucumber"],
     "jhiPrefix": "jhi",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
@@ -36,16 +33,11 @@
     "enableTranslation": true,
     "clientPackageManager": "npm",
     "nativeLanguage": "en",
-    "languages": [
-      "en",
-      "fr",
-      "de",
-      "it"
-    ],
+    "languages": ["en", "fr", "de", "it"],
     "blueprints": [],
     "skipClient": true,
     "skipUserManagement": true,
-    "lastLiquibaseTimestamp": 1629619894000
+    "lastLiquibaseTimestamp": 1629719615000
   },
   "generator-jhipster-file-handling": {
     "promptValues": {

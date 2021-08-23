@@ -137,6 +137,10 @@ public class PaymentsFileUploadQueryService extends QueryService<PaymentsFileUpl
             if (criteria.getUploadToken() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getUploadToken(), PaymentsFileUpload_.uploadToken));
             }
+            if (criteria.getPlaceholderId() != null) {
+                specification = specification.and(buildSpecification(criteria.getPlaceholderId(),
+                    root -> root.join(PaymentsFileUpload_.placeholders, JoinType.LEFT).get(Placeholder_.id)));
+            }
         }
         return specification;
     }

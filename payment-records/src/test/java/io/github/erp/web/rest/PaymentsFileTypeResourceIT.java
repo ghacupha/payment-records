@@ -20,9 +20,12 @@ package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
 import io.github.erp.domain.PaymentsFileType;
+import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.PaymentsFileTypeRepository;
 import io.github.erp.repository.search.PaymentsFileTypeSearchRepository;
 import io.github.erp.service.PaymentsFileTypeService;
+import io.github.erp.service.dto.PaymentsFileTypeDTO;
+import io.github.erp.service.mapper.PaymentsFileTypeMapper;
 import io.github.erp.service.dto.PaymentsFileTypeCriteria;
 import io.github.erp.service.PaymentsFileTypeQueryService;
 
@@ -42,6 +45,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,6 +86,15 @@ public class PaymentsFileTypeResourceIT {
 
     @Autowired
     private PaymentsFileTypeRepository paymentsFileTypeRepository;
+
+    @Mock
+    private PaymentsFileTypeRepository paymentsFileTypeRepositoryMock;
+
+    @Autowired
+    private PaymentsFileTypeMapper paymentsFileTypeMapper;
+
+    @Mock
+    private PaymentsFileTypeService paymentsFileTypeServiceMock;
 
     @Autowired
     private PaymentsFileTypeService paymentsFileTypeService;
@@ -148,9 +161,10 @@ public class PaymentsFileTypeResourceIT {
     public void createPaymentsFileType() throws Exception {
         int databaseSizeBeforeCreate = paymentsFileTypeRepository.findAll().size();
         // Create the PaymentsFileType
+        PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
         restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(paymentsFileType)))
+            .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the PaymentsFileType in the database
@@ -175,11 +189,12 @@ public class PaymentsFileTypeResourceIT {
 
         // Create the PaymentsFileType with an existing ID
         paymentsFileType.setId(1L);
+        PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(paymentsFileType)))
+            .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the PaymentsFileType in the database
@@ -199,11 +214,12 @@ public class PaymentsFileTypeResourceIT {
         paymentsFileType.setPaymentsFileTypeName(null);
 
         // Create the PaymentsFileType, which fails.
+        PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
 
 
         restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(paymentsFileType)))
+            .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
 
         List<PaymentsFileType> paymentsFileTypeList = paymentsFileTypeRepository.findAll();
@@ -218,11 +234,12 @@ public class PaymentsFileTypeResourceIT {
         paymentsFileType.setPaymentsFileMediumType(null);
 
         // Create the PaymentsFileType, which fails.
+        PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
 
 
         restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(paymentsFileType)))
+            .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
 
         List<PaymentsFileType> paymentsFileTypeList = paymentsFileTypeRepository.findAll();
@@ -248,6 +265,26 @@ public class PaymentsFileTypeResourceIT {
             .andExpect(jsonPath("$.[*].paymentsfileType").value(hasItem(DEFAULT_PAYMENTSFILE_TYPE.toString())));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllPaymentsFileTypesWithEagerRelationshipsIsEnabled() throws Exception {
+        when(paymentsFileTypeServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPaymentsFileTypeMockMvc.perform(get("/api/payments-file-types?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(paymentsFileTypeServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllPaymentsFileTypesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(paymentsFileTypeServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPaymentsFileTypeMockMvc.perform(get("/api/payments-file-types?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(paymentsFileTypeServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getPaymentsFileType() throws Exception {
@@ -546,6 +583,26 @@ public class PaymentsFileTypeResourceIT {
         // Get all the paymentsFileTypeList where paymentsfileType is null
         defaultPaymentsFileTypeShouldNotBeFound("paymentsfileType.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllPaymentsFileTypesByPlaceholderIsEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentsFileTypeRepository.saveAndFlush(paymentsFileType);
+        Placeholder placeholder = PlaceholderResourceIT.createEntity(em);
+        em.persist(placeholder);
+        em.flush();
+        paymentsFileType.addPlaceholder(placeholder);
+        paymentsFileTypeRepository.saveAndFlush(paymentsFileType);
+        Long placeholderId = placeholder.getId();
+
+        // Get all the paymentsFileTypeList where placeholder equals to placeholderId
+        defaultPaymentsFileTypeShouldBeFound("placeholderId.equals=" + placeholderId);
+
+        // Get all the paymentsFileTypeList where placeholder equals to placeholderId + 1
+        defaultPaymentsFileTypeShouldNotBeFound("placeholderId.equals=" + (placeholderId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -597,7 +654,7 @@ public class PaymentsFileTypeResourceIT {
     @Transactional
     public void updatePaymentsFileType() throws Exception {
         // Initialize the database
-        paymentsFileTypeService.save(paymentsFileType);
+        paymentsFileTypeRepository.saveAndFlush(paymentsFileType);
 
         int databaseSizeBeforeUpdate = paymentsFileTypeRepository.findAll().size();
 
@@ -612,10 +669,11 @@ public class PaymentsFileTypeResourceIT {
             .fileTemplate(UPDATED_FILE_TEMPLATE)
             .fileTemplateContentType(UPDATED_FILE_TEMPLATE_CONTENT_TYPE)
             .paymentsfileType(UPDATED_PAYMENTSFILE_TYPE);
+        PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(updatedPaymentsFileType);
 
         restPaymentsFileTypeMockMvc.perform(put("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedPaymentsFileType)))
+            .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isOk());
 
         // Validate the PaymentsFileType in the database
@@ -630,7 +688,7 @@ public class PaymentsFileTypeResourceIT {
         assertThat(testPaymentsFileType.getPaymentsfileType()).isEqualTo(UPDATED_PAYMENTSFILE_TYPE);
 
         // Validate the PaymentsFileType in Elasticsearch
-        verify(mockPaymentsFileTypeSearchRepository, times(2)).save(testPaymentsFileType);
+        verify(mockPaymentsFileTypeSearchRepository, times(1)).save(testPaymentsFileType);
     }
 
     @Test
@@ -638,10 +696,13 @@ public class PaymentsFileTypeResourceIT {
     public void updateNonExistingPaymentsFileType() throws Exception {
         int databaseSizeBeforeUpdate = paymentsFileTypeRepository.findAll().size();
 
+        // Create the PaymentsFileType
+        PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPaymentsFileTypeMockMvc.perform(put("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(paymentsFileType)))
+            .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the PaymentsFileType in the database
@@ -656,7 +717,7 @@ public class PaymentsFileTypeResourceIT {
     @Transactional
     public void deletePaymentsFileType() throws Exception {
         // Initialize the database
-        paymentsFileTypeService.save(paymentsFileType);
+        paymentsFileTypeRepository.saveAndFlush(paymentsFileType);
 
         int databaseSizeBeforeDelete = paymentsFileTypeRepository.findAll().size();
 
@@ -678,7 +739,7 @@ public class PaymentsFileTypeResourceIT {
     public void searchPaymentsFileType() throws Exception {
         // Configure the mock search repository
         // Initialize the database
-        paymentsFileTypeService.save(paymentsFileType);
+        paymentsFileTypeRepository.saveAndFlush(paymentsFileType);
         when(mockPaymentsFileTypeSearchRepository.search(queryStringQuery("id:" + paymentsFileType.getId()), PageRequest.of(0, 20)))
             .thenReturn(new PageImpl<>(Collections.singletonList(paymentsFileType), PageRequest.of(0, 1), 1));
 

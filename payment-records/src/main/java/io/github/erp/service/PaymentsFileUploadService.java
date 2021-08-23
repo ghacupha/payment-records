@@ -46,6 +46,13 @@ public interface PaymentsFileUploadService {
      */
     Page<PaymentsFileUploadDTO> findAll(Pageable pageable);
 
+    /**
+     * Get all the paymentsFileUploads with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<PaymentsFileUploadDTO> findAllWithEagerRelationships(Pageable pageable);
+
 
     /**
      * Get the "id" paymentsFileUpload.

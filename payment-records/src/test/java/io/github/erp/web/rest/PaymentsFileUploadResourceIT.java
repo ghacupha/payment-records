@@ -20,6 +20,7 @@ package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
 import io.github.erp.domain.PaymentsFileUpload;
+import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.PaymentsFileUploadRepository;
 import io.github.erp.repository.search.PaymentsFileUploadSearchRepository;
 import io.github.erp.service.PaymentsFileUploadService;
@@ -46,6 +47,7 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -100,8 +102,14 @@ public class PaymentsFileUploadResourceIT {
     @Autowired
     private PaymentsFileUploadRepository paymentsFileUploadRepository;
 
+    @Mock
+    private PaymentsFileUploadRepository paymentsFileUploadRepositoryMock;
+
     @Autowired
     private PaymentsFileUploadMapper paymentsFileUploadMapper;
+
+    @Mock
+    private PaymentsFileUploadService paymentsFileUploadServiceMock;
 
     @Autowired
     private PaymentsFileUploadService paymentsFileUploadService;
@@ -308,6 +316,26 @@ public class PaymentsFileUploadResourceIT {
             .andExpect(jsonPath("$.[*].uploadToken").value(hasItem(DEFAULT_UPLOAD_TOKEN)));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllPaymentsFileUploadsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(paymentsFileUploadServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPaymentsFileUploadMockMvc.perform(get("/api/payments-file-uploads?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(paymentsFileUploadServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllPaymentsFileUploadsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(paymentsFileUploadServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPaymentsFileUploadMockMvc.perform(get("/api/payments-file-uploads?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(paymentsFileUploadServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getPaymentsFileUpload() throws Exception {
@@ -1001,6 +1029,26 @@ public class PaymentsFileUploadResourceIT {
 
         // Get all the paymentsFileUploadList where uploadToken does not contain UPDATED_UPLOAD_TOKEN
         defaultPaymentsFileUploadShouldBeFound("uploadToken.doesNotContain=" + UPDATED_UPLOAD_TOKEN);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPaymentsFileUploadsByPlaceholderIsEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentsFileUploadRepository.saveAndFlush(paymentsFileUpload);
+        Placeholder placeholder = PlaceholderResourceIT.createEntity(em);
+        em.persist(placeholder);
+        em.flush();
+        paymentsFileUpload.addPlaceholder(placeholder);
+        paymentsFileUploadRepository.saveAndFlush(paymentsFileUpload);
+        Long placeholderId = placeholder.getId();
+
+        // Get all the paymentsFileUploadList where placeholder equals to placeholderId
+        defaultPaymentsFileUploadShouldBeFound("placeholderId.equals=" + placeholderId);
+
+        // Get all the paymentsFileUploadList where placeholder equals to placeholderId + 1
+        defaultPaymentsFileUploadShouldNotBeFound("placeholderId.equals=" + (placeholderId + 1));
     }
 
     /**

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity PaymentsFileUpload.
+    -->
+    <changeSet id="20210823112155-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="payments_file_upload_id"
+                                 baseTableName="payments_file_upload_placeholder"
+                                 constraintName="fk_payments_file_upload_placeholder_payments_file_upload_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payments_file_upload"/>
+
+        <addForeignKeyConstraint baseColumnNames="placeholder_id"
+                                 baseTableName="payments_file_upload_placeholder"
+                                 constraintName="fk_payments_file_upload_placeholder_placeholder_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="placeholder"/>
+        
+    </changeSet>
+</databaseChangeLog>

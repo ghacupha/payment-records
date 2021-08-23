@@ -20,6 +20,8 @@ package io.github.erp.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import io.github.erp.domain.enumeration.CurrencyLocality;
 
 /**
@@ -39,6 +41,7 @@ public class CurrencyTableDTO implements Serializable {
 
     private String country;
 
+    private Set<PlaceholderDTO> placeholders = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -80,6 +83,14 @@ public class CurrencyTableDTO implements Serializable {
         this.country = country;
     }
 
+    public Set<PlaceholderDTO> getPlaceholders() {
+        return placeholders;
+    }
+
+    public void setPlaceholders(Set<PlaceholderDTO> placeholders) {
+        this.placeholders = placeholders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -106,6 +117,7 @@ public class CurrencyTableDTO implements Serializable {
             ", locality='" + getLocality() + "'" +
             ", currencyName='" + getCurrencyName() + "'" +
             ", country='" + getCountry() + "'" +
+            ", placeholders='" + getPlaceholders() + "'" +
             "}";
     }
 }

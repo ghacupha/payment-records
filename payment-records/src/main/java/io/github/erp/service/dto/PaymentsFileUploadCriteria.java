@@ -61,6 +61,8 @@ public class PaymentsFileUploadCriteria implements Serializable, Criteria {
 
     private StringFilter uploadToken;
 
+    private LongFilter placeholderId;
+
     public PaymentsFileUploadCriteria() {
     }
 
@@ -74,6 +76,7 @@ public class PaymentsFileUploadCriteria implements Serializable, Criteria {
         this.uploadSuccessful = other.uploadSuccessful == null ? null : other.uploadSuccessful.copy();
         this.uploadProcessed = other.uploadProcessed == null ? null : other.uploadProcessed.copy();
         this.uploadToken = other.uploadToken == null ? null : other.uploadToken.copy();
+        this.placeholderId = other.placeholderId == null ? null : other.placeholderId.copy();
     }
 
     @Override
@@ -153,6 +156,14 @@ public class PaymentsFileUploadCriteria implements Serializable, Criteria {
         this.uploadToken = uploadToken;
     }
 
+    public LongFilter getPlaceholderId() {
+        return placeholderId;
+    }
+
+    public void setPlaceholderId(LongFilter placeholderId) {
+        this.placeholderId = placeholderId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -172,7 +183,8 @@ public class PaymentsFileUploadCriteria implements Serializable, Criteria {
             Objects.equals(paymentsFileTypeId, that.paymentsFileTypeId) &&
             Objects.equals(uploadSuccessful, that.uploadSuccessful) &&
             Objects.equals(uploadProcessed, that.uploadProcessed) &&
-            Objects.equals(uploadToken, that.uploadToken);
+            Objects.equals(uploadToken, that.uploadToken) &&
+            Objects.equals(placeholderId, that.placeholderId);
     }
 
     @Override
@@ -186,7 +198,8 @@ public class PaymentsFileUploadCriteria implements Serializable, Criteria {
         paymentsFileTypeId,
         uploadSuccessful,
         uploadProcessed,
-        uploadToken
+        uploadToken,
+        placeholderId
         );
     }
 
@@ -203,6 +216,7 @@ public class PaymentsFileUploadCriteria implements Serializable, Criteria {
                 (uploadSuccessful != null ? "uploadSuccessful=" + uploadSuccessful + ", " : "") +
                 (uploadProcessed != null ? "uploadProcessed=" + uploadProcessed + ", " : "") +
                 (uploadToken != null ? "uploadToken=" + uploadToken + ", " : "") +
+                (placeholderId != null ? "placeholderId=" + placeholderId + ", " : "") +
             "}";
     }
 

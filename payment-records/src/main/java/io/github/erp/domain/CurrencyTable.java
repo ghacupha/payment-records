@@ -26,6 +26,8 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.github.erp.domain.enumeration.CurrencyLocality;
 
@@ -59,6 +61,13 @@ public class CurrencyTable implements Serializable {
 
     @Column(name = "country")
     private String country;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "currency_table_placeholder",
+               joinColumns = @JoinColumn(name = "currency_table_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "placeholder_id", referencedColumnName = "id"))
+    private Set<Placeholder> placeholders = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -119,6 +128,31 @@ public class CurrencyTable implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Set<Placeholder> getPlaceholders() {
+        return placeholders;
+    }
+
+    public CurrencyTable placeholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
+        return this;
+    }
+
+    public CurrencyTable addPlaceholder(Placeholder placeholder) {
+        this.placeholders.add(placeholder);
+        placeholder.getCurrencyTables().add(this);
+        return this;
+    }
+
+    public CurrencyTable removePlaceholder(Placeholder placeholder) {
+        this.placeholders.remove(placeholder);
+        placeholder.getCurrencyTables().remove(this);
+        return this;
+    }
+
+    public void setPlaceholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

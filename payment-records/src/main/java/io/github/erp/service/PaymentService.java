@@ -17,6 +17,7 @@ package io.github.erp.service;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import io.github.erp.service.dto.PaymentDTO;
 
 import org.springframework.data.domain.Page;
@@ -44,6 +45,13 @@ public interface PaymentService {
      * @return the list of entities.
      */
     Page<PaymentDTO> findAll(Pageable pageable);
+
+    /**
+     * Get all the payments with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<PaymentDTO> findAllWithEagerRelationships(Pageable pageable);
 
 
     /**

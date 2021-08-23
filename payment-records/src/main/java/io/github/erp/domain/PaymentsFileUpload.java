@@ -27,6 +27,8 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A PaymentsFileUpload.
@@ -79,6 +81,13 @@ public class PaymentsFileUpload implements Serializable {
     
     @Column(name = "upload_token", unique = true)
     private String uploadToken;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "payments_file_upload_placeholder",
+               joinColumns = @JoinColumn(name = "payments_file_upload_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "placeholder_id", referencedColumnName = "id"))
+    private Set<Placeholder> placeholders = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -217,6 +226,31 @@ public class PaymentsFileUpload implements Serializable {
 
     public void setUploadToken(String uploadToken) {
         this.uploadToken = uploadToken;
+    }
+
+    public Set<Placeholder> getPlaceholders() {
+        return placeholders;
+    }
+
+    public PaymentsFileUpload placeholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
+        return this;
+    }
+
+    public PaymentsFileUpload addPlaceholder(Placeholder placeholder) {
+        this.placeholders.add(placeholder);
+        placeholder.getPaymentsFileUploads().add(this);
+        return this;
+    }
+
+    public PaymentsFileUpload removePlaceholder(Placeholder placeholder) {
+        this.placeholders.remove(placeholder);
+        placeholder.getPaymentsFileUploads().remove(this);
+        return this;
+    }
+
+    public void setPlaceholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

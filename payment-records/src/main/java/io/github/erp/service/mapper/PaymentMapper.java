@@ -18,6 +18,7 @@ package io.github.erp.service.mapper;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 import io.github.erp.domain.*;
 import io.github.erp.service.dto.PaymentDTO;
 
@@ -26,10 +27,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Payment} and its DTO {@link PaymentDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {PlaceholderMapper.class})
 public interface PaymentMapper extends EntityMapper<PaymentDTO, Payment> {
 
 
+    @Mapping(target = "removePlaceholder", ignore = true)
 
     default Payment fromId(Long id) {
         if (id == null) {

@@ -17,6 +17,7 @@ package io.github.erp.domain;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,6 +28,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Payment.
@@ -63,6 +66,13 @@ public class Payment implements Serializable {
 
     @Column(name = "beneficiary")
     private String beneficiary;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "payment_placeholder",
+               joinColumns = @JoinColumn(name = "payment_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "placeholder_id", referencedColumnName = "id"))
+    private Set<Placeholder> placeholders = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -149,6 +159,31 @@ public class Payment implements Serializable {
 
     public void setBeneficiary(String beneficiary) {
         this.beneficiary = beneficiary;
+    }
+
+    public Set<Placeholder> getPlaceholders() {
+        return placeholders;
+    }
+
+    public Payment placeholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
+        return this;
+    }
+
+    public Payment addPlaceholder(Placeholder placeholder) {
+        this.placeholders.add(placeholder);
+        placeholder.getPayments().add(this);
+        return this;
+    }
+
+    public Payment removePlaceholder(Placeholder placeholder) {
+        this.placeholders.remove(placeholder);
+        placeholder.getPayments().remove(this);
+        return this;
+    }
+
+    public void setPlaceholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

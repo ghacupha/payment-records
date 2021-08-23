@@ -21,8 +21,8 @@ package io.github.erp.internal.resource;
 import io.github.erp.internal.model.FileNotification;
 import io.github.erp.internal.resource.decorator.IFileUploadResource;
 import io.github.erp.internal.service.HandlingService;
-import io.github.erp.domain.PaymentsFileType;
 import io.github.erp.service.PaymentsFileTypeService;
+import io.github.erp.service.dto.PaymentsFileTypeDTO;
 import io.github.erp.service.dto.PaymentsFileUploadCriteria;
 import io.github.erp.service.dto.PaymentsFileUploadDTO;
 import org.slf4j.Logger;
@@ -80,7 +80,7 @@ public class AppFileUploadResource implements IFileUploadResource {
 
         ResponseEntity<PaymentsFileUploadDTO> responseEntity = fileUploadResource.createFileUpload(fileUploadDTO);
 
-        PaymentsFileType fileType = fileTypeService.findOne(fileUploadDTO.getPaymentsFileTypeId())
+        PaymentsFileTypeDTO fileType = fileTypeService.findOne(fileUploadDTO.getPaymentsFileTypeId())
             .orElseThrow(() -> new NoSuchElementException("FileType of ID : " + fileUploadDTO.getPaymentsFileTypeId()+ " not found"));
 
         log.debug("Invoking token-processing for file-type of id : {}", fileType.getId());

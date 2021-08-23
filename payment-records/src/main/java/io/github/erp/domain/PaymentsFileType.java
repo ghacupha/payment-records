@@ -26,6 +26,8 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.github.erp.domain.enumeration.PaymentsFileMediumTypes;
 
@@ -69,6 +71,13 @@ public class PaymentsFileType implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "paymentsfile_type")
     private PaymentsFileModelType paymentsfileType;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "payments_file_type_placeholder",
+               joinColumns = @JoinColumn(name = "payments_file_type_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "placeholder_id", referencedColumnName = "id"))
+    private Set<Placeholder> placeholders = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -155,6 +164,31 @@ public class PaymentsFileType implements Serializable {
 
     public void setPaymentsfileType(PaymentsFileModelType paymentsfileType) {
         this.paymentsfileType = paymentsfileType;
+    }
+
+    public Set<Placeholder> getPlaceholders() {
+        return placeholders;
+    }
+
+    public PaymentsFileType placeholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
+        return this;
+    }
+
+    public PaymentsFileType addPlaceholder(Placeholder placeholder) {
+        this.placeholders.add(placeholder);
+        placeholder.getPaymentsFileTypes().add(this);
+        return this;
+    }
+
+    public PaymentsFileType removePlaceholder(Placeholder placeholder) {
+        this.placeholders.remove(placeholder);
+        placeholder.getPaymentsFileTypes().remove(this);
+        return this;
+    }
+
+    public void setPlaceholders(Set<Placeholder> placeholders) {
+        this.placeholders = placeholders;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

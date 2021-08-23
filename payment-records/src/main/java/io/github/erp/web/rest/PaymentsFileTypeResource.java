@@ -18,9 +18,9 @@ package io.github.erp.web.rest;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import io.github.erp.domain.PaymentsFileType;
 import io.github.erp.service.PaymentsFileTypeService;
 import io.github.erp.web.rest.errors.BadRequestAlertException;
+import io.github.erp.service.dto.PaymentsFileTypeDTO;
 import io.github.erp.service.dto.PaymentsFileTypeCriteria;
 import io.github.erp.service.PaymentsFileTypeQueryService;
 
@@ -73,17 +73,17 @@ public class PaymentsFileTypeResource {
     /**
      * {@code POST  /payments-file-types} : Create a new paymentsFileType.
      *
-     * @param paymentsFileType the paymentsFileType to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new paymentsFileType, or with status {@code 400 (Bad Request)} if the paymentsFileType has already an ID.
+     * @param paymentsFileTypeDTO the paymentsFileTypeDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new paymentsFileTypeDTO, or with status {@code 400 (Bad Request)} if the paymentsFileType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/payments-file-types")
-    public ResponseEntity<PaymentsFileType> createPaymentsFileType(@Valid @RequestBody PaymentsFileType paymentsFileType) throws URISyntaxException {
-        log.debug("REST request to save PaymentsFileType : {}", paymentsFileType);
-        if (paymentsFileType.getId() != null) {
+    public ResponseEntity<PaymentsFileTypeDTO> createPaymentsFileType(@Valid @RequestBody PaymentsFileTypeDTO paymentsFileTypeDTO) throws URISyntaxException {
+        log.debug("REST request to save PaymentsFileType : {}", paymentsFileTypeDTO);
+        if (paymentsFileTypeDTO.getId() != null) {
             throw new BadRequestAlertException("A new paymentsFileType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PaymentsFileType result = paymentsFileTypeService.save(paymentsFileType);
+        PaymentsFileTypeDTO result = paymentsFileTypeService.save(paymentsFileTypeDTO);
         return ResponseEntity.created(new URI("/api/payments-file-types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -92,21 +92,21 @@ public class PaymentsFileTypeResource {
     /**
      * {@code PUT  /payments-file-types} : Updates an existing paymentsFileType.
      *
-     * @param paymentsFileType the paymentsFileType to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated paymentsFileType,
-     * or with status {@code 400 (Bad Request)} if the paymentsFileType is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the paymentsFileType couldn't be updated.
+     * @param paymentsFileTypeDTO the paymentsFileTypeDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated paymentsFileTypeDTO,
+     * or with status {@code 400 (Bad Request)} if the paymentsFileTypeDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the paymentsFileTypeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/payments-file-types")
-    public ResponseEntity<PaymentsFileType> updatePaymentsFileType(@Valid @RequestBody PaymentsFileType paymentsFileType) throws URISyntaxException {
-        log.debug("REST request to update PaymentsFileType : {}", paymentsFileType);
-        if (paymentsFileType.getId() == null) {
+    public ResponseEntity<PaymentsFileTypeDTO> updatePaymentsFileType(@Valid @RequestBody PaymentsFileTypeDTO paymentsFileTypeDTO) throws URISyntaxException {
+        log.debug("REST request to update PaymentsFileType : {}", paymentsFileTypeDTO);
+        if (paymentsFileTypeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        PaymentsFileType result = paymentsFileTypeService.save(paymentsFileType);
+        PaymentsFileTypeDTO result = paymentsFileTypeService.save(paymentsFileTypeDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, paymentsFileType.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, paymentsFileTypeDTO.getId().toString()))
             .body(result);
     }
 
@@ -118,9 +118,9 @@ public class PaymentsFileTypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of paymentsFileTypes in body.
      */
     @GetMapping("/payments-file-types")
-    public ResponseEntity<List<PaymentsFileType>> getAllPaymentsFileTypes(PaymentsFileTypeCriteria criteria, Pageable pageable) {
+    public ResponseEntity<List<PaymentsFileTypeDTO>> getAllPaymentsFileTypes(PaymentsFileTypeCriteria criteria, Pageable pageable) {
         log.debug("REST request to get PaymentsFileTypes by criteria: {}", criteria);
-        Page<PaymentsFileType> page = paymentsFileTypeQueryService.findByCriteria(criteria, pageable);
+        Page<PaymentsFileTypeDTO> page = paymentsFileTypeQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -140,20 +140,20 @@ public class PaymentsFileTypeResource {
     /**
      * {@code GET  /payments-file-types/:id} : get the "id" paymentsFileType.
      *
-     * @param id the id of the paymentsFileType to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the paymentsFileType, or with status {@code 404 (Not Found)}.
+     * @param id the id of the paymentsFileTypeDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the paymentsFileTypeDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/payments-file-types/{id}")
-    public ResponseEntity<PaymentsFileType> getPaymentsFileType(@PathVariable Long id) {
+    public ResponseEntity<PaymentsFileTypeDTO> getPaymentsFileType(@PathVariable Long id) {
         log.debug("REST request to get PaymentsFileType : {}", id);
-        Optional<PaymentsFileType> paymentsFileType = paymentsFileTypeService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(paymentsFileType);
+        Optional<PaymentsFileTypeDTO> paymentsFileTypeDTO = paymentsFileTypeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(paymentsFileTypeDTO);
     }
 
     /**
      * {@code DELETE  /payments-file-types/:id} : delete the "id" paymentsFileType.
      *
-     * @param id the id of the paymentsFileType to delete.
+     * @param id the id of the paymentsFileTypeDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/payments-file-types/{id}")
@@ -172,9 +172,9 @@ public class PaymentsFileTypeResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/payments-file-types")
-    public ResponseEntity<List<PaymentsFileType>> searchPaymentsFileTypes(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<PaymentsFileTypeDTO>> searchPaymentsFileTypes(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of PaymentsFileTypes for query {}", query);
-        Page<PaymentsFileType> page = paymentsFileTypeService.search(query, pageable);
+        Page<PaymentsFileTypeDTO> page = paymentsFileTypeService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
         }

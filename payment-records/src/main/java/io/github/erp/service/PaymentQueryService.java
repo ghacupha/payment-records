@@ -17,6 +17,7 @@ package io.github.erp.service;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import java.util.List;
 
 import javax.persistence.criteria.JoinType;
@@ -129,6 +130,10 @@ public class PaymentQueryService extends QueryService<Payment> {
             }
             if (criteria.getBeneficiary() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBeneficiary(), Payment_.beneficiary));
+            }
+            if (criteria.getPlaceholderId() != null) {
+                specification = specification.and(buildSpecification(criteria.getPlaceholderId(),
+                    root -> root.join(Payment_.placeholders, JoinType.LEFT).get(Placeholder_.id)));
             }
         }
         return specification;

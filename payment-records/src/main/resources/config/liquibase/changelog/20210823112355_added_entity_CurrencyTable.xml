@@ -33,6 +33,17 @@
 
     <changeSet id="20210823112355-1-relations" author="jhipster">
 
+        <createTable tableName="currency_table_placeholder">
+            <column name="placeholder_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_table_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="currency_table_id, placeholder_id" tableName="currency_table_placeholder"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 

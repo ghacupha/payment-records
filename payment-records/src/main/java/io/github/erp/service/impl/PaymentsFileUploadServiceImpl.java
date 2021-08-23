@@ -76,11 +76,15 @@ public class PaymentsFileUploadServiceImpl implements PaymentsFileUploadService 
     }
 
 
+    public Page<PaymentsFileUploadDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return paymentsFileUploadRepository.findAllWithEagerRelationships(pageable).map(paymentsFileUploadMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<PaymentsFileUploadDTO> findOne(Long id) {
         log.debug("Request to get PaymentsFileUpload : {}", id);
-        return paymentsFileUploadRepository.findById(id)
+        return paymentsFileUploadRepository.findOneWithEagerRelationships(id)
             .map(paymentsFileUploadMapper::toDto);
     }
 

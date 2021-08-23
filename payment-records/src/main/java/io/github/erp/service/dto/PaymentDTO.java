@@ -17,10 +17,13 @@ package io.github.erp.service.dto;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A DTO for the {@link io.github.erp.domain.Payment} entity.
@@ -43,6 +46,7 @@ public class PaymentDTO implements Serializable {
 
     private String beneficiary;
 
+    private Set<PlaceholderDTO> placeholders = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -100,6 +104,14 @@ public class PaymentDTO implements Serializable {
         this.beneficiary = beneficiary;
     }
 
+    public Set<PlaceholderDTO> getPlaceholders() {
+        return placeholders;
+    }
+
+    public void setPlaceholders(Set<PlaceholderDTO> placeholders) {
+        this.placeholders = placeholders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -128,6 +140,7 @@ public class PaymentDTO implements Serializable {
             ", transactionCurrency='" + getTransactionCurrency() + "'" +
             ", transactionAmount=" + getTransactionAmount() +
             ", beneficiary='" + getBeneficiary() + "'" +
+            ", placeholders='" + getPlaceholders() + "'" +
             "}";
     }
 }

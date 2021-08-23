@@ -21,6 +21,8 @@ package io.github.erp.service.dto;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Lob;
 
 /**
@@ -55,6 +57,7 @@ public class PaymentsFileUploadDTO implements Serializable {
     
     private String uploadToken;
 
+    private Set<PlaceholderDTO> placeholders = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -144,6 +147,14 @@ public class PaymentsFileUploadDTO implements Serializable {
         this.uploadToken = uploadToken;
     }
 
+    public Set<PlaceholderDTO> getPlaceholders() {
+        return placeholders;
+    }
+
+    public void setPlaceholders(Set<PlaceholderDTO> placeholders) {
+        this.placeholders = placeholders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -175,6 +186,7 @@ public class PaymentsFileUploadDTO implements Serializable {
             ", uploadSuccessful='" + isUploadSuccessful() + "'" +
             ", uploadProcessed='" + isUploadProcessed() + "'" +
             ", uploadToken='" + getUploadToken() + "'" +
+            ", placeholders='" + getPlaceholders() + "'" +
             "}";
     }
 }

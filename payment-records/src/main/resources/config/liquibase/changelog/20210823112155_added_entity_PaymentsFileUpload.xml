@@ -51,6 +51,17 @@
 
     <changeSet id="20210823112155-1-relations" author="jhipster">
 
+        <createTable tableName="payments_file_upload_placeholder">
+            <column name="placeholder_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payments_file_upload_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="payments_file_upload_id, placeholder_id" tableName="payments_file_upload_placeholder"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 

@@ -1,0 +1,74 @@
+<!--
+
+    Payment Records - Payment records is part of the ERP System
+    Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="paymentsFileType">
+            <h2><span>Payments File Type</span> {{ paymentsFileType.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Payments File Type Name</span></dt>
+                <dd>
+                    <span>{{ paymentsFileType.paymentsFileTypeName }}</span>
+                </dd>
+                <dt><span>Payments File Medium Type</span></dt>
+                <dd>
+                    <span>{{ paymentsFileType.paymentsFileMediumType }}</span>
+                </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{ paymentsFileType.description }}</span>
+                </dd>
+                <dt><span>File Template</span></dt>
+                <dd>
+                    <div *ngIf="paymentsFileType.fileTemplate">
+                        <a (click)="openFile(paymentsFileType.fileTemplateContentType, paymentsFileType.fileTemplate)">open</a>
+                        {{ paymentsFileType.fileTemplateContentType }}, {{ byteSize(paymentsFileType.fileTemplate) }}
+                    </div>
+                </dd>
+                <dt><span>Paymentsfile Type</span></dt>
+                <dd>
+                    <span>{{ paymentsFileType.paymentsfileType }}</span>
+                </dd>
+                <dt><span>Placeholder</span></dt>
+                <dd>
+                    <span *ngFor="let placeholder of paymentsFileType.placeholders; let last = last">
+                        <a [routerLink]="['/placeholder', placeholder?.id, 'view']">{{ placeholder.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/payments-file-type', paymentsFileType.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

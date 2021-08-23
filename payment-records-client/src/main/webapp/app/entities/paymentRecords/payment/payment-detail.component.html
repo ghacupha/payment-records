@@ -1,0 +1,75 @@
+<!--
+
+    Payment Records - Payment records is part of the ERP System
+    Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="payment">
+            <h2><span>Payment</span> {{ payment.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Payments Category</span></dt>
+                <dd>
+                    <span>{{ payment.paymentsCategory }}</span>
+                </dd>
+                <dt><span>Transaction Number</span></dt>
+                <dd>
+                    <span>{{ payment.transactionNumber }}</span>
+                </dd>
+                <dt><span>Transaction Date</span></dt>
+                <dd>
+                    <span>{{ payment.transactionDate }}</span>
+                </dd>
+                <dt><span>Transaction Currency</span></dt>
+                <dd>
+                    <span>{{ payment.transactionCurrency }}</span>
+                </dd>
+                <dt><span>Transaction Amount</span></dt>
+                <dd>
+                    <span>{{ payment.transactionAmount }}</span>
+                </dd>
+                <dt><span>Beneficiary</span></dt>
+                <dd>
+                    <span>{{ payment.beneficiary }}</span>
+                </dd>
+                <dt><span>Placeholder</span></dt>
+                <dd>
+                    <span *ngFor="let placeholder of payment.placeholders; let last = last">
+                        <a [routerLink]="['/placeholder', placeholder?.id, 'view']">{{ placeholder.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/payment', payment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

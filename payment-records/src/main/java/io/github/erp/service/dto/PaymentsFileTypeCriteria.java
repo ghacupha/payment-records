@@ -90,6 +90,8 @@ public class PaymentsFileTypeCriteria implements Serializable, Criteria {
 
     private PaymentsFileModelTypeFilter paymentsfileType;
 
+    private LongFilter placeholderId;
+
     public PaymentsFileTypeCriteria() {
     }
 
@@ -99,6 +101,7 @@ public class PaymentsFileTypeCriteria implements Serializable, Criteria {
         this.paymentsFileMediumType = other.paymentsFileMediumType == null ? null : other.paymentsFileMediumType.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.paymentsfileType = other.paymentsfileType == null ? null : other.paymentsfileType.copy();
+        this.placeholderId = other.placeholderId == null ? null : other.placeholderId.copy();
     }
 
     @Override
@@ -146,6 +149,14 @@ public class PaymentsFileTypeCriteria implements Serializable, Criteria {
         this.paymentsfileType = paymentsfileType;
     }
 
+    public LongFilter getPlaceholderId() {
+        return placeholderId;
+    }
+
+    public void setPlaceholderId(LongFilter placeholderId) {
+        this.placeholderId = placeholderId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -161,7 +172,8 @@ public class PaymentsFileTypeCriteria implements Serializable, Criteria {
             Objects.equals(paymentsFileTypeName, that.paymentsFileTypeName) &&
             Objects.equals(paymentsFileMediumType, that.paymentsFileMediumType) &&
             Objects.equals(description, that.description) &&
-            Objects.equals(paymentsfileType, that.paymentsfileType);
+            Objects.equals(paymentsfileType, that.paymentsfileType) &&
+            Objects.equals(placeholderId, that.placeholderId);
     }
 
     @Override
@@ -171,7 +183,8 @@ public class PaymentsFileTypeCriteria implements Serializable, Criteria {
         paymentsFileTypeName,
         paymentsFileMediumType,
         description,
-        paymentsfileType
+        paymentsfileType,
+        placeholderId
         );
     }
 
@@ -184,6 +197,7 @@ public class PaymentsFileTypeCriteria implements Serializable, Criteria {
                 (paymentsFileMediumType != null ? "paymentsFileMediumType=" + paymentsFileMediumType + ", " : "") +
                 (description != null ? "description=" + description + ", " : "") +
                 (paymentsfileType != null ? "paymentsfileType=" + paymentsfileType + ", " : "") +
+                (placeholderId != null ? "placeholderId=" + placeholderId + ", " : "") +
             "}";
     }
 

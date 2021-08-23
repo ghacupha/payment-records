@@ -21,6 +21,8 @@ package io.github.erp.service;
 import io.github.erp.domain.PaymentsFileType;
 import io.github.erp.repository.PaymentsFileTypeRepository;
 import io.github.erp.repository.search.PaymentsFileTypeSearchRepository;
+import io.github.erp.service.dto.PaymentsFileTypeDTO;
+import io.github.erp.service.mapper.PaymentsFileTypeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,23 +46,28 @@ public class PaymentsFileTypeService {
 
     private final PaymentsFileTypeRepository paymentsFileTypeRepository;
 
+    private final PaymentsFileTypeMapper paymentsFileTypeMapper;
+
     private final PaymentsFileTypeSearchRepository paymentsFileTypeSearchRepository;
 
-    public PaymentsFileTypeService(PaymentsFileTypeRepository paymentsFileTypeRepository, PaymentsFileTypeSearchRepository paymentsFileTypeSearchRepository) {
+    public PaymentsFileTypeService(PaymentsFileTypeRepository paymentsFileTypeRepository, PaymentsFileTypeMapper paymentsFileTypeMapper, PaymentsFileTypeSearchRepository paymentsFileTypeSearchRepository) {
         this.paymentsFileTypeRepository = paymentsFileTypeRepository;
+        this.paymentsFileTypeMapper = paymentsFileTypeMapper;
         this.paymentsFileTypeSearchRepository = paymentsFileTypeSearchRepository;
     }
 
     /**
      * Save a paymentsFileType.
      *
-     * @param paymentsFileType the entity to save.
+     * @param paymentsFileTypeDTO the entity to save.
      * @return the persisted entity.
      */
-    public PaymentsFileType save(PaymentsFileType paymentsFileType) {
-        log.debug("Request to save PaymentsFileType : {}", paymentsFileType);
-        PaymentsFileType result = paymentsFileTypeRepository.save(paymentsFileType);
-        paymentsFileTypeSearchRepository.save(result);
+    public PaymentsFileTypeDTO save(PaymentsFileTypeDTO paymentsFileTypeDTO) {
+        log.debug("Request to save PaymentsFileType : {}", paymentsFileTypeDTO);
+        PaymentsFileType paymentsFileType = paymentsFileTypeMapper.toEntity(paymentsFileTypeDTO);
+        paymentsFileType = paymentsFileTypeRepository.save(paymentsFileType);
+        PaymentsFileTypeDTO result = paymentsFileTypeMapper.toDto(paymentsFileType);
+        paymentsFileTypeSearchRepository.save(paymentsFileType);
         return result;
     }
 
@@ -71,11 +78,21 @@ public class PaymentsFileTypeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<PaymentsFileType> findAll(Pageable pageable) {
+    public Page<PaymentsFileTypeDTO> findAll(Pageable pageable) {
         log.debug("Request to get all PaymentsFileTypes");
-        return paymentsFileTypeRepository.findAll(pageable);
+        return paymentsFileTypeRepository.findAll(pageable)
+            .map(paymentsFileTypeMapper::toDto);
     }
 
+
+    /**
+     * Get all the paymentsFileTypes with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<PaymentsFileTypeDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return paymentsFileTypeRepository.findAllWithEagerRelationships(pageable).map(paymentsFileTypeMapper::toDto);
+    }
 
     /**
      * Get one paymentsFileType by id.
@@ -84,9 +101,10 @@ public class PaymentsFileTypeService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<PaymentsFileType> findOne(Long id) {
+    public Optional<PaymentsFileTypeDTO> findOne(Long id) {
         log.debug("Request to get PaymentsFileType : {}", id);
-        return paymentsFileTypeRepository.findById(id);
+        return paymentsFileTypeRepository.findOneWithEagerRelationships(id)
+            .map(paymentsFileTypeMapper::toDto);
     }
 
     /**
@@ -108,7 +126,9 @@ public class PaymentsFileTypeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<PaymentsFileType> search(String query, Pageable pageable) {
+    public Page<PaymentsFileTypeDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of PaymentsFileTypes for query {}", query);
-        return paymentsFileTypeSearchRepository.search(queryStringQuery(query), pageable);    }
+        return paymentsFileTypeSearchRepository.search(queryStringQuery(query), pageable)
+            .map(paymentsFileTypeMapper::toDto);
+    }
 }

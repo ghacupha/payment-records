@@ -37,12 +37,14 @@ import io.github.erp.domain.*; // for static metamodels
 import io.github.erp.repository.PaymentsFileTypeRepository;
 import io.github.erp.repository.search.PaymentsFileTypeSearchRepository;
 import io.github.erp.service.dto.PaymentsFileTypeCriteria;
+import io.github.erp.service.dto.PaymentsFileTypeDTO;
+import io.github.erp.service.mapper.PaymentsFileTypeMapper;
 
 /**
  * Service for executing complex queries for {@link PaymentsFileType} entities in the database.
  * The main input is a {@link PaymentsFileTypeCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link PaymentsFileType} or a {@link Page} of {@link PaymentsFileType} which fulfills the criteria.
+ * It returns a {@link List} of {@link PaymentsFileTypeDTO} or a {@link Page} of {@link PaymentsFileTypeDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -52,36 +54,40 @@ public class PaymentsFileTypeQueryService extends QueryService<PaymentsFileType>
 
     private final PaymentsFileTypeRepository paymentsFileTypeRepository;
 
+    private final PaymentsFileTypeMapper paymentsFileTypeMapper;
+
     private final PaymentsFileTypeSearchRepository paymentsFileTypeSearchRepository;
 
-    public PaymentsFileTypeQueryService(PaymentsFileTypeRepository paymentsFileTypeRepository, PaymentsFileTypeSearchRepository paymentsFileTypeSearchRepository) {
+    public PaymentsFileTypeQueryService(PaymentsFileTypeRepository paymentsFileTypeRepository, PaymentsFileTypeMapper paymentsFileTypeMapper, PaymentsFileTypeSearchRepository paymentsFileTypeSearchRepository) {
         this.paymentsFileTypeRepository = paymentsFileTypeRepository;
+        this.paymentsFileTypeMapper = paymentsFileTypeMapper;
         this.paymentsFileTypeSearchRepository = paymentsFileTypeSearchRepository;
     }
 
     /**
-     * Return a {@link List} of {@link PaymentsFileType} which matches the criteria from the database.
+     * Return a {@link List} of {@link PaymentsFileTypeDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<PaymentsFileType> findByCriteria(PaymentsFileTypeCriteria criteria) {
+    public List<PaymentsFileTypeDTO> findByCriteria(PaymentsFileTypeCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<PaymentsFileType> specification = createSpecification(criteria);
-        return paymentsFileTypeRepository.findAll(specification);
+        return paymentsFileTypeMapper.toDto(paymentsFileTypeRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link PaymentsFileType} which matches the criteria from the database.
+     * Return a {@link Page} of {@link PaymentsFileTypeDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<PaymentsFileType> findByCriteria(PaymentsFileTypeCriteria criteria, Pageable page) {
+    public Page<PaymentsFileTypeDTO> findByCriteria(PaymentsFileTypeCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<PaymentsFileType> specification = createSpecification(criteria);
-        return paymentsFileTypeRepository.findAll(specification, page);
+        return paymentsFileTypeRepository.findAll(specification, page)
+            .map(paymentsFileTypeMapper::toDto);
     }
 
     /**
@@ -118,6 +124,10 @@ public class PaymentsFileTypeQueryService extends QueryService<PaymentsFileType>
             }
             if (criteria.getPaymentsfileType() != null) {
                 specification = specification.and(buildSpecification(criteria.getPaymentsfileType(), PaymentsFileType_.paymentsfileType));
+            }
+            if (criteria.getPlaceholderId() != null) {
+                specification = specification.and(buildSpecification(criteria.getPlaceholderId(),
+                    root -> root.join(PaymentsFileType_.placeholders, JoinType.LEFT).get(Placeholder_.id)));
             }
         }
         return specification;

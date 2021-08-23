@@ -76,11 +76,15 @@ public class CurrencyTableServiceImpl implements CurrencyTableService {
     }
 
 
+    public Page<CurrencyTableDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return currencyTableRepository.findAllWithEagerRelationships(pageable).map(currencyTableMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<CurrencyTableDTO> findOne(Long id) {
         log.debug("Request to get CurrencyTable : {}", id);
-        return currencyTableRepository.findById(id)
+        return currencyTableRepository.findOneWithEagerRelationships(id)
             .map(currencyTableMapper::toDto);
     }
 

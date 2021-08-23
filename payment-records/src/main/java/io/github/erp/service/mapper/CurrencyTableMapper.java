@@ -27,10 +27,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link CurrencyTable} and its DTO {@link CurrencyTableDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {PlaceholderMapper.class})
 public interface CurrencyTableMapper extends EntityMapper<CurrencyTableDTO, CurrencyTable> {
 
 
+    @Mapping(target = "removePlaceholder", ignore = true)
 
     default CurrencyTable fromId(Long id) {
         if (id == null) {
