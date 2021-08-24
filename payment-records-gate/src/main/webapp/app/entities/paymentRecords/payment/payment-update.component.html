@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-payment-heading">Create or edit a Payment</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_paymentsCategory">Payments Category</label>
+                    <input type="text" class="form-control" name="paymentsCategory" id="field_paymentsCategory"
+                           formControlName="paymentsCategory"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionNumber">Transaction Number</label>
+                    <input type="text" class="form-control" name="transactionNumber" id="field_transactionNumber"
+                           formControlName="transactionNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionDate">Transaction Date</label>
+                    <div class="input-group">
+                        <input id="field_transactionDate" type="text" class="form-control" name="transactionDate" ngbDatepicker #transactionDateDp="ngbDatepicker" formControlName="transactionDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="transactionDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionCurrency">Transaction Currency</label>
+                    <input type="text" class="form-control" name="transactionCurrency" id="field_transactionCurrency"
+                           formControlName="transactionCurrency"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionAmount">Transaction Amount</label>
+                    <input type="number" class="form-control" name="transactionAmount" id="field_transactionAmount"
+                           formControlName="transactionAmount"/>
+                    <div *ngIf="editForm.get('transactionAmount')!.invalid && (editForm.get('transactionAmount')!.dirty || editForm.get('transactionAmount')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('transactionAmount')?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('transactionAmount')?.errors?.min">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('transactionAmount')?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_beneficiary">Beneficiary</label>
+                    <input type="text" class="form-control" name="beneficiary" id="field_beneficiary"
+                           formControlName="beneficiary"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="field_placeholders">Placeholder</label>
+                    <select class="form-control" id="field_placeholders" multiple name="placeholders" formControlName="placeholders">
+                        <option [ngValue]="getSelected(editForm.get('placeholders')!.value, placeholderOption)" *ngFor="let placeholderOption of placeholders; trackBy: trackById">{{ placeholderOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

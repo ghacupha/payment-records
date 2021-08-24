@@ -1,0 +1,54 @@
+{
+  "name": "PaymentsFileType",
+  "fields": [
+    {
+      "fieldName": "paymentsFileTypeName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "paymentsFileMediumType",
+      "fieldType": "PaymentsFileMediumTypes",
+      "fieldValues": "EXCEL,EXCEL_XLS,EXCEL_XLSX,EXCEL_XLSB,EXCEL_CSV,EXCEL_XML,PDF,POWERPOINT,DOC,TEXT,JSON,HTML5",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fileTemplate",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "paymentsfileType",
+      "fieldType": "PaymentsFileModelType",
+      "fieldValues": "CURRENCY_LIST,PAYMENTS_DATA,PLACE_HOLDER"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipName": "placeholder",
+      "otherEntityName": "placeholder",
+      "relationshipType": "many-to-many",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "paymentsFileType"
+    }
+  ],
+  "changelogDate": "20210823112055",
+  "entityTableName": "payments_file_type",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "payments",
+  "applications": "*",
+  "microserviceName": "paymentRecords",
+  "searchEngine": "elasticsearch",
+  "databaseType": "sql"
+}
