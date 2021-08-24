@@ -9,6 +9,7 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - PAYMENT_RECORDS_GATE_PORT=${PAYMENT_RECORDS_GATE_PORT}
     ports:
       - 8791:8791
   jhipster-registry:

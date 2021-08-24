@@ -62,7 +62,7 @@ spring:
         enabled: true
 
 server:
-  port: 8791
+  port: ${PAYMENT_RECORDS_GATE_PORT}
 
 # ===================================================================
 # JHipster specific properties

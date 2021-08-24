@@ -171,14 +171,14 @@ jhipster:
     from: paymentRecordsGate@localhost
   swagger:
     default-include-pattern: /api/.*
-    title: paymentRecordsGate API
-    description: paymentRecordsGate API documentation
+    title: Payment RecordsGate API
+    description: Payment Records Gate API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:
     contact-url:
     contact-email:
-    license: unlicensed
+    license: GPLv3
     license-url:
 # ===================================================================
 # Application specific properties

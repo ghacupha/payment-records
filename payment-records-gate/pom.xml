@@ -38,6 +38,13 @@
         <profile.swagger />
         <profile.tls />
 
+        <docker.image.prefix>${env.DOCKER_IMAGE_PREFIX}</docker.image.prefix>
+        <application.port>${env.PAYMENT_RECORDS_GATE_PORT}</application.port>
+        <founder.website>https://github.com/ghacupha</founder.website>
+        <owner.email>mailnjeru@gmail.com</owner.email>
+        <project.inceptionYear>2021</project.inceptionYear>
+        <project.owner>Edwin Njeru</project.owner>
+
         <!-- Dependency versions -->
         <jhipster-dependencies.version>3.9.1</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
@@ -579,7 +586,7 @@
                             <image>adoptopenjdk:11-jre-hotspot</image>
                         </from>
                         <to>
-                            <image>paymentrecordsgate:latest</image>
+                            <image>${docker.image.prefix}/${project.artifactId}:${project.version}</image>
                         </to>
                         <container>
                             <entrypoint>
@@ -588,7 +595,7 @@
                                 <arg>/entrypoint.sh</arg>
                             </entrypoint>
                             <ports>
-                                <port>8791</port>
+                                <port>${application.port}</port>
                                 <port>5701/udp</port>
                             </ports>
                             <environment>
