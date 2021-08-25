@@ -1,7 +1,7 @@
 package io.github.erp.security.jwt;
 
 /*-
- * Payment Records - Payment records is part of the ERP System
+ * ERP System - ERP data management platform
  * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,11 +17,13 @@ package io.github.erp.security.jwt;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import io.github.erp.security.AuthoritiesConstants;
-
-import java.security.Key;
-import java.util.*;
-
+import io.github.jhipster.config.JHipsterProperties;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,11 +32,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

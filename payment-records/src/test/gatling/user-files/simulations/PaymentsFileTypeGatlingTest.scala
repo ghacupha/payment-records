@@ -1,20 +1,6 @@
-/**
- * Payment Records - Payment records is part of the ERP System
- * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+import java.nio.charset.StandardCharsets
+import java.util.Base64
+
 import _root_.io.gatling.core.scenario.Simulation
 import ch.qos.logback.classic.{Level, LoggerContext}
 import io.gatling.core.Predef._
@@ -50,14 +36,17 @@ class PaymentsFileTypeGatlingTest extends Simulation {
         "Accept" -> """application/json"""
     )
 
+    val authorization_header = "Basic " + Base64.getEncoder.encodeToString("paymentRecordsapp:bXktc2VjcmV0LXRva2VuLXRvLWNoYW5nZS1pbi1wcm9kdWN0aW9uLWFuZC10by1rZWVwLWluLWEtc2VjdXJlLXBsYWNl".getBytes(StandardCharsets.UTF_8))
+
     val headers_http_authentication = Map(
-        "Content-Type" -> """application/json""",
-        "Accept" -> """application/json"""
+        "Content-Type" -> """application/x-www-form-urlencoded""",
+        "Accept" -> """application/json""",
+        "Authorization"-> authorization_header
     )
 
     val headers_http_authenticated = Map(
         "Accept" -> """application/json""",
-        "Authorization" -> "${access_token}"
+        "Authorization" -> "Bearer ${access_token}"
     )
 
     val scn = scenario("Test the PaymentsFileType entity")
@@ -68,10 +57,16 @@ class PaymentsFileTypeGatlingTest extends Simulation {
         ).exitHereIfFailed
         .pause(10)
         .exec(http("Authentication")
-        .post("/api/authenticate")
+        .post("/oauth/token")
         .headers(headers_http_authentication)
-        .body(StringBody("""{"username":"admin", "password":"admin"}""")).asJson
-        .check(header("Authorization").saveAs("access_token"))).exitHereIfFailed
+        .formParam("username", "admin")
+        .formParam("password", "admin")
+        .formParam("grant_type", "password")
+        .formParam("scope", "read write")
+        .formParam("client_secret", "bXktc2VjcmV0LXRva2VuLXRvLWNoYW5nZS1pbi1wcm9kdWN0aW9uLWFuZC10by1rZWVwLWluLWEtc2VjdXJlLXBsYWNl")
+        .formParam("client_id", "paymentRecordsapp")
+        .formParam("submit", "Login")
+        .check(jsonPath("$.access_token").saveAs("access_token"))).exitHereIfFailed
         .pause(2)
         .exec(http("Authenticated request")
         .get("/api/account")

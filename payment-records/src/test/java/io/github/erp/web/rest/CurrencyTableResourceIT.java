@@ -1,24 +1,7 @@
 package io.github.erp.web.rest;
 
-/*-
- * Payment Records - Payment records is part of the ERP System
- * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import io.github.erp.PaymentRecordsApp;
+import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.domain.CurrencyTable;
 import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.CurrencyTableRepository;
@@ -51,6 +34,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -59,7 +43,7 @@ import io.github.erp.domain.enumeration.CurrencyLocality;
 /**
  * Integration tests for the {@link CurrencyTableResource} REST controller.
  */
-@SpringBootTest(classes = PaymentRecordsApp.class)
+@SpringBootTest(classes = { SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class })
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -151,7 +135,7 @@ public class CurrencyTableResourceIT {
         int databaseSizeBeforeCreate = currencyTableRepository.findAll().size();
         // Create the CurrencyTable
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
-        restCurrencyTableMockMvc.perform(post("/api/currency-tables")
+        restCurrencyTableMockMvc.perform(post("/api/currency-tables").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isCreated());
@@ -179,7 +163,7 @@ public class CurrencyTableResourceIT {
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCurrencyTableMockMvc.perform(post("/api/currency-tables")
+        restCurrencyTableMockMvc.perform(post("/api/currency-tables").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isBadRequest());
@@ -204,7 +188,7 @@ public class CurrencyTableResourceIT {
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
 
 
-        restCurrencyTableMockMvc.perform(post("/api/currency-tables")
+        restCurrencyTableMockMvc.perform(post("/api/currency-tables").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isBadRequest());
@@ -656,7 +640,7 @@ public class CurrencyTableResourceIT {
             .country(UPDATED_COUNTRY);
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(updatedCurrencyTable);
 
-        restCurrencyTableMockMvc.perform(put("/api/currency-tables")
+        restCurrencyTableMockMvc.perform(put("/api/currency-tables").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isOk());
@@ -683,7 +667,7 @@ public class CurrencyTableResourceIT {
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restCurrencyTableMockMvc.perform(put("/api/currency-tables")
+        restCurrencyTableMockMvc.perform(put("/api/currency-tables").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isBadRequest());
@@ -705,7 +689,7 @@ public class CurrencyTableResourceIT {
         int databaseSizeBeforeDelete = currencyTableRepository.findAll().size();
 
         // Delete the currencyTable
-        restCurrencyTableMockMvc.perform(delete("/api/currency-tables/{id}", currencyTable.getId())
+        restCurrencyTableMockMvc.perform(delete("/api/currency-tables/{id}", currencyTable.getId()).with(csrf())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
