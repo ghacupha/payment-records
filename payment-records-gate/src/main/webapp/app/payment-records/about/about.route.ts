@@ -17,14 +17,14 @@
 ///
 
 import { Route } from '@angular/router';
+import { AboutComponent } from 'app/payment-records/about/about.component';
 
-import { HomeComponent } from './home.component';
 
-export const HOME_ROUTE: Route = {
-  path: '',
-  component: HomeComponent,
+export const ABOUT_ROUTE: Route = {
+  path: 'about/payment-records',
+  component: AboutComponent,
   data: {
     authorities: [],
-    pageTitle: 'Payment Records | Home',
+    pageTitle: 'Payment Records | About',
   },
 };

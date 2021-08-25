@@ -16,15 +16,16 @@
 /// along with this program. If not, see <http://www.gnu.org/licenses/>.
 ///
 
-import { Route } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
+import { PaymentRecordsClientAboutModule } from 'app/payment-records/about/about.module';
+import {PaymentRecordsGateSharedModule} from "app/shared/shared.module";
 
-import { HomeComponent } from './home.component';
+export const routes: Routes = [];
 
-export const HOME_ROUTE: Route = {
-  path: '',
-  component: HomeComponent,
-  data: {
-    authorities: [],
-    pageTitle: 'Payment Records | Home',
-  },
-};
+@NgModule({
+  imports: [CommonModule, PaymentRecordsGateSharedModule, RouterModule.forChild(routes), PaymentRecordsClientAboutModule],
+  exports: [RouterModule]
+})
+export class PaymentRecordsBespokeModule{}
