@@ -112,6 +112,11 @@ jhipster:
         base64-secret: Y2RkYzllNWVhZGUwNTZkNDc4ZWVjMDBkNzZjM2IxZjU4YTJkZTk5Mzk2NmRjMDg3YzhiNjJiMDM4ZjRiNGY0MTA5MTgwMWVlMjU2YmNjYmExMDcyOGVhNWNmNWQ0OWU0OWY0ZjU5MDdiYTI2YmM0MjcxZWEyODI5NDdhMGEzMWY=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
+    client-authorization:
+      access-token-uri: http://erpuaa/oauth/token
+      token-service-id: erpuaa
+      client-id: internal
+      client-secret: internal
   metrics:
     logs: # Reports metrics in the logs
       enabled: true

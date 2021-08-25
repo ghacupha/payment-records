@@ -1,86 +1,70 @@
 package io.github.erp.config;
 
-/*-
- * Payment Records - Payment records is part of the ERP System
- * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-import io.github.erp.security.*;
-import io.github.erp.security.jwt.*;
+import io.github.erp.config.oauth2.OAuth2JwtAccessTokenConverter;
+import io.github.erp.config.oauth2.OAuth2Properties;
+import io.github.erp.security.oauth2.OAuth2SignatureVerifierClient;
+import io.github.erp.security.AuthoritiesConstants;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.client.loadbalancer.RestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
-import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.client.RestTemplate;
 
-@EnableWebSecurity
+@Configuration
+@EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@Import(SecurityProblemSupport.class)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
+    private final OAuth2Properties oAuth2Properties;
 
-    private final TokenProvider tokenProvider;
-    private final SecurityProblemSupport problemSupport;
-
-    public SecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport) {
-        this.tokenProvider = tokenProvider;
-        this.problemSupport = problemSupport;
+    public SecurityConfiguration(OAuth2Properties oAuth2Properties) {
+        this.oAuth2Properties = oAuth2Properties;
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
         http
             .csrf()
             .disable()
-            .exceptionHandling()
-                .authenticationEntryPoint(problemSupport)
-                .accessDeniedHandler(problemSupport)
-        .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
-        .and()
-            .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-        .and()
-            .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
-        .and()
             .frameOptions()
-            .deny()
+            .disable()
         .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .authorizeRequests()
-            .antMatchers("/api/authenticate").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-        .and()
-            .apply(securityConfigurerAdapter());
-        // @formatter:on
+            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
     }
 
-    private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
+    @Bean
+    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
+        return new JwtTokenStore(jwtAccessTokenConverter);
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter(OAuth2SignatureVerifierClient signatureVerifierClient) {
+        return new OAuth2JwtAccessTokenConverter(oAuth2Properties, signatureVerifierClient);
+    }
+
+    @Bean
+    @Qualifier("loadBalancedRestTemplate")
+    public RestTemplate loadBalancedRestTemplate(RestTemplateCustomizer customizer) {
+        RestTemplate restTemplate = new RestTemplate();
+        customizer.customize(restTemplate);
+        return restTemplate;
     }
 }

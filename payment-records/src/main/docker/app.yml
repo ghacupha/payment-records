@@ -1,55 +1,29 @@
-#
-# Payment Records - Payment records is part of the ERP System
-# Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
-#
-
 version: '2'
 services:
   paymentrecords-app:
-    image: ghacupha/payment-records:0.0.1-SNAPSHOT
+    image: paymentrecords
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-      #- SPRING_DATASOURCE_URL=jdbc:postgresql://paymentrecords-postgresql:5432/paymentRecords
-      - SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://paymentrecords-postgresql:5432/paymentRecords
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
-      #- SPRING_DATA_JEST_URI=http://paymentrecords-elasticsearch:9200
-      - SPRING_DATA_JEST_URI=${SPRING_DATA_JEST_URI}
-      #- SPRING_ELASTICSEARCH_REST_URIS=http://paymentrecords-elasticsearch:9200
-      - SPRING_ELASTICSEARCH_REST_URIS=${SPRING_DATA_JEST_URI}
-      - PAYMENT_RECORDS_PROD_DB=${PAYMENT_RECORDS_PROD_DB}
-      - PG_DATABASE_PROD_USER=${PG_DATABASE_PROD_USER}
-      - PG_DATABASE_PROD_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
-      - SECURITY_AUTHENTICATION_JWT_BASE64_SECRET=${SECURITY_AUTHENTICATION_JWT_BASE64_SECRET}
-      - PAYMENT_RECORDS_PORT=${PAYMENT_RECORDS_PORT}
-  #  paymentrecords-postgresql:
-  #    extends:
-  #      file: postgresql.yml
-  #      service: paymentrecords-postgresql
+      - SPRING_DATA_JEST_URI=http://paymentrecords-elasticsearch:9200
+      - SPRING_ELASTICSEARCH_REST_URIS=http://paymentrecords-elasticsearch:9200
+  paymentrecords-postgresql:
+    extends:
+      file: postgresql.yml
+      service: paymentrecords-postgresql
   paymentrecords-elasticsearch:
     extends:
       file: elasticsearch.yml
       service: paymentrecords-elasticsearch
-  erp-registry:
+  jhipster-registry:
     extends:
-      file: erp-registry.yml
-      service: erp-registry
+      file: jhipster-registry.yml
+      service: jhipster-registry
     environment:
       - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
       - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/docker-config/

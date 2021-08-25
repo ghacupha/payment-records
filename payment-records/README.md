@@ -1,7 +1,5 @@
 # paymentRecords
 
-[![.github/workflows/github-ci.yml](https://github.com/ghacupha/payment-records/actions/workflows/github-ci.yml/badge.svg)](https://github.com/ghacupha/payment-records/actions/workflows/github-ci.yml)
-
 This application was generated using JHipster 6.10.5, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.5](https://www.jhipster.tech/documentation-archive/v6.10.5).
 
 This is a "microservice" application intended to be part of a microservice architecture, please refer to the [Doing microservices with JHipster][] page of the documentation for more information.

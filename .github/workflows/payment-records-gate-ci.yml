@@ -21,16 +21,21 @@ jobs:
               with:
                   java-version: '11.x'
             - name: Install node.js packages
+              working-directory: ./payment-records-gate
               run: npm install
             - name: Run backend test
+              working-directory: ./payment-records-gate
               run: |
                   chmod +x mvnw
                   ./mvnw -ntp clean verify -P-webpack
             - name: Run frontend test
+              working-directory: ./payment-records-gate
               run: npm run test
             - name: Package application
+              working-directory: ./payment-records-gate
               run: ./mvnw -ntp package -Pprod -DskipTests
             - name: Build and publish docker image
+              working-directory: ./payment-records-gate
               if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/'))
               run: |
                   ./mvnw -ntp jib:build -Djib.to.image=ghacupha/payments-records-gate:0.0.1-SNAPSHOT -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }}"
