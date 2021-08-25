@@ -8,6 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Payment Records</name>
+    <description>Payment records is part of the ERP System</description>
 
     <repositories>
         <!-- jhipster-needle-maven-repository -->
@@ -36,6 +37,15 @@
         <profile.no-liquibase />
         <profile.swagger />
         <profile.tls />
+      
+        <dev.db>${env.PAYMENT_RECORDS_DEV_DB}</dev.db>
+        <docker.image.prefix>${env.DOCKER_IMAGE_PREFIX}</docker.image.prefix>
+        <founder.website>https://github.com/ghacupha</founder.website>
+        <owner.email>mailnjeru@gmail.com</owner.email>
+        <project.inceptionYear>2021</project.inceptionYear>
+        <project.owner>Edwin Njeru</project.owner>
+        <application.port>${env.PAYMENT_RECORDS_PORT}</application.port>
+
 
         <!-- Dependency versions -->
         <jhipster-dependencies.version>3.9.1</jhipster-dependencies.version>
@@ -56,7 +66,9 @@
         <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
         <archunit-junit5.version>0.14.1</archunit-junit5.version>
         <log4j2-mock.version>0.0.2</log4j2-mock.version>
-        <mapstruct.version>1.3.1.Final</mapstruct.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <lombok.version>1.18.12</lombok.version>
+        <poiji.version>3.0.0</poiji.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -373,6 +385,22 @@
             <artifactId>cucumber-spring</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ozlerhakan</groupId>
+            <artifactId>poiji</artifactId>
+            <version>${poiji.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
@@ -387,6 +415,48 @@
             </testResource>
         </testResources>
         <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.0.rc2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>.idea/**</exclude>
+                        <exclude>.jhipster/**</exclude>
+                        <exclude>node/**</exclude>
+                        <exclude>node_modules/**</exclude>
+                        <exclude>**/README</exclude>
+                        <exclude>**/pom.xml</exclude>
+                        <exclude>**/LICENSE</exclude>
+                        <exclude>src/test/resources/**</exclude>
+                        <exclude>src/main/resources/**</exclude>
+                        <!--// TODO review license for production-->
+                    </excludes>
+                    <header>com/mycila/maven/plugin/license/templates/GPL-3.txt</header>
+                    <properties>
+                        <owner>${project.owner}</owner>
+                        <email>${owner.email}</email>
+                        <year>${project.inceptionYear}</year>
+                        <website>${founder.website}</website>
+                    </properties>
+                    <project>
+                        <name>${project.name}</name>
+                        <inceptionYear>${project.inceptionYear}</inceptionYear>
+                        <description>${project.description}</description>
+                    </project>
+                    <mapping>
+                        <java>JAVAPKG_STYLE</java>
+                    </mapping>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!--<phase>process-sources</phase>-->
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -509,6 +579,11 @@
                                 <groupId>org.glassfish.jaxb</groupId>
                                 <artifactId>jaxb-runtime</artifactId>
                                 <version>${jaxb-runtime.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
                             </path>
                             <!-- jhipster-needle-maven-add-annotation-processor -->
                         </annotationProcessorPaths>
@@ -641,7 +716,7 @@
                             <image>adoptopenjdk:11-jre-hotspot</image>
                         </from>
                         <to>
-                            <image>paymentrecords:latest</image>
+                            <image>${docker.image.prefix}/${project.artifactId}:${project.version}</image>
                         </to>
                         <container>
                             <entrypoint>
@@ -650,7 +725,7 @@
                                 <arg>/entrypoint.sh</arg>
                             </entrypoint>
                             <ports>
-                                <port>8787</port>
+                                <port>${application.port}</port>
                                 <port>5701/udp</port>
                             </ports>
                             <environment>
@@ -678,10 +753,10 @@
                         <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                         <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                         <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/paymentRecords</url>
+                        <url>${env.LOCAL_PG_SERVER}/${dev.db}</url>
                         <defaultSchemaName></defaultSchemaName>
-                        <username>paymentRecords</username>
-                        <password></password>
+                        <username>${env.PG_DATABASE_DEV_USER}</username>
+                        <password>${env.PG_DATABASE_DEV_PASSWORD}</password>
                         <referenceUrl>hibernate:spring:io.github.erp.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>

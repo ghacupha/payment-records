@@ -1,7 +1,7 @@
 version: '2'
 services:
   paymentrecords-app:
-    image: paymentrecords
+    image: ghacupha/payment-records:0.0.1-SNAPSHOT
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
@@ -12,18 +12,26 @@ services:
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
       - SPRING_DATA_JEST_URI=http://paymentrecords-elasticsearch:9200
       - SPRING_ELASTICSEARCH_REST_URIS=http://paymentrecords-elasticsearch:9200
-  paymentrecords-postgresql:
-    extends:
-      file: postgresql.yml
-      service: paymentrecords-postgresql
+      - SECURITY_AUTHENTICATION_JWT_BASE64_SECRET=${SECURITY_AUTHENTICATION_JWT_BASE64_SECRET}
+      - LOCAL_PG_SERVER=${LOCAL_PG_SERVER}
+      - PAYMENT_RECORDS_PROD_DB=${PAYMENT_RECORDS_PROD_DB}
+      - PG_DATABASE_PROD_USER=${PG_DATABASE_PROD_USER}
+      - PG_DATABASE_PROD_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
+      - SPRING_DATA_JEST_URI=${SPRING_DATA_JEST_URI}
+      - PAYMENT_RECORDS_PORT=${PAYMENT_RECORDS_PORT}
+      - JHIPSTER_REGISTRY_PASSWORD=${JHIPSTER_REGISTRY_PASSWORD}
+  # paymentrecords-postgresql:
+  #   extends:
+  #     file: postgresql.yml
+  #     service: paymentrecords-postgresql
   paymentrecords-elasticsearch:
     extends:
       file: elasticsearch.yml
       service: paymentrecords-elasticsearch
-  jhipster-registry:
+  erp-registry:
     extends:
-      file: jhipster-registry.yml
-      service: jhipster-registry
+      file: erp-registry-dev.yml
+      service: erp-registry
     environment:
       - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
       - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/docker-config/

@@ -40,9 +40,9 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/paymentRecords
-    username: paymentRecords
-    password:
+    url: ${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}
+    username: ${PG_DATABASE_PROD_USER}
+    password: ${PG_DATABASE_PROD_PASSWORD}
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -51,11 +51,11 @@ spring:
     show-sql: false
   data:
     jest:
-      uri: http://localhost:9200
+      uri: ${SPRING_DATA_JEST_URI}
   # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
   elasticsearch:
     rest:
-      uris: http://localhost:9200
+      uris: ${SPRING_DATA_JEST_URI}
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
@@ -96,7 +96,7 @@ spring:
 #     ciphers: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 ,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 ,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 ,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA,TLS_RSA_WITH_CAMELLIA_256_CBC_SHA,TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA,TLS_RSA_WITH_CAMELLIA_128_CBC_SHA
 # ===================================================================
 server:
-  port: 8787
+  port: ${PAYMENT_RECORDS_PORT}
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
@@ -151,7 +151,7 @@ oauth2:
   web-client-configuration:
     #change client secret in production, keep in sync with UAA configuration
     client-id: web_app
-    secret: changeit
+    secret: ${SECURITY_AUTHENTICATION_JWT_BASE64_SECRET}
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
