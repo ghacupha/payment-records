@@ -19,7 +19,7 @@
     "devDatabaseType": "postgresql",
     "prodDatabaseType": "postgresql",
     "searchEngine": "elasticsearch",
-    "messageBroker": false,
+    "messageBroker": "kafka",
     "serviceDiscoveryType": "eureka",
     "buildTool": "maven",
     "enableSwaggerCodegen": false,
