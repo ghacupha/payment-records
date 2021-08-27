@@ -106,7 +106,7 @@ management:
 
 spring:
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
+    exclude: org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
   application:
     name: paymentRecords
   jmx:
@@ -224,6 +224,16 @@ jhipster:
     contact-email:
     license: GPLv3
     license-url:
+kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    group.id: payment-records
+    auto.offset.reset: earliest
+  producer:
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.StringSerializer
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

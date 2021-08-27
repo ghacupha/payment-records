@@ -103,10 +103,36 @@ management:
             enabled: true
 
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration
   application:
     name: paymentRecordsGate
   jmx:
     enabled: false
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      # modify batch size as necessary
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
   messages:
     basename: i18n/messages
   main:
@@ -127,17 +153,17 @@ spring:
   output:
     ansi:
       console-available: true
-security:
-  oauth2:
-    client:
-      access-token-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
-      user-authorization-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
-      client-id: web_app
-      client-secret: web_app
-      scope: openid profile email
-    resource:
-      filter-order: 3
-      user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+#security:
+#  oauth2:
+#    client:
+#      access-token-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
+#      user-authorization-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
+#      client-id: web_app
+#      client-secret: web_app
+#      scope: openid profile email
+#    resource:
+#      filter-order: 3
+#      user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
 
 server:
   servlet:
@@ -180,6 +206,16 @@ jhipster:
     contact-email:
     license: GPLv3
     license-url:
+kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    group.id: payment-records-gate
+    auto.offset.reset: earliest
+  producer:
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.StringSerializer
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

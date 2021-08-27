@@ -1,0 +1,214 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-1">
+        <createSequence incrementBy="50" sequenceName="sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-2">
+        <createTable tableName="currency_table">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="currency_tablePK"/>
+            </column>
+            <column name="country" type="VARCHAR(255)"/>
+            <column name="currency_code" type="VARCHAR(3)"/>
+            <column name="currency_name" type="VARCHAR(255)"/>
+            <column name="locality" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-3">
+        <createTable tableName="currency_table_placeholder">
+            <column name="currency_table_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="placeholder_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-4">
+        <createTable tableName="jhi_persistent_audit_event">
+            <column autoIncrement="true" name="event_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jhi_persistent_audit_eventPK"/>
+            </column>
+            <column name="event_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="principal" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-5">
+        <createTable tableName="jhi_persistent_audit_evt_data">
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-6">
+        <createTable tableName="payment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="paymentPK"/>
+            </column>
+            <column name="beneficiary" type="VARCHAR(255)"/>
+            <column name="payments_category" type="VARCHAR(255)"/>
+            <column name="transaction_amount" type="numeric(21, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_currency" type="VARCHAR(255)"/>
+            <column name="transaction_date" type="date"/>
+            <column name="transaction_number" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-7">
+        <createTable tableName="payment_placeholder">
+            <column name="payment_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="placeholder_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-8">
+        <createTable tableName="payments_file_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payments_file_typePK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="file_template" type="BYTEA"/>
+            <column name="file_template_content_type" type="VARCHAR(255)"/>
+            <column name="payments_file_medium_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payments_file_type_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paymentsfile_type" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-9">
+        <createTable tableName="payments_file_type_placeholder">
+            <column name="payments_file_type_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="placeholder_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-10">
+        <createTable tableName="payments_file_upload">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payments_file_uploadPK"/>
+            </column>
+            <column name="data_file" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_file_content_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payments_file_type_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="period_from" type="date"/>
+            <column name="period_to" type="date"/>
+            <column name="upload_processed" type="BOOLEAN"/>
+            <column name="upload_successful" type="BOOLEAN"/>
+            <column name="upload_token" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-11">
+        <createTable tableName="payments_file_upload_placeholder">
+            <column name="payments_file_upload_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="placeholder_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-12">
+        <createTable tableName="payments_message_token">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payments_message_tokenPK"/>
+            </column>
+            <column name="actioned" type="BOOLEAN"/>
+            <column name="content_fully_enqueued" type="BOOLEAN"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="received" type="BOOLEAN"/>
+            <column name="time_sent" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-13">
+        <createTable tableName="placeholder">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="placeholderPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-14">
+        <addUniqueConstraint columnNames="currency_code" constraintName="UC_CURRENCY_TABLECURRENCY_CODE_COL" tableName="currency_table"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-15">
+        <addUniqueConstraint columnNames="payments_file_type_name" constraintName="UC_PAYMENTS_FILE_TYPEPAYMENTS_FILE_TYPE_NAME_COL" tableName="payments_file_type"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-16">
+        <addUniqueConstraint columnNames="file_name" constraintName="UC_PAYMENTS_FILE_UPLOADFILE_NAME_COL" tableName="payments_file_upload"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-17">
+        <addUniqueConstraint columnNames="upload_token" constraintName="UC_PAYMENTS_FILE_UPLOADUPLOAD_TOKEN_COL" tableName="payments_file_upload"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-18">
+        <addUniqueConstraint columnNames="description" constraintName="UC_PLACEHOLDERDESCRIPTION_COL" tableName="placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-19">
+        <addUniqueConstraint columnNames="token" constraintName="UC_PLACEHOLDERTOKEN_COL" tableName="placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-20">
+        <addForeignKeyConstraint baseColumnNames="placeholder_id" baseTableName="currency_table_placeholder" constraintName="FK1qmlqj5815mitfvd303v7624" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="placeholder" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-21">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="jhi_persistent_audit_evt_data" constraintName="FK2ehnyx2si4tjd2nt4q7y40v8m" deferrable="false" initiallyDeferred="false" referencedColumnNames="event_id" referencedTableName="jhi_persistent_audit_event" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-22">
+        <addForeignKeyConstraint baseColumnNames="payments_file_type_id" baseTableName="payments_file_type_placeholder" constraintName="FK4ppq4gdxle4675q2l22rsr8r6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="payments_file_type" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-23">
+        <addForeignKeyConstraint baseColumnNames="placeholder_id" baseTableName="payments_file_upload_placeholder" constraintName="FKhvakwblv640iutmbkf77qtn0s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="placeholder" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-24">
+        <addForeignKeyConstraint baseColumnNames="payment_id" baseTableName="payment_placeholder" constraintName="FKk0w1hbpssv64lbtjjrv8g28w9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="payment" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-25">
+        <addForeignKeyConstraint baseColumnNames="placeholder_id" baseTableName="payments_file_type_placeholder" constraintName="FKkr0dl78d69mj0tur37g1mhbi8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="placeholder" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-26">
+        <addForeignKeyConstraint baseColumnNames="placeholder_id" baseTableName="payment_placeholder" constraintName="FKo6ap2pfbi1kg5i3mgpgkl47w1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="placeholder" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-27">
+        <addForeignKeyConstraint baseColumnNames="currency_table_id" baseTableName="currency_table_placeholder" constraintName="FKpef6paveggvjwvvshfer8rs0d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="currency_table" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630067822254-28">
+        <addForeignKeyConstraint baseColumnNames="payments_file_upload_id" baseTableName="payments_file_upload_placeholder" constraintName="FKstmynknrjuo0peb7lmlfkaa26" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="payments_file_upload" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

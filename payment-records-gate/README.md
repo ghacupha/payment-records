@@ -22,6 +22,13 @@ npm install
 
 We use npm scripts and [Webpack][] as our build system.
 
+If you are using hazelcast as a cache, you will have to launch a cache server.
+To start your cache server, run:
+
+```
+docker-compose -f src/main/docker/hazelcast-management-center.yml up -d
+```
+
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
@@ -189,6 +196,18 @@ For more information, refer to the [Code quality page][].
 ## Using Docker to simplify development (optional)
 
 You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
+
+For example, to start a postgresql database in a docker container, run:
+
+```
+docker-compose -f src/main/docker/postgresql.yml up -d
+```
+
+To stop it and remove the container, run:
+
+```
+docker-compose -f src/main/docker/postgresql.yml down
+```
 
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:

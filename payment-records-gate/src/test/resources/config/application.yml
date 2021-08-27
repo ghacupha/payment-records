@@ -21,11 +21,41 @@ eureka:
     instanceId: paymentRecordsGate:${spring.application.instance-id:${random.value}}
 
 spring:
+  profiles:
+    # Uncomment the following line to enable tests against production database type rather than H2, using Testcontainers
+    #active: testcontainers
   application:
     name: paymentRecordsGate
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:h2:mem:paymentRecordsGate;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    name:
+    username:
+    password:
+    hikari:
+      auto-commit: false
   jackson:
     serialization:
       write-durations-as-timestamps: false
+  jpa:
+    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.hbm2ddl.auto: validate
+      hibernate.jdbc.time_zone: UTC
+  liquibase:
+    contexts: test
   mail:
     host: localhost
   main:
@@ -67,18 +97,30 @@ jhipster:
       host: localhost
       port: 5000
       queue-size: 512
+  mail:
+    from: test@localhost
+    base-url: http://127.0.0.1:8080
   security:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret:
+        base64-secret: MWI0ZDU4MDllMzkyYmE0OTlkMjEzNGE2ZWQ5NTgzN2YxZGRjZTA4ZDY2MDQwZjQ2MWY3YWM1MzU4Yzk4NTc1NjNkYTMxYjhjYmY3ODliZWI2Nzg5Njg3ZmI1OTFiNDVjNjBhMjA1YTU5YmQ5NTQ1ZDNlMDg2NDI1ZmQyZjdiOWY=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
   metrics:
     logs: # Reports metrics in the logs
       enabled: true
       report-frequency: 60 # in seconds
-
+kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    group.id: payment-records-gate
+    auto.offset.reset: earliest
+  producer:
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.StringSerializer
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

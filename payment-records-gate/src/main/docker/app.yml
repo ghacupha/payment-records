@@ -9,9 +9,33 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_GATE_PROD_DB}
       - PAYMENT_RECORDS_GATE_PORT=${PAYMENT_RECORDS_GATE_PORT}
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+      - LOCAL_PG_SERVER = ${LOCAL_PG_SERVER}
+      - PAYMENT_RECORDS_GATE_PROD_DB=${PAYMENT_RECORDS_GATE_PROD_DB}
+      - PG_DATABASE_PROD_USER=${PG_DATABASE_PROD_USER}
+      - PG_DATABASE_PROD_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
+      - PAYMENT_RECORDS_GATE_DEV_DB=${PAYMENT_RECORDS_GATE_DEV_DB}
+      - PG_DATABASE_DEV_USER=${PG_DATABASE_DEV_USER}
+      - PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}
     ports:
       - 8791:8791
+  paymentrecordsgate-postgresql:
+    extends:
+      file: postgresql.yml
+      service: paymentrecordsgate-postgresql
+  kafka:
+    extends:
+      file: kafka.yml
+      service: kafka
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+  zookeeper:
+    extends:
+      file: kafka.yml
+      service: zookeeper
   jhipster-registry:
     extends:
       file: jhipster-registry.yml

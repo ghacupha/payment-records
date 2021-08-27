@@ -35,6 +35,7 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "enableTranslation": false,
-    "blueprints": []
+    "blueprints": [],
+    "jwtSecretKey": "MWI0ZDU4MDllMzkyYmE0OTlkMjEzNGE2ZWQ5NTgzN2YxZGRjZTA4ZDY2MDQwZjQ2MWY3YWM1MzU4Yzk4NTc1NjNkYTMxYjhjYmY3ODliZWI2Nzg5Njg3ZmI1OTFiNDVjNjBhMjA1YTU5YmQ5NTQ1ZDNlMDg2NDI1ZmQyZjdiOWY="
   }
 }

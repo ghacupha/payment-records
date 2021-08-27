@@ -4,7 +4,7 @@ import { flatMap } from 'rxjs/operators';
 
 import { Account } from 'app/core/user/account.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { AuthServerProvider, LOGOUT_URL } from 'app/core/auth/auth-jwt.service';
+import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { Login } from './login.model';
 
 @Injectable({ providedIn: 'root' })
@@ -13,14 +13,6 @@ export class LoginService {
 
   login(credentials: Login): Observable<Account | null> {
     return this.authServerProvider.login(credentials).pipe(flatMap(() => this.accountService.identity(true)));
-  }
-
-  logoutUrl(): string {
-    return LOGOUT_URL;
-  }
-
-  logoutInClient(): void {
-    this.accountService.authenticate(null);
   }
 
   logout(): void {

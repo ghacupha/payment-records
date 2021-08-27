@@ -1,21 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { Login } from 'app/core/login/login.model';
 
-export const LOGOUT_URL = SERVER_API_URL + 'auth/logout';
+type JwtToken = {
+  id_token: string;
+};
 
 @Injectable({ providedIn: 'root' })
 export class AuthServerProvider {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private $localStorage: LocalStorageService, private $sessionStorage: SessionStorageService) {}
 
-  login(credentials: Login): Observable<any> {
-    return this.http.post(SERVER_API_URL + 'auth/login', credentials);
+  getToken(): string {
+    return this.$localStorage.retrieve('authenticationToken') || this.$sessionStorage.retrieve('authenticationToken') || '';
   }
 
-  logout(): Observable<{}> {
-    return this.http.post(LOGOUT_URL, null);
+  login(credentials: Login): Observable<void> {
+    return this.http
+      .post<JwtToken>(SERVER_API_URL + 'api/authenticate', credentials)
+      .pipe(map(response => this.authenticateSuccess(response, credentials.rememberMe)));
+  }
+
+  logout(): Observable<void> {
+    return new Observable(observer => {
+      this.$localStorage.clear('authenticationToken');
+      this.$sessionStorage.clear('authenticationToken');
+      observer.complete();
+    });
+  }
+
+  private authenticateSuccess(response: JwtToken, rememberMe: boolean): void {
+    const jwt = response.id_token;
+    if (rememberMe) {
+      this.$localStorage.store('authenticationToken', jwt);
+    } else {
+      this.$sessionStorage.store('authenticationToken', jwt);
+    }
   }
 }

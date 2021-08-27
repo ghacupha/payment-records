@@ -21,10 +21,6 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       tap(null, (err: HttpErrorResponse) => {
         if (err.status === 401 && err.url && !err.url.includes('api/account')) {
-          if (err.url.includes(this.loginService.logoutUrl())) {
-            this.loginService.logoutInClient();
-            return;
-          }
           this.stateStorageService.storeUrl(this.router.routerState.snapshot.url);
           this.loginService.logout();
           this.router.navigate(['']);

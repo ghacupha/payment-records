@@ -1,0 +1,179 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-2">
+        <createTable tableName="jhi_authority">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jhi_authorityPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-3">
+        <createTable tableName="jhi_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jhi_userPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="activated" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activation_key" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(254)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="image_url" type="VARCHAR(256)"/>
+            <column name="lang_key" type="VARCHAR(10)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reset_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="reset_key" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-4">
+        <createTable tableName="jhi_user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-5">
+        <addUniqueConstraint columnNames="email" constraintName="UC_JHI_USEREMAIL_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-6">
+        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-7">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="jhi_user_authority" constraintName="FK290okww5jujghp4el5i7mgwu0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-8">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="jhi_user_authority" constraintName="FK4psxl0jtx6nr7rhqbynr6itoc" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="jhi_authority" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-9">
+        <dropForeignKeyConstraint baseTableName="currency_table_placeholder" constraintName="fk_currency_table_placeholder_currency_table_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-10">
+        <dropForeignKeyConstraint baseTableName="currency_table_placeholder" constraintName="fk_currency_table_placeholder_placeholder_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-11">
+        <dropForeignKeyConstraint baseTableName="payment_placeholder" constraintName="fk_payment_placeholder_payment_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-12">
+        <dropForeignKeyConstraint baseTableName="payment_placeholder" constraintName="fk_payment_placeholder_placeholder_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-13">
+        <dropForeignKeyConstraint baseTableName="payments_file_type_placeholder" constraintName="fk_payments_file_type_placeholder_payments_file_type_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-14">
+        <dropForeignKeyConstraint baseTableName="payments_file_type_placeholder" constraintName="fk_payments_file_type_placeholder_placeholder_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-15">
+        <dropForeignKeyConstraint baseTableName="payments_file_upload_placeholder" constraintName="fk_payments_file_upload_placeholder_payments_file_upload_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-16">
+        <dropForeignKeyConstraint baseTableName="payments_file_upload_placeholder" constraintName="fk_payments_file_upload_placeholder_placeholder_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-17">
+        <dropForeignKeyConstraint baseTableName="batch_job_execution_context" constraintName="job_exec_ctx_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-18">
+        <dropForeignKeyConstraint baseTableName="batch_job_execution_params" constraintName="job_exec_params_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-19">
+        <dropForeignKeyConstraint baseTableName="batch_step_execution" constraintName="job_execution_step_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-20">
+        <dropForeignKeyConstraint baseTableName="batch_job_execution" constraintName="job_instance_execution_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-21">
+        <dropForeignKeyConstraint baseTableName="batch_step_execution_context" constraintName="step_exec_ctx_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-22">
+        <dropUniqueConstraint constraintName="ux_currency_table_currency_code" tableName="currency_table"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-23">
+        <dropUniqueConstraint constraintName="ux_payments_file_type_payments_file_type_name" tableName="payments_file_type"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-24">
+        <dropUniqueConstraint constraintName="ux_payments_file_upload_file_name" tableName="payments_file_upload"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-25">
+        <dropUniqueConstraint constraintName="ux_payments_file_upload_upload_token" tableName="payments_file_upload"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-26">
+        <dropUniqueConstraint constraintName="ux_placeholder_description" tableName="placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-27">
+        <dropUniqueConstraint constraintName="ux_placeholder_token" tableName="placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-28">
+        <dropTable tableName="batch_job_execution"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-29">
+        <dropTable tableName="batch_job_execution_context"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-30">
+        <dropTable tableName="batch_job_execution_params"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-31">
+        <dropTable tableName="batch_job_instance"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-32">
+        <dropTable tableName="batch_step_execution"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-33">
+        <dropTable tableName="batch_step_execution_context"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-34">
+        <dropTable tableName="currency_table"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-35">
+        <dropTable tableName="currency_table_placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-36">
+        <dropTable tableName="payment"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-37">
+        <dropTable tableName="payment_placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-38">
+        <dropTable tableName="payments_file_type"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-39">
+        <dropTable tableName="payments_file_type_placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-40">
+        <dropTable tableName="payments_file_upload"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-41">
+        <dropTable tableName="payments_file_upload_placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-42">
+        <dropTable tableName="payments_message_token"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-43">
+        <dropTable tableName="placeholder"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-44">
+        <dropSequence sequenceName="batch_job_execution_seq"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-45">
+        <dropSequence sequenceName="batch_job_seq"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-46">
+        <dropSequence sequenceName="batch_step_execution_seq"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630065608049-1">
+        <alterSequence sequenceName="sequence_generator"/>
+    </changeSet>
+</databaseChangeLog>

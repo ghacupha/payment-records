@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateMomentAdapter } from 'app/shared/util/datepicker-adapter';
 
+import { AuthInterceptor } from 'app/blocks/interceptor/auth.interceptor';
 import { AuthExpiredInterceptor } from 'app/blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
@@ -37,6 +38,11 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
     },
     { provide: NgbDateAdapter, useClass: NgbDateMomentAdapter },
     DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthExpiredInterceptor,

@@ -9,6 +9,6 @@ export class PasswordResetFinishService {
   constructor(private http: HttpClient) {}
 
   save(key: string, newPassword: string): Observable<{}> {
-    return this.http.post(SERVER_API_URL + 'services/erpuaa/api/account/reset-password/finish', { key, newPassword });
+    return this.http.post(SERVER_API_URL + 'api/account/reset-password/finish', { key, newPassword });
   }
 }

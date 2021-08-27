@@ -23,7 +23,7 @@ export class AccountService {
   ) {}
 
   save(account: Account): Observable<{}> {
-    return this.http.post(SERVER_API_URL + 'services/erpuaa/api/account', account);
+    return this.http.post(SERVER_API_URL + 'api/account', account);
   }
 
   authenticate(identity: Account | null): void {
@@ -78,7 +78,7 @@ export class AccountService {
   }
 
   private fetch(): Observable<Account> {
-    return this.http.get<Account>(SERVER_API_URL + 'services/erpuaa/api/account');
+    return this.http.get<Account>(SERVER_API_URL + 'api/account');
   }
 
   private navigateToStoredUrl(): void {

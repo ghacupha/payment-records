@@ -32,7 +32,7 @@ describe('Service Tests', () => {
         service.find('user').subscribe();
 
         const req = httpMock.expectOne({ method: 'GET' });
-        const resourceUrl = SERVER_API_URL + 'services/erpuaa/api/users';
+        const resourceUrl = SERVER_API_URL + 'api/users';
         expect(req.request.url).toEqual(`${resourceUrl}/user`);
       });
 
@@ -46,6 +46,18 @@ describe('Service Tests', () => {
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(new User(1, 'user'));
         expect(expectedResult).toEqual('user');
+      });
+
+      it('should return Authorities', () => {
+        let expectedResult: string[] = [];
+
+        service.authorities().subscribe(authorities => {
+          expectedResult = authorities;
+        });
+        const req = httpMock.expectOne({ method: 'GET' });
+
+        req.flush([Authority.USER, Authority.ADMIN]);
+        expect(expectedResult).toEqual([Authority.USER, Authority.ADMIN]);
       });
 
       it('should propagate not found response', () => {
