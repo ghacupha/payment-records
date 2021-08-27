@@ -1,7 +1,6 @@
 package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
-import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.domain.PaymentsFileUpload;
 import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.PaymentsFileUploadRepository;
@@ -37,7 +36,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link PaymentsFileUploadResource} REST controller.
  */
-@SpringBootTest(classes = { SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class })
+@SpringBootTest(classes = PaymentRecordsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -169,7 +167,7 @@ public class PaymentsFileUploadResourceIT {
         int databaseSizeBeforeCreate = paymentsFileUploadRepository.findAll().size();
         // Create the PaymentsFileUpload
         PaymentsFileUploadDTO paymentsFileUploadDTO = paymentsFileUploadMapper.toDto(paymentsFileUpload);
-        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads").with(csrf())
+        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileUploadDTO)))
             .andExpect(status().isCreated());
@@ -203,7 +201,7 @@ public class PaymentsFileUploadResourceIT {
         PaymentsFileUploadDTO paymentsFileUploadDTO = paymentsFileUploadMapper.toDto(paymentsFileUpload);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads").with(csrf())
+        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileUploadDTO)))
             .andExpect(status().isBadRequest());
@@ -228,7 +226,7 @@ public class PaymentsFileUploadResourceIT {
         PaymentsFileUploadDTO paymentsFileUploadDTO = paymentsFileUploadMapper.toDto(paymentsFileUpload);
 
 
-        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads").with(csrf())
+        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileUploadDTO)))
             .andExpect(status().isBadRequest());
@@ -248,7 +246,7 @@ public class PaymentsFileUploadResourceIT {
         PaymentsFileUploadDTO paymentsFileUploadDTO = paymentsFileUploadMapper.toDto(paymentsFileUpload);
 
 
-        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads").with(csrf())
+        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileUploadDTO)))
             .andExpect(status().isBadRequest());
@@ -268,7 +266,7 @@ public class PaymentsFileUploadResourceIT {
         PaymentsFileUploadDTO paymentsFileUploadDTO = paymentsFileUploadMapper.toDto(paymentsFileUpload);
 
 
-        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads").with(csrf())
+        restPaymentsFileUploadMockMvc.perform(post("/api/payments-file-uploads")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileUploadDTO)))
             .andExpect(status().isBadRequest());
@@ -1111,7 +1109,7 @@ public class PaymentsFileUploadResourceIT {
             .uploadToken(UPDATED_UPLOAD_TOKEN);
         PaymentsFileUploadDTO paymentsFileUploadDTO = paymentsFileUploadMapper.toDto(updatedPaymentsFileUpload);
 
-        restPaymentsFileUploadMockMvc.perform(put("/api/payments-file-uploads").with(csrf())
+        restPaymentsFileUploadMockMvc.perform(put("/api/payments-file-uploads")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileUploadDTO)))
             .andExpect(status().isOk());
@@ -1144,7 +1142,7 @@ public class PaymentsFileUploadResourceIT {
         PaymentsFileUploadDTO paymentsFileUploadDTO = paymentsFileUploadMapper.toDto(paymentsFileUpload);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restPaymentsFileUploadMockMvc.perform(put("/api/payments-file-uploads").with(csrf())
+        restPaymentsFileUploadMockMvc.perform(put("/api/payments-file-uploads")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileUploadDTO)))
             .andExpect(status().isBadRequest());
@@ -1166,7 +1164,7 @@ public class PaymentsFileUploadResourceIT {
         int databaseSizeBeforeDelete = paymentsFileUploadRepository.findAll().size();
 
         // Delete the paymentsFileUpload
-        restPaymentsFileUploadMockMvc.perform(delete("/api/payments-file-uploads/{id}", paymentsFileUpload.getId()).with(csrf())
+        restPaymentsFileUploadMockMvc.perform(delete("/api/payments-file-uploads/{id}", paymentsFileUpload.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 

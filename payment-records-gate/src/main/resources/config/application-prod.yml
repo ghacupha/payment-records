@@ -133,7 +133,7 @@ oauth2:
   web-client-configuration:
     #change client secret in production, keep in sync with UAA configuration
     client-id: web_app
-    secret: changeit
+    secret: ${SECURITY_AUTHENTICATION_JWT_BASE64_SECRET}
     # Controls session expiration due to inactivity (ignored for remember-me).
     # Negative values disable session inactivity expiration.
     session-timeout-in-seconds: 1800

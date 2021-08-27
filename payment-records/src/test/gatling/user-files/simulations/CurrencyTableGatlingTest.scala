@@ -1,6 +1,3 @@
-import java.nio.charset.StandardCharsets
-import java.util.Base64
-
 import _root_.io.gatling.core.scenario.Simulation
 import ch.qos.logback.classic.{Level, LoggerContext}
 import io.gatling.core.Predef._
@@ -36,17 +33,14 @@ class CurrencyTableGatlingTest extends Simulation {
         "Accept" -> """application/json"""
     )
 
-    val authorization_header = "Basic " + Base64.getEncoder.encodeToString("paymentRecordsapp:bXktc2VjcmV0LXRva2VuLXRvLWNoYW5nZS1pbi1wcm9kdWN0aW9uLWFuZC10by1rZWVwLWluLWEtc2VjdXJlLXBsYWNl".getBytes(StandardCharsets.UTF_8))
-
     val headers_http_authentication = Map(
-        "Content-Type" -> """application/x-www-form-urlencoded""",
-        "Accept" -> """application/json""",
-        "Authorization"-> authorization_header
+        "Content-Type" -> """application/json""",
+        "Accept" -> """application/json"""
     )
 
     val headers_http_authenticated = Map(
         "Accept" -> """application/json""",
-        "Authorization" -> "Bearer ${access_token}"
+        "Authorization" -> "${access_token}"
     )
 
     val scn = scenario("Test the CurrencyTable entity")
@@ -57,16 +51,10 @@ class CurrencyTableGatlingTest extends Simulation {
         ).exitHereIfFailed
         .pause(10)
         .exec(http("Authentication")
-        .post("/oauth/token")
+        .post("/api/authenticate")
         .headers(headers_http_authentication)
-        .formParam("username", "admin")
-        .formParam("password", "admin")
-        .formParam("grant_type", "password")
-        .formParam("scope", "read write")
-        .formParam("client_secret", "bXktc2VjcmV0LXRva2VuLXRvLWNoYW5nZS1pbi1wcm9kdWN0aW9uLWFuZC10by1rZWVwLWluLWEtc2VjdXJlLXBsYWNl")
-        .formParam("client_id", "paymentRecordsapp")
-        .formParam("submit", "Login")
-        .check(jsonPath("$.access_token").saveAs("access_token"))).exitHereIfFailed
+        .body(StringBody("""{"username":"admin", "password":"admin"}""")).asJson
+        .check(header("Authorization").saveAs("access_token"))).exitHereIfFailed
         .pause(2)
         .exec(http("Authenticated request")
         .get("/api/account")

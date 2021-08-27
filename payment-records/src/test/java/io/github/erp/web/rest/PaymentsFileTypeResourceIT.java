@@ -1,7 +1,6 @@
 package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
-import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.domain.PaymentsFileType;
 import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.PaymentsFileTypeRepository;
@@ -35,7 +34,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,7 +43,7 @@ import io.github.erp.domain.enumeration.PaymentsFileModelType;
 /**
  * Integration tests for the {@link PaymentsFileTypeResource} REST controller.
  */
-@SpringBootTest(classes = { SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class })
+@SpringBootTest(classes = PaymentRecordsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -146,7 +144,7 @@ public class PaymentsFileTypeResourceIT {
         int databaseSizeBeforeCreate = paymentsFileTypeRepository.findAll().size();
         // Create the PaymentsFileType
         PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
-        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types").with(csrf())
+        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isCreated());
@@ -176,7 +174,7 @@ public class PaymentsFileTypeResourceIT {
         PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types").with(csrf())
+        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
@@ -201,7 +199,7 @@ public class PaymentsFileTypeResourceIT {
         PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
 
 
-        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types").with(csrf())
+        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
@@ -221,7 +219,7 @@ public class PaymentsFileTypeResourceIT {
         PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
 
 
-        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types").with(csrf())
+        restPaymentsFileTypeMockMvc.perform(post("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
@@ -655,7 +653,7 @@ public class PaymentsFileTypeResourceIT {
             .paymentsfileType(UPDATED_PAYMENTSFILE_TYPE);
         PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(updatedPaymentsFileType);
 
-        restPaymentsFileTypeMockMvc.perform(put("/api/payments-file-types").with(csrf())
+        restPaymentsFileTypeMockMvc.perform(put("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isOk());
@@ -684,7 +682,7 @@ public class PaymentsFileTypeResourceIT {
         PaymentsFileTypeDTO paymentsFileTypeDTO = paymentsFileTypeMapper.toDto(paymentsFileType);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restPaymentsFileTypeMockMvc.perform(put("/api/payments-file-types").with(csrf())
+        restPaymentsFileTypeMockMvc.perform(put("/api/payments-file-types")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsFileTypeDTO)))
             .andExpect(status().isBadRequest());
@@ -706,7 +704,7 @@ public class PaymentsFileTypeResourceIT {
         int databaseSizeBeforeDelete = paymentsFileTypeRepository.findAll().size();
 
         // Delete the paymentsFileType
-        restPaymentsFileTypeMockMvc.perform(delete("/api/payments-file-types/{id}", paymentsFileType.getId()).with(csrf())
+        restPaymentsFileTypeMockMvc.perform(delete("/api/payments-file-types/{id}", paymentsFileType.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 

@@ -1,7 +1,6 @@
 package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
-import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.domain.Payment;
 import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.PaymentRepository;
@@ -37,7 +36,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link PaymentResource} REST controller.
  */
-@SpringBootTest(classes = { SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class })
+@SpringBootTest(classes = PaymentRecordsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -149,7 +147,7 @@ public class PaymentResourceIT {
         int databaseSizeBeforeCreate = paymentRepository.findAll().size();
         // Create the Payment
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
-        restPaymentMockMvc.perform(post("/api/payments").with(csrf())
+        restPaymentMockMvc.perform(post("/api/payments")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentDTO)))
             .andExpect(status().isCreated());
@@ -179,7 +177,7 @@ public class PaymentResourceIT {
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restPaymentMockMvc.perform(post("/api/payments").with(csrf())
+        restPaymentMockMvc.perform(post("/api/payments")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentDTO)))
             .andExpect(status().isBadRequest());
@@ -204,7 +202,7 @@ public class PaymentResourceIT {
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
 
 
-        restPaymentMockMvc.perform(post("/api/payments").with(csrf())
+        restPaymentMockMvc.perform(post("/api/payments")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentDTO)))
             .andExpect(status().isBadRequest());
@@ -900,7 +898,7 @@ public class PaymentResourceIT {
             .beneficiary(UPDATED_BENEFICIARY);
         PaymentDTO paymentDTO = paymentMapper.toDto(updatedPayment);
 
-        restPaymentMockMvc.perform(put("/api/payments").with(csrf())
+        restPaymentMockMvc.perform(put("/api/payments")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentDTO)))
             .andExpect(status().isOk());
@@ -929,7 +927,7 @@ public class PaymentResourceIT {
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restPaymentMockMvc.perform(put("/api/payments").with(csrf())
+        restPaymentMockMvc.perform(put("/api/payments")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentDTO)))
             .andExpect(status().isBadRequest());
@@ -951,7 +949,7 @@ public class PaymentResourceIT {
         int databaseSizeBeforeDelete = paymentRepository.findAll().size();
 
         // Delete the payment
-        restPaymentMockMvc.perform(delete("/api/payments/{id}", payment.getId()).with(csrf())
+        restPaymentMockMvc.perform(delete("/api/payments/{id}", payment.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 

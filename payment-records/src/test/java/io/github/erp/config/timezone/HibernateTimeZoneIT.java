@@ -1,7 +1,6 @@
 package io.github.erp.config.timezone;
 
 import io.github.erp.PaymentRecordsApp;
-import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.repository.timezone.DateTimeWrapper;
 import io.github.erp.repository.timezone.DateTimeWrapperRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Integration tests for the ZoneId Hibernate configuration.
  */
-@SpringBootTest(classes = {SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class})
+@SpringBootTest(classes = PaymentRecordsApp.class)
 public class HibernateTimeZoneIT {
 
     @Autowired

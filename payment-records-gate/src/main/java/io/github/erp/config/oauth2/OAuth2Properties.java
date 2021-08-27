@@ -86,6 +86,8 @@ public class OAuth2Properties {
          * That way, we make sure that we get the newest keys always in case they are updated there.
          */
         private long ttl = 24 * 60 * 60 * 1000L;
+
+        // TODO See if this can go to environment
         /**
          * Endpoint where to retrieve the public key used to verify token signatures.
          */

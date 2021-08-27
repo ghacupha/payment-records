@@ -89,7 +89,7 @@ public class OAuth2Properties {
         /**
          * Endpoint where to retrieve the public key used to verify token signatures.
          */
-        private String publicKeyEndpointUri = "http://uaa/oauth/token_key";
+        private String publicKeyEndpointUri = "http://erpuaa/oauth/token_key";
 
         public long getPublicKeyRefreshRateLimit() {
             return publicKeyRefreshRateLimit;

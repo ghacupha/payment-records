@@ -10,7 +10,7 @@
     "packageName": "io.github.erp",
     "packageFolder": "io/github/erp",
     "serverPort": "8787",
-    "authenticationType": "uaa",
+    "authenticationType": "jwt",
     "uaaBaseName": "erpUaa",
     "cacheProvider": "hazelcast",
     "enableHibernateCache": true,

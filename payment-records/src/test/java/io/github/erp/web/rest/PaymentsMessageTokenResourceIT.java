@@ -1,7 +1,6 @@
 package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
-import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.domain.PaymentsMessageToken;
 import io.github.erp.repository.PaymentsMessageTokenRepository;
 import io.github.erp.repository.search.PaymentsMessageTokenSearchRepository;
@@ -32,7 +31,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -40,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link PaymentsMessageTokenResource} REST controller.
  */
-@SpringBootTest(classes = { SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class })
+@SpringBootTest(classes = PaymentRecordsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -137,7 +135,7 @@ public class PaymentsMessageTokenResourceIT {
         int databaseSizeBeforeCreate = paymentsMessageTokenRepository.findAll().size();
         // Create the PaymentsMessageToken
         PaymentsMessageTokenDTO paymentsMessageTokenDTO = paymentsMessageTokenMapper.toDto(paymentsMessageToken);
-        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens").with(csrf())
+        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsMessageTokenDTO)))
             .andExpect(status().isCreated());
@@ -167,7 +165,7 @@ public class PaymentsMessageTokenResourceIT {
         PaymentsMessageTokenDTO paymentsMessageTokenDTO = paymentsMessageTokenMapper.toDto(paymentsMessageToken);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens").with(csrf())
+        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsMessageTokenDTO)))
             .andExpect(status().isBadRequest());
@@ -192,7 +190,7 @@ public class PaymentsMessageTokenResourceIT {
         PaymentsMessageTokenDTO paymentsMessageTokenDTO = paymentsMessageTokenMapper.toDto(paymentsMessageToken);
 
 
-        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens").with(csrf())
+        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsMessageTokenDTO)))
             .andExpect(status().isBadRequest());
@@ -212,7 +210,7 @@ public class PaymentsMessageTokenResourceIT {
         PaymentsMessageTokenDTO paymentsMessageTokenDTO = paymentsMessageTokenMapper.toDto(paymentsMessageToken);
 
 
-        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens").with(csrf())
+        restPaymentsMessageTokenMockMvc.perform(post("/api/payments-message-tokens")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsMessageTokenDTO)))
             .andExpect(status().isBadRequest());
@@ -763,7 +761,7 @@ public class PaymentsMessageTokenResourceIT {
             .contentFullyEnqueued(UPDATED_CONTENT_FULLY_ENQUEUED);
         PaymentsMessageTokenDTO paymentsMessageTokenDTO = paymentsMessageTokenMapper.toDto(updatedPaymentsMessageToken);
 
-        restPaymentsMessageTokenMockMvc.perform(put("/api/payments-message-tokens").with(csrf())
+        restPaymentsMessageTokenMockMvc.perform(put("/api/payments-message-tokens")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsMessageTokenDTO)))
             .andExpect(status().isOk());
@@ -792,7 +790,7 @@ public class PaymentsMessageTokenResourceIT {
         PaymentsMessageTokenDTO paymentsMessageTokenDTO = paymentsMessageTokenMapper.toDto(paymentsMessageToken);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restPaymentsMessageTokenMockMvc.perform(put("/api/payments-message-tokens").with(csrf())
+        restPaymentsMessageTokenMockMvc.perform(put("/api/payments-message-tokens")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(paymentsMessageTokenDTO)))
             .andExpect(status().isBadRequest());
@@ -814,7 +812,7 @@ public class PaymentsMessageTokenResourceIT {
         int databaseSizeBeforeDelete = paymentsMessageTokenRepository.findAll().size();
 
         // Delete the paymentsMessageToken
-        restPaymentsMessageTokenMockMvc.perform(delete("/api/payments-message-tokens/{id}", paymentsMessageToken.getId()).with(csrf())
+        restPaymentsMessageTokenMockMvc.perform(delete("/api/payments-message-tokens/{id}", paymentsMessageToken.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 

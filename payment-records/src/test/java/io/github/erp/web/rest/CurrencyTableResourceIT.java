@@ -1,7 +1,6 @@
 package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
-import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.domain.CurrencyTable;
 import io.github.erp.domain.Placeholder;
 import io.github.erp.repository.CurrencyTableRepository;
@@ -34,7 +33,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -43,7 +41,7 @@ import io.github.erp.domain.enumeration.CurrencyLocality;
 /**
  * Integration tests for the {@link CurrencyTableResource} REST controller.
  */
-@SpringBootTest(classes = { SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class })
+@SpringBootTest(classes = PaymentRecordsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -135,7 +133,7 @@ public class CurrencyTableResourceIT {
         int databaseSizeBeforeCreate = currencyTableRepository.findAll().size();
         // Create the CurrencyTable
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
-        restCurrencyTableMockMvc.perform(post("/api/currency-tables").with(csrf())
+        restCurrencyTableMockMvc.perform(post("/api/currency-tables")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isCreated());
@@ -163,7 +161,7 @@ public class CurrencyTableResourceIT {
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCurrencyTableMockMvc.perform(post("/api/currency-tables").with(csrf())
+        restCurrencyTableMockMvc.perform(post("/api/currency-tables")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isBadRequest());
@@ -188,7 +186,7 @@ public class CurrencyTableResourceIT {
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
 
 
-        restCurrencyTableMockMvc.perform(post("/api/currency-tables").with(csrf())
+        restCurrencyTableMockMvc.perform(post("/api/currency-tables")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isBadRequest());
@@ -640,7 +638,7 @@ public class CurrencyTableResourceIT {
             .country(UPDATED_COUNTRY);
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(updatedCurrencyTable);
 
-        restCurrencyTableMockMvc.perform(put("/api/currency-tables").with(csrf())
+        restCurrencyTableMockMvc.perform(put("/api/currency-tables")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isOk());
@@ -667,7 +665,7 @@ public class CurrencyTableResourceIT {
         CurrencyTableDTO currencyTableDTO = currencyTableMapper.toDto(currencyTable);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restCurrencyTableMockMvc.perform(put("/api/currency-tables").with(csrf())
+        restCurrencyTableMockMvc.perform(put("/api/currency-tables")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(currencyTableDTO)))
             .andExpect(status().isBadRequest());
@@ -689,7 +687,7 @@ public class CurrencyTableResourceIT {
         int databaseSizeBeforeDelete = currencyTableRepository.findAll().size();
 
         // Delete the currencyTable
-        restCurrencyTableMockMvc.perform(delete("/api/currency-tables/{id}", currencyTable.getId()).with(csrf())
+        restCurrencyTableMockMvc.perform(delete("/api/currency-tables/{id}", currencyTable.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 

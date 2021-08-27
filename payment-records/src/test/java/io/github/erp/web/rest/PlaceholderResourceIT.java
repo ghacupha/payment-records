@@ -1,7 +1,6 @@
 package io.github.erp.web.rest;
 
 import io.github.erp.PaymentRecordsApp;
-import io.github.erp.config.SecurityBeanOverrideConfiguration;
 import io.github.erp.domain.Placeholder;
 import io.github.erp.domain.CurrencyTable;
 import io.github.erp.domain.Payment;
@@ -36,7 +35,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link PlaceholderResource} REST controller.
  */
-@SpringBootTest(classes = { SecurityBeanOverrideConfiguration.class, PaymentRecordsApp.class })
+@SpringBootTest(classes = PaymentRecordsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
@@ -120,7 +118,7 @@ public class PlaceholderResourceIT {
         int databaseSizeBeforeCreate = placeholderRepository.findAll().size();
         // Create the Placeholder
         PlaceholderDTO placeholderDTO = placeholderMapper.toDto(placeholder);
-        restPlaceholderMockMvc.perform(post("/api/placeholders").with(csrf())
+        restPlaceholderMockMvc.perform(post("/api/placeholders")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(placeholderDTO)))
             .andExpect(status().isCreated());
@@ -146,7 +144,7 @@ public class PlaceholderResourceIT {
         PlaceholderDTO placeholderDTO = placeholderMapper.toDto(placeholder);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restPlaceholderMockMvc.perform(post("/api/placeholders").with(csrf())
+        restPlaceholderMockMvc.perform(post("/api/placeholders")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(placeholderDTO)))
             .andExpect(status().isBadRequest());
@@ -171,7 +169,7 @@ public class PlaceholderResourceIT {
         PlaceholderDTO placeholderDTO = placeholderMapper.toDto(placeholder);
 
 
-        restPlaceholderMockMvc.perform(post("/api/placeholders").with(csrf())
+        restPlaceholderMockMvc.perform(post("/api/placeholders")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(placeholderDTO)))
             .andExpect(status().isBadRequest());
@@ -525,7 +523,7 @@ public class PlaceholderResourceIT {
             .token(UPDATED_TOKEN);
         PlaceholderDTO placeholderDTO = placeholderMapper.toDto(updatedPlaceholder);
 
-        restPlaceholderMockMvc.perform(put("/api/placeholders").with(csrf())
+        restPlaceholderMockMvc.perform(put("/api/placeholders")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(placeholderDTO)))
             .andExpect(status().isOk());
@@ -550,7 +548,7 @@ public class PlaceholderResourceIT {
         PlaceholderDTO placeholderDTO = placeholderMapper.toDto(placeholder);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restPlaceholderMockMvc.perform(put("/api/placeholders").with(csrf())
+        restPlaceholderMockMvc.perform(put("/api/placeholders")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(placeholderDTO)))
             .andExpect(status().isBadRequest());
@@ -572,7 +570,7 @@ public class PlaceholderResourceIT {
         int databaseSizeBeforeDelete = placeholderRepository.findAll().size();
 
         // Delete the placeholder
-        restPlaceholderMockMvc.perform(delete("/api/placeholders/{id}", placeholder.getId()).with(csrf())
+        restPlaceholderMockMvc.perform(delete("/api/placeholders/{id}", placeholder.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 

@@ -14,18 +14,18 @@
     <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210823112355_added_entity_CurrencyTable.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210822081134_added_entity_Payment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823112055_added_entity_PaymentsFileType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823112155_added_entity_PaymentsFileUpload.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823112255_added_entity_PaymentsMessageToken.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210823112355_added_entity_CurrencyTable.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823115335_added_entity_Placeholder.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210823111936_added_springbatch_schema.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20210823112355_added_entity_constraints_CurrencyTable.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210822081134_added_entity_constraints_Payment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823112055_added_entity_constraints_PaymentsFileType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823112155_added_entity_constraints_PaymentsFileUpload.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210823111936_added_springbatch_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210823112355_added_entity_constraints_CurrencyTable.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
