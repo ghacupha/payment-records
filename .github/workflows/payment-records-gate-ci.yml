@@ -12,6 +12,9 @@ jobs:
             JHI_DISABLE_WEBPACK_LOGS: true
             NG_CLI_ANALYTICS: false
             PAYMENT_RECORDS_GATE_PORT: ${{ secrets.PAYMENT_RECORDS_GATE_PORT }}
+            DOCKER_IMAGE_PREFIX: ${{ secrets.DOCKER_IMAGE_PREFIX }}
+            PAYMENT_RECORDS_GATE_DEV_DB: ${{ secrets.PAYMENT_RECORDS_GATE_DEV_DB }}
+            PAYMENT_RECORDS_GATE_PROD_DB: ${{ secrets.PAYMENT_RECORDS_GATE_PROD_DB }}
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
