@@ -38,10 +38,10 @@ services:
       - PG_DATABASE_DEV_USER=${PG_DATABASE_DEV_USER}
       - PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}
       - PAYMENT_RECORDS_DEV_DB=${PAYMENT_RECORDS_DEV_DB}
-  paymentrecords-postgresql:
-    extends:
-      file: postgresql.yml
-      service: paymentrecords-postgresql
+#  paymentrecords-postgresql:
+#    extends:
+#      file: postgresql.yml
+#      service: paymentrecords-postgresql
   paymentrecords-elasticsearch:
     extends:
       file: elasticsearch.yml

@@ -13,6 +13,14 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "typedef": [true, "call-signature"],
-    "spaced-comment": ["error", "never"]
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "line": {
+          "markers": ["/"]
+        }
+      }
+    ]
   }
 }
