@@ -29,6 +29,12 @@ import { PaymentService } from './payment.service';
 import { PaymentComponent } from './payment.component';
 import { PaymentDetailComponent } from './payment-detail.component';
 import { PaymentUpdateComponent } from './payment-update.component';
+import {
+  DEFAULT_CATEGORY,
+  DEFAULT_CURRENCY,
+  DEFAULT_DATE,
+  DEFAULT_TRANSACTION_AMOUNT
+} from "app/payment-records/default-values.constants";
 
 @Injectable({ providedIn: 'root' })
 export class PaymentResolve implements Resolve<IPayment> {
@@ -49,6 +55,24 @@ export class PaymentResolve implements Resolve<IPayment> {
       );
     }
     return of(new Payment());
+  }
+}
+
+/**
+ * Provides the New Payment form with default values
+ */
+@Injectable({ providedIn: 'root' })
+export class NewPaymentResolve implements Resolve<IPayment> {
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
+
+    const payment: Payment = {
+      paymentsCategory: DEFAULT_CATEGORY,
+      transactionDate: DEFAULT_DATE,
+      transactionCurrency: DEFAULT_CURRENCY,
+      transactionAmount: DEFAULT_TRANSACTION_AMOUNT,
+    }
+    return of(payment);
   }
 }
 
@@ -79,7 +103,7 @@ export const paymentRoute: Routes = [
     path: 'new',
     component: PaymentUpdateComponent,
     resolve: {
-      payment: PaymentResolve,
+      payment: NewPaymentResolve,
     },
     data: {
       authorities: [Authority.USER],
