@@ -103,6 +103,11 @@ export class PaymentUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  edit(): void {
+    this.save();
+    this.formUpdateStateService.paymentEditedSuccessfully();
+  }
+
   save(): void {
     this.isSaving = true;
     const payment = this.createFromForm();
