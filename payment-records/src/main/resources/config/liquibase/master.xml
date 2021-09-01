@@ -21,6 +21,7 @@
     <include file="config/liquibase/changelog/20210823112355_added_entity_CurrencyTable.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823115335_added_entity_Placeholder.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823111936_added_springbatch_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210901114446_added_entity_PaymentLabel.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210822081134_added_entity_constraints_Payment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210823112055_added_entity_constraints_PaymentsFileType.xml" relativeToChangelogFile="false"/>

@@ -1,26 +1,9 @@
 package io.github.erp.web.rest;
 
-/*-
- * Payment Records - Payment records is part of the ERP System
- * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import io.github.erp.PaymentRecordsApp;
 import io.github.erp.domain.Payment;
 import io.github.erp.domain.Placeholder;
+import io.github.erp.domain.PaymentLabel;
 import io.github.erp.repository.PaymentRepository;
 import io.github.erp.repository.search.PaymentSearchRepository;
 import io.github.erp.service.PaymentService;
@@ -846,6 +829,26 @@ public class PaymentResourceIT {
 
         // Get all the paymentList where placeholder equals to placeholderId + 1
         defaultPaymentShouldNotBeFound("placeholderId.equals=" + (placeholderId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPaymentsByPaymentLabelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentRepository.saveAndFlush(payment);
+        PaymentLabel paymentLabel = PaymentLabelResourceIT.createEntity(em);
+        em.persist(paymentLabel);
+        em.flush();
+        payment.addPaymentLabel(paymentLabel);
+        paymentRepository.saveAndFlush(payment);
+        Long paymentLabelId = paymentLabel.getId();
+
+        // Get all the paymentList where paymentLabel equals to paymentLabelId
+        defaultPaymentShouldBeFound("paymentLabelId.equals=" + paymentLabelId);
+
+        // Get all the paymentList where paymentLabel equals to paymentLabelId + 1
+        defaultPaymentShouldNotBeFound("paymentLabelId.equals=" + (paymentLabelId + 1));
     }
 
     /**

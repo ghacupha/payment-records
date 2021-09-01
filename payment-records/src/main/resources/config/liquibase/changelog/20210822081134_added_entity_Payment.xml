@@ -50,6 +50,17 @@
 
         <addPrimaryKey columnNames="payment_id, placeholder_id" tableName="payment_placeholder"/>
         
+        <createTable tableName="payment_payment_label">
+            <column name="payment_label_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="payment_id, payment_label_id" tableName="payment_payment_label"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 

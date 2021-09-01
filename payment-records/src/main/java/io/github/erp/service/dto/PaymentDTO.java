@@ -1,23 +1,5 @@
 package io.github.erp.service.dto;
 
-/*-
- * Payment Records - Payment records is part of the ERP System
- * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -47,6 +29,7 @@ public class PaymentDTO implements Serializable {
     private String beneficiary;
 
     private Set<PlaceholderDTO> placeholders = new HashSet<>();
+    private Set<PaymentLabelDTO> paymentLabels = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -112,6 +95,14 @@ public class PaymentDTO implements Serializable {
         this.placeholders = placeholders;
     }
 
+    public Set<PaymentLabelDTO> getPaymentLabels() {
+        return paymentLabels;
+    }
+
+    public void setPaymentLabels(Set<PaymentLabelDTO> paymentLabels) {
+        this.paymentLabels = paymentLabels;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -141,6 +132,7 @@ public class PaymentDTO implements Serializable {
             ", transactionAmount=" + getTransactionAmount() +
             ", beneficiary='" + getBeneficiary() + "'" +
             ", placeholders='" + getPlaceholders() + "'" +
+            ", paymentLabels='" + getPaymentLabels() + "'" +
             "}";
     }
 }

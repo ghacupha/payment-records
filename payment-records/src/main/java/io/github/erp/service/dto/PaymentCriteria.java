@@ -1,23 +1,5 @@
 package io.github.erp.service.dto;
 
-/*-
- * Payment Records - Payment records is part of the ERP System
- * Copyright © 2021 Edwin Njeru (mailnjeru@gmail.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 import java.io.Serializable;
 import java.util.Objects;
 import io.github.jhipster.service.Criteria;
@@ -60,6 +42,8 @@ public class PaymentCriteria implements Serializable, Criteria {
 
     private LongFilter placeholderId;
 
+    private LongFilter paymentLabelId;
+
     public PaymentCriteria() {
     }
 
@@ -72,6 +56,7 @@ public class PaymentCriteria implements Serializable, Criteria {
         this.transactionAmount = other.transactionAmount == null ? null : other.transactionAmount.copy();
         this.beneficiary = other.beneficiary == null ? null : other.beneficiary.copy();
         this.placeholderId = other.placeholderId == null ? null : other.placeholderId.copy();
+        this.paymentLabelId = other.paymentLabelId == null ? null : other.paymentLabelId.copy();
     }
 
     @Override
@@ -143,6 +128,14 @@ public class PaymentCriteria implements Serializable, Criteria {
         this.placeholderId = placeholderId;
     }
 
+    public LongFilter getPaymentLabelId() {
+        return paymentLabelId;
+    }
+
+    public void setPaymentLabelId(LongFilter paymentLabelId) {
+        this.paymentLabelId = paymentLabelId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -161,7 +154,8 @@ public class PaymentCriteria implements Serializable, Criteria {
             Objects.equals(transactionCurrency, that.transactionCurrency) &&
             Objects.equals(transactionAmount, that.transactionAmount) &&
             Objects.equals(beneficiary, that.beneficiary) &&
-            Objects.equals(placeholderId, that.placeholderId);
+            Objects.equals(placeholderId, that.placeholderId) &&
+            Objects.equals(paymentLabelId, that.paymentLabelId);
     }
 
     @Override
@@ -174,7 +168,8 @@ public class PaymentCriteria implements Serializable, Criteria {
         transactionCurrency,
         transactionAmount,
         beneficiary,
-        placeholderId
+        placeholderId,
+        paymentLabelId
         );
     }
 
@@ -190,6 +185,7 @@ public class PaymentCriteria implements Serializable, Criteria {
                 (transactionAmount != null ? "transactionAmount=" + transactionAmount + ", " : "") +
                 (beneficiary != null ? "beneficiary=" + beneficiary + ", " : "") +
                 (placeholderId != null ? "placeholderId=" + placeholderId + ", " : "") +
+                (paymentLabelId != null ? "paymentLabelId=" + paymentLabelId + ", " : "") +
             "}";
     }
 

@@ -38,7 +38,7 @@
     "blueprints": [],
     "skipClient": true,
     "skipUserManagement": true,
-    "lastLiquibaseTimestamp": 1629719615000
+    "lastLiquibaseTimestamp": 1630496686000
   },
   "generator-jhipster-file-handling": {
     "promptValues": {

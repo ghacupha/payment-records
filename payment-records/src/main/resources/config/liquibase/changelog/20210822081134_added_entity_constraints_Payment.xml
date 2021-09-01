@@ -20,5 +20,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="placeholder"/>
         
+        <addForeignKeyConstraint baseColumnNames="payment_id"
+                                 baseTableName="payment_payment_label"
+                                 constraintName="fk_payment_payment_label_payment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payment"/>
+
+        <addForeignKeyConstraint baseColumnNames="payment_label_id"
+                                 baseTableName="payment_payment_label"
+                                 constraintName="fk_payment_payment_label_payment_label_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payment_label"/>
+        
     </changeSet>
 </databaseChangeLog>
