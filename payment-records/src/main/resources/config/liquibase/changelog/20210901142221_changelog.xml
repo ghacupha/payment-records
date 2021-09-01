@@ -1,0 +1,64 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-2">
+        <createTable tableName="payment_payment_label">
+            <column name="payment_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="payment_label_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-3">
+        <addForeignKeyConstraint baseColumnNames="payment_label_id" baseTableName="payment_payment_label" constraintName="FKexhbcn1fg37rnhaxui7nejwrm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="payment_label" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-4">
+        <addForeignKeyConstraint baseColumnNames="payment_id" baseTableName="payment_payment_label" constraintName="FKrvhmn6vgej9crd7pd6fb02kfi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="payment" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-5">
+        <dropForeignKeyConstraint baseTableName="batch_job_execution_context" constraintName="job_exec_ctx_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-6">
+        <dropForeignKeyConstraint baseTableName="batch_job_execution_params" constraintName="job_exec_params_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-7">
+        <dropForeignKeyConstraint baseTableName="batch_step_execution" constraintName="job_execution_step_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-8">
+        <dropForeignKeyConstraint baseTableName="batch_job_execution" constraintName="job_instance_execution_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-9">
+        <dropForeignKeyConstraint baseTableName="batch_step_execution_context" constraintName="step_exec_ctx_fk"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-10">
+        <dropTable tableName="batch_job_execution"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-11">
+        <dropTable tableName="batch_job_execution_context"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-12">
+        <dropTable tableName="batch_job_execution_params"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-13">
+        <dropTable tableName="batch_job_instance"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-14">
+        <dropTable tableName="batch_step_execution"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-15">
+        <dropTable tableName="batch_step_execution_context"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-16">
+        <dropSequence sequenceName="batch_job_execution_seq"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-17">
+        <dropSequence sequenceName="batch_job_seq"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-18">
+        <dropSequence sequenceName="batch_step_execution_seq"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1630506178804-1">
+        <alterSequence sequenceName="sequence_generator"/>
+    </changeSet>
+</databaseChangeLog>

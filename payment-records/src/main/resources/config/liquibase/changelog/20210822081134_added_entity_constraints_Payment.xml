@@ -7,7 +7,7 @@
         Added the constraints for entity Payment.
     -->
     <changeSet id="20210822081134-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="payment_id"
                                  baseTableName="payment_placeholder"
                                  constraintName="fk_payment_placeholder_payment_id"
@@ -19,7 +19,7 @@
                                  constraintName="fk_payment_placeholder_placeholder_id"
                                  referencedColumnNames="id"
                                  referencedTableName="placeholder"/>
-        
+
         <addForeignKeyConstraint baseColumnNames="payment_id"
                                  baseTableName="payment_payment_label"
                                  constraintName="fk_payment_payment_label_payment_id"
@@ -31,6 +31,9 @@
                                  constraintName="fk_payment_payment_label_payment_label_id"
                                  referencedColumnNames="id"
                                  referencedTableName="payment_label"/>
-        
+
+    </changeSet>
+    <changeSet id="20210822081134-3-checksums" author="Edwin Njeru">
+        <validCheckSum>8:b23ad95a2a0207ecf75701414f67d14a</validCheckSum>
     </changeSet>
 </databaseChangeLog>
