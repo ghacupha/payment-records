@@ -90,6 +90,25 @@ export class PaymentUpdateComponent implements OnInit {
     }
   }
 
+  copy(): void {
+    this.isSaving = true;
+    const payment = this.copyFromForm();
+    this.subscribeToSaveResponse(this.paymentService.create(payment));
+  }
+
+  private copyFromForm(): IPayment {
+    return {
+      ...new Payment(),
+      paymentsCategory: this.editForm.get(['paymentsCategory'])!.value,
+      transactionNumber: this.editForm.get(['transactionNumber'])!.value,
+      transactionDate: this.editForm.get(['transactionDate'])!.value,
+      transactionCurrency: this.editForm.get(['transactionCurrency'])!.value,
+      transactionAmount: this.editForm.get(['transactionAmount'])!.value,
+      beneficiary: this.editForm.get(['beneficiary'])!.value,
+      placeholders: this.editForm.get(['placeholders'])!.value,
+    };
+  }
+
   private createFromForm(): IPayment {
     return {
       ...new Payment(),

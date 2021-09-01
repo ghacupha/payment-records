@@ -95,7 +95,7 @@ export const paymentRoute: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Payments',
+      pageTitle: 'ERP| Payments',
     },
     canActivate: [UserRouteAccessService],
   },
@@ -107,7 +107,7 @@ export const paymentRoute: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Payments',
+      pageTitle: 'ERP| Payments',
     },
     canActivate: [UserRouteAccessService],
   },
@@ -119,7 +119,19 @@ export const paymentRoute: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'Payments',
+      pageTitle: 'ERP| Payments',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: ':id/copy',
+    component: PaymentUpdateComponent,
+    resolve: {
+      payment: PaymentResolve,
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'ERP| Copy Payment',
     },
     canActivate: [UserRouteAccessService],
   },
