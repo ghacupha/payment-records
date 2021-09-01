@@ -38,8 +38,10 @@ export class PaymentUpdateComponent implements OnInit {
   placeholders: IPlaceholder[] = [];
   transactionDateDp: any;
 
+  selectedPayment: IPayment = {...new Payment()};
   weAreCopyingAPayment = false;
-  copyPaymentId!: number;
+  weAreEditingAPayment = false;
+  weAreCreatingAPayment = false;
 
   editForm = this.fb.group({
     id: [],
@@ -63,8 +65,16 @@ export class PaymentUpdateComponent implements OnInit {
       this.weAreCopyingAPayment = copyState;
     });
 
-    this.formUpdateStateService.selectedPaymentId$.subscribe(id => {
-      this.copyPaymentId = id;
+    this.formUpdateStateService.weAreEditingState$.subscribe(editState => {
+      this.weAreEditingAPayment = editState;
+    });
+
+    this.formUpdateStateService.weAreCreatingState$.subscribe(createState => {
+      this.weAreCreatingAPayment = createState;
+    });
+
+    this.formUpdateStateService.selectedPayment$.subscribe(pyt => {
+      this.selectedPayment = pyt;
     });
   }
 
@@ -145,7 +155,7 @@ export class PaymentUpdateComponent implements OnInit {
 
   protected onCopySuccess(): void {
     this.isSaving = false;
-    this.formUpdateStateService.completePaymentCopy();
+    this.formUpdateStateService.paymentCopiedSuccessfully();
     this.previousState();
   }
 
@@ -158,10 +168,12 @@ export class PaymentUpdateComponent implements OnInit {
 
   protected onSaveSuccess(): void {
     this.isSaving = false;
+    this.formUpdateStateService.paymentSavedSuccessfully();
     this.previousState();
   }
 
   protected onSaveError(): void {
+    this.formUpdateStateService.paymentUpdateFormErrored();
     this.isSaving = false;
   }
 

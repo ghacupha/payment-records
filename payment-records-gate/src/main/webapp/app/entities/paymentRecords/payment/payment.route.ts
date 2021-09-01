@@ -37,17 +37,49 @@ import {
 } from "app/payment-records/default-values.constants";
 import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-update-form-state.service";
 
+/**
+ * Provides the edit form containing the entity to be edited pre-filled
+ */
 @Injectable({ providedIn: 'root' })
-export class PaymentResolve implements Resolve<IPayment> {
+export class ViewPaymentResolve implements Resolve<IPayment> {
   constructor(private service: PaymentService, private router: Router, private formState: PaymentUpdateFormStateService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
-    this.formState.completePaymentCopy();
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
         flatMap((payment: HttpResponse<Payment>) => {
           if (payment.body) {
+            this.formState.paymentSelected(payment.body);
+            return of(payment.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
+    }
+    return of(new Payment());
+  }
+}
+
+/**
+ * Provides the edit form containing the entity to be edited pre-filled
+ */
+@Injectable({ providedIn: 'root' })
+export class EditPaymentResolve implements Resolve<IPayment> {
+  constructor(private service: PaymentService, private router: Router, private formState: PaymentUpdateFormStateService) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
+
+    this.formState.paymentEdited();
+
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(
+        flatMap((payment: HttpResponse<Payment>) => {
+          if (payment.body) {
+            this.formState.paymentSelected(payment.body);
             return of(payment.body);
           } else {
             this.router.navigate(['404']);
@@ -72,7 +104,9 @@ export class NewPaymentResolve implements Resolve<IPayment> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
 
-    this.formState.completePaymentCopy();
+    this.formState.paymentCreated();
+
+    this.formState.paymentSelected({...new Payment()});
 
     const payment: Payment = {
       paymentsCategory: DEFAULT_CATEGORY,
@@ -84,6 +118,9 @@ export class NewPaymentResolve implements Resolve<IPayment> {
   }
 }
 
+/**
+ * Provides the update form containing the entity to be copied
+ */
 @Injectable({ providedIn: 'root' })
 export class CopyPaymentResolve implements Resolve<IPayment> {
   constructor(
@@ -93,16 +130,16 @@ export class CopyPaymentResolve implements Resolve<IPayment> {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
-    this.formState.copyPayment();
+
+    this.formState.paymentCopied();
 
     const id = route.params['id'];
-
-    this.formState.selectPayment(id);
 
     if (id) {
       return this.service.find(id).pipe(
         flatMap((payment: HttpResponse<Payment>) => {
           if (payment.body) {
+            this.formState.paymentSelected(payment.body);
             return of(payment.body);
           } else {
             this.router.navigate(['404']);
@@ -130,7 +167,7 @@ export const paymentRoute: Routes = [
     path: ':id/view',
     component: PaymentDetailComponent,
     resolve: {
-      payment: PaymentResolve,
+      payment: ViewPaymentResolve,
     },
     data: {
       authorities: [Authority.USER],
@@ -154,7 +191,7 @@ export const paymentRoute: Routes = [
     path: ':id/edit',
     component: PaymentUpdateComponent,
     resolve: {
-      payment: PaymentResolve,
+      payment: EditPaymentResolve,
     },
     data: {
       authorities: [Authority.USER],

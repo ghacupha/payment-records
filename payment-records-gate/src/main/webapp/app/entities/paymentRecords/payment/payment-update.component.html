@@ -20,9 +20,11 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-payment-heading" [hidden]="weAreCopyingAPayment">Create or edit a Payment</h2>
+            <h2 id="jhi-payment-heading" [hidden]="!weAreCreatingAPayment">New Payment</h2>
 
-            <h2 id="jhi-payment-heading-copying" [hidden]="!weAreCopyingAPayment">Copying Payment : {{ copyPaymentId }}</h2>
+            <h2 id="jhi-payment-heading-editing" [hidden]="!weAreEditingAPayment">Editing Payment: {{ selectedPayment.id }}</h2>
+
+            <h2 id="jhi-payment-heading-copying" [hidden]="!weAreCopyingAPayment">Copying Payment: {{ selectedPayment.id }}</h2>
 
             <div>
                 <jhi-alert-error></jhi-alert-error>
