@@ -35,12 +35,14 @@ import {
   DEFAULT_DATE,
   DEFAULT_TRANSACTION_AMOUNT
 } from "app/payment-records/default-values.constants";
+import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-update-form-state.service";
 
 @Injectable({ providedIn: 'root' })
 export class PaymentResolve implements Resolve<IPayment> {
-  constructor(private service: PaymentService, private router: Router) {}
+  constructor(private service: PaymentService, private router: Router, private formState: PaymentUpdateFormStateService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
+    this.formState.completePaymentCopy();
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
@@ -64,7 +66,13 @@ export class PaymentResolve implements Resolve<IPayment> {
 @Injectable({ providedIn: 'root' })
 export class NewPaymentResolve implements Resolve<IPayment> {
 
+  constructor(private formState: PaymentUpdateFormStateService) {
+  }
+
+
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
+
+    this.formState.completePaymentCopy();
 
     const payment: Payment = {
       paymentsCategory: DEFAULT_CATEGORY,
@@ -73,6 +81,37 @@ export class NewPaymentResolve implements Resolve<IPayment> {
       transactionAmount: DEFAULT_TRANSACTION_AMOUNT,
     }
     return of(payment);
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class CopyPaymentResolve implements Resolve<IPayment> {
+  constructor(
+    private service: PaymentService,
+    private router: Router,
+    private formState: PaymentUpdateFormStateService
+  ) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
+    this.formState.copyPayment();
+
+    const id = route.params['id'];
+
+    this.formState.selectPayment(id);
+
+    if (id) {
+      return this.service.find(id).pipe(
+        flatMap((payment: HttpResponse<Payment>) => {
+          if (payment.body) {
+            return of(payment.body);
+          } else {
+            this.router.navigate(['404']);
+            return EMPTY;
+          }
+        })
+      );
+    }
+    return of(new Payment());
   }
 }
 
@@ -127,7 +166,7 @@ export const paymentRoute: Routes = [
     path: ':id/copy',
     component: PaymentUpdateComponent,
     resolve: {
-      payment: PaymentResolve,
+      payment: CopyPaymentResolve,
     },
     data: {
       authorities: [Authority.USER],

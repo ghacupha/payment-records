@@ -21,12 +21,13 @@ import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 
 import { IPayment, Payment } from 'app/shared/model/paymentRecords/payment.model';
 import { PaymentService } from './payment.service';
 import { IPlaceholder } from 'app/shared/model/paymentRecords/placeholder.model';
 import { PlaceholderService } from 'app/entities/paymentRecords/placeholder/placeholder.service';
+import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-update-form-state.service";
 
 @Component({
   selector: 'jhi-payment-update',
@@ -36,6 +37,9 @@ export class PaymentUpdateComponent implements OnInit {
   isSaving = false;
   placeholders: IPlaceholder[] = [];
   transactionDateDp: any;
+
+  weAreCopyingAPayment = false;
+  copyPaymentId!: number;
 
   editForm = this.fb.group({
     id: [],
@@ -52,8 +56,17 @@ export class PaymentUpdateComponent implements OnInit {
     protected paymentService: PaymentService,
     protected placeholderService: PlaceholderService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private formUpdateStateService: PaymentUpdateFormStateService
+  ) {
+    this.formUpdateStateService.weAreCopyingState$.subscribe(copyState => {
+      this.weAreCopyingAPayment = copyState;
+    });
+
+    this.formUpdateStateService.selectedPaymentId$.subscribe(id => {
+      this.copyPaymentId = id;
+    });
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ payment }) => {
@@ -93,7 +106,7 @@ export class PaymentUpdateComponent implements OnInit {
   copy(): void {
     this.isSaving = true;
     const payment = this.copyFromForm();
-    this.subscribeToSaveResponse(this.paymentService.create(payment));
+    this.subscribeToCopyResponse(this.paymentService.create(payment));
   }
 
   private copyFromForm(): IPayment {
@@ -121,6 +134,19 @@ export class PaymentUpdateComponent implements OnInit {
       beneficiary: this.editForm.get(['beneficiary'])!.value,
       placeholders: this.editForm.get(['placeholders'])!.value,
     };
+  }
+
+  protected subscribeToCopyResponse(result: Observable<HttpResponse<IPayment>>): void {
+    result.subscribe(
+      () => this.onCopySuccess(),
+      () => this.onSaveError()
+    );
+  }
+
+  protected onCopySuccess(): void {
+    this.isSaving = false;
+    this.formUpdateStateService.completePaymentCopy();
+    this.previousState();
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPayment>>): void {

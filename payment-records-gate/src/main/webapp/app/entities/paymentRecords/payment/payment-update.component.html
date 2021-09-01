@@ -20,12 +20,14 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-payment-heading">Create or edit a Payment</h2>
+            <h2 id="jhi-payment-heading" [hidden]="weAreCopyingAPayment">Create or edit a Payment</h2>
+
+            <h2 id="jhi-payment-heading-copying" [hidden]="!weAreCopyingAPayment">Copying Payment : {{ copyPaymentId }}</h2>
 
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div class="form-group" [hidden]="!editForm.get('id')!.value || weAreCopyingAPayment">
                     <label for="id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -97,11 +99,11 @@
                     <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
                 </button>
 
-                <button type="submit" id="copy-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary" (click)="copy()">
+                <button type="submit" id="copy-entity" [hidden]="!weAreCopyingAPayment" [disabled]="editForm.invalid || isSaving" class="btn btn-primary" (click)="copy()">
                     <fa-icon icon="copy"></fa-icon>&nbsp;<span>Copy</span>
                 </button>
 
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [hidden]="weAreCopyingAPayment" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
                 </button>
             </div>
