@@ -94,6 +94,13 @@
                         <option [ngValue]="getSelected(editForm.get('placeholders')!.value, placeholderOption)" *ngFor="let placeholderOption of placeholders; trackBy: trackById">{{ placeholderOption.id }}</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="field_paymentLabels">Payment Label</label>
+                    <select class="form-control" id="field_paymentLabels" multiple name="paymentLabels" formControlName="paymentLabels">
+                        <option [ngValue]="getSelected(editForm.get('paymentLabels')!.value, paymentLabelOption)" *ngFor="let paymentLabelOption of paymentlabels; trackBy: trackById">{{ paymentLabelOption.description }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

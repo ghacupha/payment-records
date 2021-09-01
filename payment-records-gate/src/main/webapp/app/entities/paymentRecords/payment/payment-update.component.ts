@@ -21,13 +21,17 @@ import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { IPayment, Payment } from 'app/shared/model/paymentRecords/payment.model';
 import { PaymentService } from './payment.service';
 import { IPlaceholder } from 'app/shared/model/paymentRecords/placeholder.model';
 import { PlaceholderService } from 'app/entities/paymentRecords/placeholder/placeholder.service';
+import { IPaymentLabel } from 'app/shared/model/paymentRecords/payment-label.model';
+import { PaymentLabelService } from 'app/entities/paymentRecords/payment-label/payment-label.service';
 import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-update-form-state.service";
+
+type SelectableEntity = IPlaceholder | IPaymentLabel;
 
 @Component({
   selector: 'jhi-payment-update',
@@ -36,6 +40,7 @@ import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-u
 export class PaymentUpdateComponent implements OnInit {
   isSaving = false;
   placeholders: IPlaceholder[] = [];
+  paymentlabels: IPaymentLabel[] = [];
   transactionDateDp: any;
 
   selectedPayment: IPayment = {...new Payment()};
@@ -52,11 +57,13 @@ export class PaymentUpdateComponent implements OnInit {
     transactionAmount: [null, [Validators.required, Validators.min(0)]],
     beneficiary: [],
     placeholders: [],
+    paymentLabels: [],
   });
 
   constructor(
     protected paymentService: PaymentService,
     protected placeholderService: PlaceholderService,
+    protected paymentLabelService: PaymentLabelService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private formUpdateStateService: PaymentUpdateFormStateService
@@ -83,6 +90,8 @@ export class PaymentUpdateComponent implements OnInit {
       this.updateForm(payment);
 
       this.placeholderService.query().subscribe((res: HttpResponse<IPlaceholder[]>) => (this.placeholders = res.body || []));
+
+      this.paymentLabelService.query().subscribe((res: HttpResponse<IPaymentLabel[]>) => (this.paymentlabels = res.body || []));
     });
   }
 
@@ -96,6 +105,7 @@ export class PaymentUpdateComponent implements OnInit {
       transactionAmount: payment.transactionAmount,
       beneficiary: payment.beneficiary,
       placeholders: payment.placeholders,
+      paymentLabels: payment.paymentLabels,
     });
   }
 
@@ -134,6 +144,7 @@ export class PaymentUpdateComponent implements OnInit {
       transactionAmount: this.editForm.get(['transactionAmount'])!.value,
       beneficiary: this.editForm.get(['beneficiary'])!.value,
       placeholders: this.editForm.get(['placeholders'])!.value,
+      paymentLabels: this.editForm.get(['paymentLabels'])!.value,
     };
   }
 
@@ -148,6 +159,7 @@ export class PaymentUpdateComponent implements OnInit {
       transactionAmount: this.editForm.get(['transactionAmount'])!.value,
       beneficiary: this.editForm.get(['beneficiary'])!.value,
       placeholders: this.editForm.get(['placeholders'])!.value,
+      paymentLabels: this.editForm.get(['paymentLabels'])!.value,
     };
   }
 
@@ -182,11 +194,11 @@ export class PaymentUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IPlaceholder): any {
+  trackById(index: number, item: SelectableEntity): any {
     return item.id;
   }
 
-  getSelected(selectedVals: IPlaceholder[], option: IPlaceholder): IPlaceholder {
+  getSelected(selectedVals: SelectableEntity[], option: SelectableEntity): SelectableEntity {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {
