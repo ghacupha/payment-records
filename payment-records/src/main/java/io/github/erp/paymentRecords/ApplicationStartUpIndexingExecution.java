@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ApplicationStartUpIndexingExecution implements ApplicationListener<ApplicationReadyEvent> {
@@ -24,12 +25,11 @@ public class ApplicationStartUpIndexingExecution implements ApplicationListener<
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        List<Payment> storedEntities = paymentRepository.findAll();
-
-        log.info("Initiating startup index hydration with {} entities", storedEntities.size());
-
-        applicationIndexingService.index(storedEntities);
-
-        log.info("Search index initiated and ready for queries...");
+        Optional<List<Payment>> storedEntities = Optional.of(paymentRepository.findAll());
+        storedEntities.ifPresent(entities -> {
+            log.info("Initiating startup index hydration with {} entities", entities.size());
+            applicationIndexingService.index(entities);
+            log.info("Search index initiated and ready for queries...");
+        });
     }
 }
