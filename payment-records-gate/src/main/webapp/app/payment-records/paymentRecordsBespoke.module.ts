@@ -21,11 +21,21 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PaymentRecordsClientAboutModule } from 'app/payment-records/about/about.module';
 import {PaymentRecordsGateSharedModule} from "app/shared/shared.module";
+import {PaymentRecordsNavigationModule} from "app/payment-records/navigation/payment-records-navigation.module";
 
 export const routes: Routes = [];
 
 @NgModule({
-  imports: [CommonModule, PaymentRecordsGateSharedModule, RouterModule.forChild(routes), PaymentRecordsClientAboutModule],
-  exports: [RouterModule]
+  imports: [
+    CommonModule,
+    PaymentRecordsGateSharedModule,
+    RouterModule.forChild(routes),
+    PaymentRecordsClientAboutModule,
+    PaymentRecordsNavigationModule
+  ],
+  exports: [
+    RouterModule,
+    PaymentRecordsNavigationModule
+  ]
 })
 export class PaymentRecordsBespokeModule{}

@@ -19,6 +19,21 @@
         "ignoreRestSiblings": false
       }
     ],
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "line": {
+          "markers": ["/"],
+          "exceptions": ["-", "+", "/"]
+        },
+        "block": {
+          "markers": ["!"],
+          "exceptions": ["*", "/"],
+          "balanced": true
+        }
+      }
+    ]
   }
 }

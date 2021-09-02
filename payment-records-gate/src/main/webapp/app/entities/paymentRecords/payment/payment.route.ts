@@ -102,6 +102,7 @@ export class NewPaymentResolve implements Resolve<IPayment> {
   }
 
 
+  /* eslint-disable-next-line */
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
 
     this.formState.paymentCreated();

@@ -51,7 +51,7 @@ import {
   faAsterisk,
   faTasks,
   // jhipster-needle-add-icon-import
-  faHome, faCopy,
+  faHome, faCopy, faCertificate, faFileAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const fontAwesomeIcons = [
@@ -89,6 +89,8 @@ export const fontAwesomeIcons = [
   faSearch,
   faTrashAlt,
   faCopy,
+  faCertificate,
+  faFileAlt,
   // jhipster-needle-add-icon-import
   faAsterisk,
 ];
