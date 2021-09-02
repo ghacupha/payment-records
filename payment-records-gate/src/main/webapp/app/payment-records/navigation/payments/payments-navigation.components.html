@@ -1,0 +1,43 @@
+<div [ngSwitch]="isAuthenticated()">
+    <ul class="navbar-nav ml-auto">
+        <!--<li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" routerLink="/payment/new" (click)="collapseNavbar()">
+                <span>
+                    <fa-icon icon="plus"></fa-icon>
+                    <span>New</span>
+                </span>
+            </a>
+        </li>-->
+        <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" display="dynamic"
+            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
+                <span>
+                    <fa-icon icon="th-list"></fa-icon>
+                    <span>
+                        Payments
+                    </span>
+                </span>
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+                <li>
+                    <a class="dropdown-item" routerLink="payment" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                        <span>Payment</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" routerLink="placeholder" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                        <span>Placeholder</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" routerLink="payment-label" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                        <span>Payment Label</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

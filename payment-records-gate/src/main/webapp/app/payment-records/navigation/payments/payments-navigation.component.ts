@@ -7,11 +7,11 @@ import {Router} from "@angular/router";
 import {VERSION} from "app/app.constants";
 
 @Component({
-  selector: "jhi-payment-files-nav",
-  templateUrl: "./payment-files-navigation.component.html",
-  styleUrls: ["./payment-navigation.scss"]
+  selector: "jhi-payments-nav",
+  templateUrl: "./payments-navigation.components.html",
+  styleUrls: ["../payment-navigation.scss"]
 })
-export class PaymentFilesNavigationComponent implements OnInit {
+export class PaymentsNavigationComponent implements OnInit {
   inProduction?: boolean;
   isNavbarCollapsed = true;
   swaggerEnabled?: boolean;
