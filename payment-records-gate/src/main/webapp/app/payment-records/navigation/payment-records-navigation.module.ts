@@ -6,13 +6,15 @@ import {PaymentFilesNavigationComponent} from "app/payment-records/navigation/fi
 import {PaymentRecordsGateCoreModule} from "app/core/core.module";
 import {PaymentRecordsGateSharedLibsModule} from "app/shared/shared-libs.module";
 import {PaymentsNavigationComponent} from "app/payment-records/navigation/payments/payments-navigation.component";
+import {NewPaymentNavigationComponent} from "app/payment-records/navigation/new-payment-navigation/new-payment-navigation.component";
 
 export const routes: Routes = [];
 
 @NgModule({
   declarations: [
     PaymentFilesNavigationComponent,
-    PaymentsNavigationComponent
+    PaymentsNavigationComponent,
+    NewPaymentNavigationComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ export const routes: Routes = [];
   ],
   exports: [
     PaymentFilesNavigationComponent,
-    PaymentsNavigationComponent
+    PaymentsNavigationComponent,
+    NewPaymentNavigationComponent
   ]
 })
 export class PaymentRecordsNavigationModule {}
