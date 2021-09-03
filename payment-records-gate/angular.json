@@ -31,6 +31,8 @@
   },
   "defaultProject": "payment-records-gate",
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "41a32bd9-1887-4264-8c77-e5ff48146780",
+    "defaultCollection": "@ngrx/schematics"
   }
 }
