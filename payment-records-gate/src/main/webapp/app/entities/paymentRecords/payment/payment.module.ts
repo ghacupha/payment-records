@@ -25,10 +25,26 @@ import { PaymentDetailComponent } from './payment-detail.component';
 import { PaymentUpdateComponent } from './payment-update.component';
 import { PaymentDeleteDialogComponent } from './payment-delete-dialog.component';
 import { paymentRoute } from './payment.route';
+import {StoreModule} from "@ngrx/store";
+import {
+  paymentUpdateFormStateSelector,
+  paymentUpdateStateReducer
+} from "app/payment-records/store/update-menu-status.reducer";
 
 @NgModule({
-  imports: [PaymentRecordsGateSharedModule, RouterModule.forChild(paymentRoute)],
-  declarations: [PaymentComponent, PaymentDetailComponent, PaymentUpdateComponent, PaymentDeleteDialogComponent],
-  entryComponents: [PaymentDeleteDialogComponent],
+  imports: [
+    PaymentRecordsGateSharedModule,
+    RouterModule.forChild(paymentRoute),
+    StoreModule.forFeature(paymentUpdateFormStateSelector, paymentUpdateStateReducer)
+  ],
+  declarations: [
+    PaymentComponent,
+    PaymentDetailComponent,
+    PaymentUpdateComponent,
+    PaymentDeleteDialogComponent
+  ],
+  entryComponents: [
+    PaymentDeleteDialogComponent
+  ],
 })
 export class PaymentRecordsPaymentModule {}

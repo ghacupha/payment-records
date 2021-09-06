@@ -41,7 +41,14 @@ import {StoreModule} from "@ngrx/store";
     PaymentRecordsGateCoreModule,
     PaymentRecordsGateHomeModule,
     PaymentRecordsBespokeModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot({}, {runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+        strictStateSerializability: true,
+        strictActionSerializability: true,
+        strictActionWithinNgZone: true,
+        strictActionTypeUniqueness: true,
+    }}),
     // jhipster-needle-angular-add-module JHipster will add new module here
     PaymentRecordsGateEntityModule,
     PaymentRecordsGateAppRoutingModule,
