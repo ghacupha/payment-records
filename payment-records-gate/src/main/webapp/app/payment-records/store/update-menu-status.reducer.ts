@@ -4,7 +4,11 @@ import {
   newPaymentButtonClicked,
   paymentCopyButtonClicked,
   paymentCopyInitiated,
-  paymentEditInitiated, paymentSaveButtonClicked, paymentUpdateButtonClicked, paymentUpdateCancelButtonClicked
+  paymentEditInitiated,
+  paymentSaveButtonClicked,
+  paymentUpdateButtonClicked,
+  paymentUpdateCancelButtonClicked,
+  paymentUpdateErrorHasOccurred
 } from "app/payment-records/store/update-menu-status.actions";
 import {initialState, State} from "app/payment-records/store/global-store.definition";
 
@@ -76,6 +80,18 @@ const _paymentUpdateStateReducer = createReducer(
   )),
 
   on(paymentUpdateCancelButtonClicked, state => ({
+      ...state,
+      paymentsFormState: {
+        ...state.paymentsFormState,
+        selectedPayment: {},
+        weAreCreating: false,
+        weAreEditing: false,
+        weAreCopying: false,
+      }
+    }
+  )),
+
+  on(paymentUpdateErrorHasOccurred, state => ({
       ...state,
       paymentsFormState: {
         ...state.paymentsFormState,

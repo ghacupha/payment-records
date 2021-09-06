@@ -35,7 +35,6 @@ import {
   DEFAULT_DATE,
   DEFAULT_TRANSACTION_AMOUNT
 } from "app/payment-records/default-values.constants";
-import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-update-form-state.service";
 import {Store} from "@ngrx/store";
 import {State} from "app/payment-records/store/global-store.definition";
 import {
@@ -49,7 +48,7 @@ import {
  */
 @Injectable({ providedIn: 'root' })
 export class ViewPaymentResolve implements Resolve<IPayment> {
-  constructor(private service: PaymentService, private router: Router, private formState: PaymentUpdateFormStateService) {}
+  constructor(private service: PaymentService, private router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
     const id = route.params['id'];
@@ -57,7 +56,6 @@ export class ViewPaymentResolve implements Resolve<IPayment> {
       return this.service.find(id).pipe(
         flatMap((payment: HttpResponse<Payment>) => {
           if (payment.body) {
-            this.formState.paymentSelected(payment.body);
             return of(payment.body);
           } else {
             this.router.navigate(['404']);
@@ -78,13 +76,10 @@ export class EditPaymentResolve implements Resolve<IPayment> {
   constructor(
     private service: PaymentService,
     private router: Router,
-    private formState: PaymentUpdateFormStateService,
     protected store: Store<State>
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
-
-    this.formState.paymentEdited();
 
     const id = route.params['id'];
     if (id) {
@@ -112,7 +107,6 @@ export class EditPaymentResolve implements Resolve<IPayment> {
 export class NewPaymentResolve implements Resolve<IPayment> {
 
   constructor(
-    private formState: PaymentUpdateFormStateService,
     protected store: Store<State>
     ) {
   }
@@ -120,9 +114,6 @@ export class NewPaymentResolve implements Resolve<IPayment> {
 
   /* eslint-disable-next-line */
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
-
-    //    this.formState.paymentCreated();
-    //    this.formState.paymentSelected({...new Payment()});
 
     const payment: Payment = {
       paymentsCategory: DEFAULT_CATEGORY,
@@ -145,13 +136,10 @@ export class CopyPaymentResolve implements Resolve<IPayment> {
   constructor(
     private service: PaymentService,
     private router: Router,
-    private formState: PaymentUpdateFormStateService,
     protected store: Store<State>
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPayment> | Observable<never> {
-
-    //  this.formState.paymentCopied();
 
     const id = route.params['id'];
 
@@ -159,7 +147,6 @@ export class CopyPaymentResolve implements Resolve<IPayment> {
       return this.service.find(id).pipe(
         flatMap((payment: HttpResponse<Payment>) => {
           if (payment.body) {
-            //  this.formState.paymentSelected(payment.body);
             this.store.dispatch(paymentCopyInitiated({copiedPayment: payment.body}))
             return of(payment.body);
           } else {

@@ -29,7 +29,6 @@ import { IPlaceholder } from 'app/shared/model/paymentRecords/placeholder.model'
 import { PlaceholderService } from 'app/entities/paymentRecords/placeholder/placeholder.service';
 import { IPaymentLabel } from 'app/shared/model/paymentRecords/payment-label.model';
 import { PaymentLabelService } from 'app/entities/paymentRecords/payment-label/payment-label.service';
-import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-update-form-state.service";
 import {select, Store} from "@ngrx/store";
 import {State} from "app/payment-records/store/global-store.definition";
 import {
@@ -37,7 +36,11 @@ import {
   creatingPaymentStatus,
   editingPaymentStatus, updateSelectedPayment
 } from "app/payment-records/store/update-menu-status.selectors";
-import {paymentUpdateCancelButtonClicked} from "app/payment-records/store/update-menu-status.actions";
+import {
+  paymentCopyButtonClicked, paymentSaveButtonClicked,
+  paymentUpdateButtonClicked,
+  paymentUpdateCancelButtonClicked, paymentUpdateErrorHasOccurred
+} from "app/payment-records/store/update-menu-status.actions";
 
 type SelectableEntity = IPlaceholder | IPaymentLabel;
 
@@ -74,24 +77,8 @@ export class PaymentUpdateComponent implements OnInit {
     protected paymentLabelService: PaymentLabelService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private formUpdateStateService: PaymentUpdateFormStateService,
     protected store: Store<State>
   ) {
-    /* this.formUpdateStateService.weAreCopyingState$.subscribe(copyState => {
-      this.weAreCopyingAPayment = copyState;
-    }); */
-    /* this.formUpdateStateService.weAreEditingState$.subscribe(editState => {
-      this.weAreEditingAPayment = editState;
-    }); */
-
-    /* this.formUpdateStateService.weAreCreatingState$.subscribe(createState => {
-      this.weAreCreatingAPayment = createState;
-    }); */
-
-    /* this.formUpdateStateService.selectedPayment$.subscribe(pyt => {
-      this.selectedPayment = pyt;
-    }); */
-
     this.store.pipe(select(copyingPaymentStatus)).subscribe(stat => this.weAreCopyingAPayment = stat);
     this.store.pipe(select(editingPaymentStatus)).subscribe(stat => this.weAreEditingAPayment = stat);
     this.store.pipe(select(creatingPaymentStatus)).subscribe(stat => this.weAreCreatingAPayment = stat);
@@ -129,7 +116,7 @@ export class PaymentUpdateComponent implements OnInit {
 
   edit(): void {
     this.save();
-    this.formUpdateStateService.paymentEditedSuccessfully();
+    this.store.dispatch(paymentUpdateButtonClicked())
   }
 
   save(): void {
@@ -186,7 +173,7 @@ export class PaymentUpdateComponent implements OnInit {
 
   protected onCopySuccess(): void {
     this.isSaving = false;
-    this.formUpdateStateService.paymentCopiedSuccessfully();
+    this.store.dispatch(paymentCopyButtonClicked())
     this.previousState();
   }
 
@@ -199,12 +186,12 @@ export class PaymentUpdateComponent implements OnInit {
 
   protected onSaveSuccess(): void {
     this.isSaving = false;
-    this.formUpdateStateService.paymentSavedSuccessfully();
+    this.store.dispatch(paymentSaveButtonClicked())
     this.previousState();
   }
 
   protected onSaveError(): void {
-    this.formUpdateStateService.paymentUpdateFormErrored();
+    this.store.dispatch(paymentUpdateErrorHasOccurred());
     this.isSaving = false;
   }
 
