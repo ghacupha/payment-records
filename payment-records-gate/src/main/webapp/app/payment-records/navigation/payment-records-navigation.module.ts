@@ -8,6 +8,7 @@ import {PaymentRecordsGateSharedLibsModule} from "app/shared/shared-libs.module"
 import {PaymentsNavigationComponent} from "app/payment-records/navigation/payments/payments-navigation.component";
 import {NewPaymentNavigationComponent} from "app/payment-records/navigation/new-payment-navigation/new-payment-navigation.component";
 import {HomeButtonNavigationComponent} from "app/payment-records/navigation/home-button-navigation/home-button-navigation.component";
+import {PaymentLabelNavigationComponent} from "app/payment-records/navigation/payment-label/payment-label-navigation.component";
 
 export const routes: Routes = [];
 
@@ -16,7 +17,8 @@ export const routes: Routes = [];
     PaymentFilesNavigationComponent,
     PaymentsNavigationComponent,
     NewPaymentNavigationComponent,
-    HomeButtonNavigationComponent
+    HomeButtonNavigationComponent,
+    PaymentLabelNavigationComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ export const routes: Routes = [];
     PaymentFilesNavigationComponent,
     PaymentsNavigationComponent,
     NewPaymentNavigationComponent,
-    HomeButtonNavigationComponent
+    HomeButtonNavigationComponent,
+    PaymentLabelNavigationComponent
   ]
 })
 export class PaymentRecordsNavigationModule {}
