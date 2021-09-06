@@ -37,6 +37,7 @@ import {
   creatingPaymentStatus,
   editingPaymentStatus, updateSelectedPayment
 } from "app/payment-records/store/update-menu-status.selectors";
+import {paymentUpdateCancelButtonClicked} from "app/payment-records/store/update-menu-status.actions";
 
 type SelectableEntity = IPlaceholder | IPaymentLabel;
 
@@ -122,6 +123,7 @@ export class PaymentUpdateComponent implements OnInit {
   }
 
   previousState(): void {
+    this.store.dispatch(paymentUpdateCancelButtonClicked());
     window.history.back();
   }
 

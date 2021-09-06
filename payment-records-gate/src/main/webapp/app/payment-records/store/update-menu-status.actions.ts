@@ -27,3 +27,7 @@ export const newPaymentButtonClicked = createAction(
 export const paymentSaveButtonClicked = createAction(
   '[Payment Update Form: Save Button] payment save button clicked'
 );
+
+export const paymentUpdateCancelButtonClicked = createAction(
+  '[Payment Update Form: Cancel Button] payment update cancel button clicked'
+);
