@@ -12,19 +12,9 @@ export const paymentUpdateFormStateSelector = "paymentUpdateForm"
 
 export interface PaymentsFormState {
   selectedPayment: IPayment,
-  paymentUpdateState: UpdateActionState,
-}
-
-export interface UpdateActionState {
   weAreCopying: boolean
   weAreEditing: boolean
   weAreCreating: boolean
-}
-
-export const initialUpdateState: UpdateActionState = {
-  weAreCopying: false,
-  weAreEditing: false,
-  weAreCreating: false,
 }
 
 const _paymentUpdateStateReducer = createReducer(
@@ -32,45 +22,44 @@ const _paymentUpdateStateReducer = createReducer(
 
   on(paymentCopyInitiated, (state, {copiedPayment}) => ({
     ...state,
-    selectedPayment: copiedPayment,
-    paymentUpdateState: {
-      ...state.paymentsFormState.paymentUpdateState,
+    paymentsFormState: {
+      ...state.paymentsFormState,
+      selectedPayment: copiedPayment,
       weAreCopying: true
     }
   })),
 
   on(paymentCopyButtonClicked, (state) => ({
     ...state,
-    selectedPayment: {},
-    paymentUpdateState: {
-      ...state.paymentsFormState.paymentUpdateState,
+    paymentsFormState: {
+      ...state.paymentsFormState,
       weAreCopying: false
     }
   })),
 
   on(paymentEditInitiated, (state, {editPayment}) => ({
     ...state,
-    selectedPayment: editPayment,
-    paymentUpdateState: {
-      ...state.paymentsFormState.paymentUpdateState,
+    paymentsFormState: {
+      ...state.paymentsFormState,
+      selectedPayment: editPayment,
       weAreEditing: true
     }
   })),
 
   on(paymentUpdateButtonClicked, state => ({
     ...state,
-    selectedPayment: {},
-    paymentUpdateState: {
-      ...state.paymentsFormState.paymentUpdateState,
+    paymentsFormState: {
+      ...state.paymentsFormState,
+      selectedPayment: {},
       weAreEditing: false
     }
   })),
 
-  on(newPaymentButtonClicked, state => ({
+  on(newPaymentButtonClicked, (state, {newPayment}) => ({
       ...state,
-      selectedPayment: {},
-      paymentUpdateState: {
-        ...state.paymentsFormState.paymentUpdateState,
+      paymentsFormState: {
+        ...state.paymentsFormState,
+        selectedPayment: newPayment,
         weAreCreating: true
       }
     }
@@ -78,10 +67,10 @@ const _paymentUpdateStateReducer = createReducer(
 
   on(paymentSaveButtonClicked, state => ({
       ...state,
-      selectedPayment: {},
-      paymentUpdateState: {
-        ...state.paymentsFormState.paymentUpdateState,
-        weAreCreating: false,
+      paymentsFormState: {
+        ...state.paymentsFormState,
+        selectedPayment: {},
+        weAreCreating: false
       }
     }
   )),

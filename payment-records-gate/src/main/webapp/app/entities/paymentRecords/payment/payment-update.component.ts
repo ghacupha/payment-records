@@ -30,6 +30,13 @@ import { PlaceholderService } from 'app/entities/paymentRecords/placeholder/plac
 import { IPaymentLabel } from 'app/shared/model/paymentRecords/payment-label.model';
 import { PaymentLabelService } from 'app/entities/paymentRecords/payment-label/payment-label.service';
 import {PaymentUpdateFormStateService} from "app/payment-records/state/payment-update-form-state.service";
+import {select, Store} from "@ngrx/store";
+import {State} from "app/payment-records/store/global-store.definition";
+import {
+  copyingPaymentStatus,
+  creatingPaymentStatus,
+  editingPaymentStatus, updateSelectedPayment
+} from "app/payment-records/store/update-menu-status.selectors";
 
 type SelectableEntity = IPlaceholder | IPaymentLabel;
 
@@ -66,23 +73,28 @@ export class PaymentUpdateComponent implements OnInit {
     protected paymentLabelService: PaymentLabelService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private formUpdateStateService: PaymentUpdateFormStateService
+    private formUpdateStateService: PaymentUpdateFormStateService,
+    protected store: Store<State>
   ) {
-    this.formUpdateStateService.weAreCopyingState$.subscribe(copyState => {
+    /* this.formUpdateStateService.weAreCopyingState$.subscribe(copyState => {
       this.weAreCopyingAPayment = copyState;
-    });
-
-    this.formUpdateStateService.weAreEditingState$.subscribe(editState => {
+    }); */
+    /* this.formUpdateStateService.weAreEditingState$.subscribe(editState => {
       this.weAreEditingAPayment = editState;
-    });
+    }); */
 
-    this.formUpdateStateService.weAreCreatingState$.subscribe(createState => {
+    /* this.formUpdateStateService.weAreCreatingState$.subscribe(createState => {
       this.weAreCreatingAPayment = createState;
-    });
+    }); */
 
-    this.formUpdateStateService.selectedPayment$.subscribe(pyt => {
+    /* this.formUpdateStateService.selectedPayment$.subscribe(pyt => {
       this.selectedPayment = pyt;
-    });
+    }); */
+
+    this.store.pipe(select(copyingPaymentStatus)).subscribe(stat => this.weAreCopyingAPayment = stat);
+    this.store.pipe(select(editingPaymentStatus)).subscribe(stat => this.weAreEditingAPayment = stat);
+    this.store.pipe(select(creatingPaymentStatus)).subscribe(stat => this.weAreCreatingAPayment = stat);
+    this.store.pipe(select(updateSelectedPayment)).subscribe(pyt => this.selectedPayment = pyt);
   }
 
   ngOnInit(): void {

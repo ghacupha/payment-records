@@ -21,6 +21,7 @@ export const paymentUpdateButtonClicked = createAction(
 
 export const newPaymentButtonClicked = createAction(
   '[Payments New Button] new payment button clicked',
+  props<{newPayment: IPayment}>()
 );
 
 export const paymentSaveButtonClicked = createAction(

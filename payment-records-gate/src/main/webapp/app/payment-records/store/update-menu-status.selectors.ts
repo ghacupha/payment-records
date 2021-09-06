@@ -1,24 +1,25 @@
 import {createFeatureSelector, createSelector} from "@ngrx/store";
-import {PaymentsFormState, paymentUpdateFormStateSelector} from "app/payment-records/store/update-menu-status.reducer";
+import {paymentUpdateFormStateSelector} from "app/payment-records/store/update-menu-status.reducer";
+import {State} from "app/payment-records/store/global-store.definition";
 
-export const paymentStatusFeatureSelector = createFeatureSelector<PaymentsFormState>(paymentUpdateFormStateSelector);
+export const paymentStatusFeatureSelector = createFeatureSelector<State>(paymentUpdateFormStateSelector);
 
 export const updateSelectedPayment = createSelector(
   paymentStatusFeatureSelector,
-  state => state.selectedPayment
+  state => state.paymentsFormState.selectedPayment
 );
 
 export const editingPaymentStatus = createSelector(
   paymentStatusFeatureSelector,
-  state => state.paymentUpdateState.weAreEditing
+  state => state.paymentsFormState.weAreEditing
 );
 
 export const creatingPaymentStatus = createSelector(
   paymentStatusFeatureSelector,
-  state => state.paymentUpdateState.weAreCreating
+  state => state.paymentsFormState.weAreCreating
 );
 
 export const copyingPaymentStatus = createSelector(
   paymentStatusFeatureSelector,
-  state => state.paymentUpdateState.weAreCopying
+  state => state.paymentsFormState.weAreCopying
 );

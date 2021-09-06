@@ -33,6 +33,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
 import {PaymentRecordsBespokeModule} from "app/payment-records/paymentRecordsBespoke.module";
 import {StoreModule} from "@ngrx/store";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 
 @NgModule({
   imports: [
@@ -44,11 +45,15 @@ import {StoreModule} from "@ngrx/store";
     StoreModule.forRoot({}, {runtimeChecks: {
         strictStateImmutability: true,
         strictActionImmutability: true,
-        strictStateSerializability: true,
-        strictActionSerializability: true,
+        strictStateSerializability: false,
+        strictActionSerializability: false,
         strictActionWithinNgZone: true,
         strictActionTypeUniqueness: true,
     }}),
+    StoreDevtoolsModule.instrument({
+      name: 'ERP States',
+      maxAge: 25, // Retains last 25 states
+    }),
     // jhipster-needle-angular-add-module JHipster will add new module here
     PaymentRecordsGateEntityModule,
     PaymentRecordsGateAppRoutingModule,

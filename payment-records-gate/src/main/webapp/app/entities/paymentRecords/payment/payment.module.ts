@@ -35,7 +35,7 @@ import {
   imports: [
     PaymentRecordsGateSharedModule,
     RouterModule.forChild(paymentRoute),
-    StoreModule.forFeature(paymentUpdateFormStateSelector, paymentUpdateStateReducer)
+    StoreModule.forFeature(paymentUpdateFormStateSelector, paymentUpdateStateReducer),
   ],
   declarations: [
     PaymentComponent,
