@@ -190,7 +190,7 @@ export class PaymentUpdateComponent implements OnInit {
     this.previousState();
   }
 
-  protected onSaveError(): void {
+  onSaveError(): void {
     this.store.dispatch(paymentUpdateErrorHasOccurred());
     this.isSaving = false;
   }
