@@ -39,10 +39,6 @@ services:
       - PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}
     ports:
       - 8791:8791
-  # paymentrecordsgate-postgresql:
-  #   extends:
-  #     file: postgresql.yml
-  #     service: paymentrecordsgate-postgresql
   kafka:
     extends:
       file: kafka.yml

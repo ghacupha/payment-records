@@ -40,10 +40,6 @@ services:
       - PAYMENT_RECORDS_DEV_DB=${PAYMENT_RECORDS_DEV_DB}
       - JHIPSTER_REGISTRY_PASSWORD=${JHIPSTER_REGISTRY_PASSWORD}
       - PAYMENT_RECORDS_PORT=${PAYMENT_RECORDS_PORT}
-#  paymentrecords-postgresql:
-#    extends:
-#      file: postgresql.yml
-#      service: paymentrecords-postgresql
   paymentrecords-elasticsearch:
     extends:
       file: elasticsearch.yml

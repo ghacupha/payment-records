@@ -3,8 +3,8 @@
     "appsFolders": ["payment-records", "payment-records-gate"],
     "directoryPath": "./",
     "gatewayType": "zuul",
-    "monitoring": "elk",
-    "consoleOptions": ["curator", "zipkin"],
+    "monitoring": "no",
+    "consoleOptions": [],
     "serviceDiscoveryType": "eureka",
     "jwtSecretKey": "NzAyZGZmNmI2NGJkNTYyOWY2ZDg2OTczZDcxYjczM2QxMzVmYTA3NmYwNDAxMmZmYzlmZmVkMTA4ZTA2NTBiZjQ0YjA5ZTU2M2ZlODdhMDkyNWFiMjA1N2NhZDBjMDNhZGJlNQ=="
   }

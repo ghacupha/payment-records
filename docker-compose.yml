@@ -1,100 +1,67 @@
 version: '2'
 services:
-  paymentrecords:
-    image: 'ghacupha/payment-records:0.0.1-SNAPSHOT'
+  jhipster-registry:
+    extends:
+      file: jhipster-registry.yml
+      service: jhipster-registry
+  paymentrecords-app:
+    image: ghacupha/payment-records:0.0.1-SNAPSHOT
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - 'SPRING_PROFILES_ACTIVE=prod,swagger'
+      - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - 'EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka'
-      - 'SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config'
-      - 'SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}'
-      - JHIPSTER_SLEEP=30
-      - 'SPRING_DATA_JEST_URI=${SPRING_DATA_JEST_URI}'
-      - 'SPRING_ELASTICSEARCH_REST_URIS=${SPRING_DATA_JEST_URI}'
-      - 'KAFKA_BOOTSTRAPSERVERS=kafka:9092'
-      - 'LOCAL_PG_SERVER=${LOCAL_PG_SERVER}'
-      - 'PG_DATABASE_PROD_USER=${PG_DATABASE_PROD_USER}'
-      - 'PG_DATABASE_PROD_PASSWORD=${PG_DATABASE_PROD_PASSWORD}'
-      - 'PAYMENT_RECORDS_PROD_DB=${PAYMENT_RECORDS_PROD_DB}'
-      - 'PG_DATABASE_DEV_USER=${PG_DATABASE_DEV_USER}'
-      - 'PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}'
-      - 'PAYMENT_RECORDS_DEV_DB=${PAYMENT_RECORDS_DEV_DB}'
-      - 'JHIPSTER_REGISTRY_PASSWORD=${JHIPSTER_REGISTRY_PASSWORD}'
-      - 'PAYMENT_RECORDS_PORT=${PAYMENT_RECORDS_PORT}'
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_PROD_DB}
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=${SPRING_DATA_JEST_URI}
+      - SPRING_ELASTICSEARCH_REST_URIS=${SPRING_DATA_JEST_URI}
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+      - LOCAL_PG_SERVER=${LOCAL_PG_SERVER}
+      - PG_DATABASE_PROD_USER=${PG_DATABASE_PROD_USER}
+      - PG_DATABASE_PROD_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
+      - PAYMENT_RECORDS_PROD_DB=${PAYMENT_RECORDS_PROD_DB}
+      - PG_DATABASE_DEV_USER=${PG_DATABASE_DEV_USER}
+      - PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}
+      - PAYMENT_RECORDS_DEV_DB=${PAYMENT_RECORDS_DEV_DB}
+      - JHIPSTER_REGISTRY_PASSWORD=${JHIPSTER_REGISTRY_PASSWORD}
+      - PAYMENT_RECORDS_PORT=${PAYMENT_RECORDS_PORT}
   paymentrecords-elasticsearch:
     image: 'docker.elastic.co/elasticsearch/elasticsearch:6.8.8'
     environment:
       - ES_JAVA_OPTS=-Xms1024m -Xmx1024m
       - discovery.type=single-node
 
-  paymentrecordsgate:
-    image: 'ghacupha/payment-records-gate:0.0.1-SNAPSHOT'
+  paymentrecordsgate-app:
+    image: ghacupha/payment-records-gate:0.0.1-SNAPSHOT
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - 'SPRING_PROFILES_ACTIVE=prod,swagger'
+      - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - 'EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka'
-      - 'SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config'
-      - JHIPSTER_SLEEP=30
-      - 'SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_GATE_PROD_DB}'
-      - 'PAYMENT_RECORDS_GATE_PORT=${PAYMENT_RECORDS_GATE_PORT}'
-      - 'KAFKA_BOOTSTRAPSERVERS=kafka:9092'
-      - 'LOCAL_PG_SERVER=${LOCAL_PG_SERVER}'
-      - 'PAYMENT_RECORDS_GATE_PROD_DB=${PAYMENT_RECORDS_GATE_PROD_DB}'
-      - 'PG_DATABASE_PROD_USER=${PG_DATABASE_PROD_USER}'
-      - 'PG_DATABASE_PROD_PASSWORD=${PG_DATABASE_PROD_PASSWORD}'
-      - 'PAYMENT_RECORDS_GATE_DEV_DB=${PAYMENT_RECORDS_GATE_DEV_DB}'
-      - 'PG_DATABASE_DEV_USER=${PG_DATABASE_DEV_USER}'
-      - 'PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}'
-      - JHIPSTER_REGISTRY_PASSWORD=admin
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATASOURCE_URL=${LOCAL_PG_SERVER}/${PAYMENT_RECORDS_GATE_PROD_DB}
+      - PAYMENT_RECORDS_GATE_PORT=${PAYMENT_RECORDS_GATE_PORT}
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+      - LOCAL_PG_SERVER=${LOCAL_PG_SERVER}
+      - PAYMENT_RECORDS_GATE_PROD_DB=${PAYMENT_RECORDS_GATE_PROD_DB}
+      - PG_DATABASE_PROD_USER=${PG_DATABASE_PROD_USER}
+      - PG_DATABASE_PROD_PASSWORD=${PG_DATABASE_PROD_PASSWORD}
+      - PAYMENT_RECORDS_GATE_DEV_DB=${PAYMENT_RECORDS_GATE_DEV_DB}
+      - PG_DATABASE_DEV_USER=${PG_DATABASE_DEV_USER}
+      - PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}
     ports:
-      - '8080:8791'
+      - 8791:8791
 
-  zookeeper:
-    extends:
-      file: kafka.yml
-      service: zookeeper
   kafka:
     extends:
       file: kafka.yml
       service: kafka
-  jhipster-registry:
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+  zookeeper:
     extends:
-      file: jhipster-registry.yml
-      service: jhipster-registry
-
-  jhipster-elasticsearch:
-    extends:
-      file: jhipster-console.yml
-      service: jhipster-elasticsearch
-  jhipster-logstash:
-    extends:
-      file: jhipster-console.yml
-      service: jhipster-logstash
-    depends_on:
-      - jhipster-elasticsearch
-  jhipster-console:
-    extends:
-      file: jhipster-console.yml
-      service: jhipster-console
-    depends_on:
-      - jhipster-elasticsearch
-  jhipster-import-dashboards:
-    extends:
-      file: jhipster-console.yml
-      service: jhipster-import-dashboards
-    depends_on:
-      - jhipster-elasticsearch
-  jhipster-curator:
-    extends:
-      file: jhipster-console.yml
-      service: jhipster-curator
-    depends_on:
-      - jhipster-elasticsearch
-  jhipster-zipkin:
-    extends:
-      file: jhipster-console.yml
-      service: jhipster-zipkin
-    depends_on:
-      - jhipster-elasticsearch
+      file: kafka.yml
+      service: zookeeper
